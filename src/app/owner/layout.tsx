@@ -3,14 +3,23 @@ import Sidebar from '@/components/owner/Sidebar'
 import { prisma } from '@/lib/prisma'
 
 export default async function OwnerLayout({ children }: { children: React.ReactNode }) {
-  const user = await requireOwner()
-
-  // Load badge counts
-  const [pendingRR, unreadNotifs, unreadMsgs] = await Promise.all([
-    prisma.refillRequest.count({ where: { status: { in: ['pending', 'submitted'] } } }),
-    prisma.notification.count({ where: { status: 'unread' } }),
-    prisma.message.count({ where: { status: 'unread' } }),
-  ])
+  let user, pendingRR = 0, unreadNotifs = 0, unreadMsgs = 0
+  try {
+    user = await requireOwner()
+    ;[pendingRR, unreadNotifs, unreadMsgs] = await Promise.all([
+      prisma.refillRequest.count({ where: { status: { in: ['pending', 'submitted'] } } }),
+      prisma.notification.count({ where: { status: 'unread' } }),
+      prisma.message.count({ where: { status: 'unread' } }),
+    ])
+  } catch (e: any) {
+    return (
+      <div style={{ padding: 40, fontFamily: 'monospace', fontSize: 14 }}>
+        <strong style={{ color: 'red' }}>Layout error:</strong>
+        <pre style={{ whiteSpace: 'pre-wrap', marginTop: 8 }}>{e?.message ?? String(e)}</pre>
+        <pre style={{ whiteSpace: 'pre-wrap', color: '#666' }}>{e?.stack}</pre>
+      </div>
+    )
+  }
 
   const initials = user.name.split(' ').map((x: any) => x[0]).join('').slice(0,2).toUpperCase()
 
