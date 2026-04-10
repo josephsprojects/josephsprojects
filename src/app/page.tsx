@@ -628,7 +628,7 @@ export default function DataPrimeTechHome() {
               If you have a problem worth solving, we&apos;ll build the tool to solve it.
             </p>
             <div className="hero-actions fade-up fade-3">
-              <a href="/curalog" className="btn-primary">
+              <a href="/curalog" target="_blank" rel="noopener noreferrer" className="btn-primary">
                 See CuraLog live
                 <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
@@ -664,7 +664,7 @@ export default function DataPrimeTechHome() {
                 </div>
               </div>
               <div className="hero-panel-apps">
-                <a href="/curalog" className="app-row">
+                <a href="/curalog" target="_blank" rel="noopener noreferrer" className="app-row">
                   <div className="app-icon" style={{ background: 'rgba(14,79,84,.1)', border: '1px solid rgba(14,79,84,.18)' }} aria-hidden="true">
                     <svg viewBox="0 0 24 24" stroke="#0E4F54"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M8 6H6a2 2 0 00-2 2v11a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-2"/><path d="M12 12v4M10 14h4"/></svg>
                   </div>
@@ -674,7 +674,7 @@ export default function DataPrimeTechHome() {
                   </div>
                   <span className="app-badge badge-live">Live</span>
                 </a>
-                <a href="/finance" className="app-row">
+                <a href="/finance" target="_blank" rel="noopener noreferrer" className="app-row">
                   <div className="app-icon" style={{ background: 'rgba(26,122,66,.08)', border: '1px solid rgba(26,122,66,.18)' }} aria-hidden="true">
                     <svg viewBox="0 0 24 24" stroke="#1A7A42"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
                   </div>
@@ -799,7 +799,7 @@ export default function DataPrimeTechHome() {
                   </div>
                   <h3 className="spotlight-h">Multi-patient care,<br/>built for real teams.</h3>
                   <p className="spotlight-p">CuraLog is a full medication management platform with caregiver portals, refill tracking, provider lookup, and secure messaging — all in one place.</p>
-                  <a href="/curalog" className="spotlight-cta">
+                  <a href="/curalog" target="_blank" rel="noopener noreferrer" className="spotlight-cta">
                     Open CuraLog
                     <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </a>
@@ -920,7 +920,7 @@ export default function DataPrimeTechHome() {
                 Send us a message
                 <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
-              <a href="/curalog" className="btn-cta-ghost">View CuraLog</a>
+              <a href="/curalog" target="_blank" rel="noopener noreferrer" className="btn-cta-ghost">View CuraLog</a>
             </div>
           </div>
         </section>
