@@ -22,7 +22,7 @@ export default async function AuditPage() {
           <table className="tbl">
             <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Type</th><th>Entity</th><th>Change</th></tr></thead>
             <tbody>
-              {logs.map(log => (
+              {logs.map((log: any) => (
                 <tr key={log.id}>
                   <td style={{ fontSize: '.75rem', color: 'var(--text3)', whiteSpace: 'nowrap' }}>{new Date(log.created_at).toLocaleString()}</td>
                   <td style={{ fontWeight: 600 }}>{log.user_name || 'System'}</td>
