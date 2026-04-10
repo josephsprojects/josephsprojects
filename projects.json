@@ -1,0 +1,22 @@
+[
+  {
+    "id": "medicationtracker",
+    "name": "Medication Tracker",
+    "description": "A private web app for tracking medications, refill schedules, and pharmacy details. Includes automatic low-supply alerts, pill count tracking, and secure two-factor authentication.",
+    "url": "/medicationtracker",
+    "status": "live",
+    "tags": ["Health", "Supabase", "2FA", "Real-time sync"],
+    "color": "#4F6EF7",
+    "icon": "clipboard"
+  },
+  {
+    "id": "finance",
+    "name": "Personal Finance Tracker",
+    "description": "A private web app for tracking credit cards, subscriptions, and bills. Includes utilization alerts, payoff calculations, and shared payment splits.",
+    "url": "/finance",
+    "status": "live",
+    "tags": ["Finance", "Supabase", "2FA", "Real-time sync"],
+    "color": "#7C3AED",
+    "icon": "dollar"
+  }
+]

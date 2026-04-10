@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Data Prime Tech</title>
+<meta name="description" content="Every app and tool built by Data Prime Tech — real software solving real problems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --font:'DM Sans',sans-serif;
+  --font-display:'Syne',sans-serif;
+  --accent:#0D9488;--accent-h:#0F766E;
+  --accent-light:rgba(13,148,136,.08);--accent-border:rgba(13,148,136,.18);
+  --accent-glow:rgba(13,148,136,.25);
+  --emerald:#10B981;--amber:#F59E0B;--rose:#F43F5E;--violet:#8B5CF6;
+  --r:16px;--rs:10px;--rx:24px;
+  --bg:#FAFAF9;--surface:#FFFFFF;--surface2:#F5F5F3;--surface3:#EEEDE9;
+  --border:rgba(0,0,0,.06);--border2:rgba(0,0,0,.11);
+  --text:#1C1917;--text2:#57534E;--text3:#A8A29E;
+  --nav-bg:rgba(250,250,249,.85);
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
+  --shadow-lg:0 4px 24px rgba(0,0,0,.06),0 16px 64px rgba(0,0,0,.06);
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#111110;--surface:#1C1B1A;--surface2:#242320;--surface3:#2E2C29;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);
+  --text:#F5F5F4;--text2:#A8A29E;--text3:#57534E;
+  --nav-bg:rgba(17,17,16,.85);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+  --shadow-lg:0 4px 24px rgba(0,0,0,.4),0 16px 64px rgba(0,0,0,.35);
+}}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* ─── Nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-mark{width:30px;height:30px;border-radius:9px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.logo-name{font-family:var(--font-display);font-size:15px;font-weight:700;letter-spacing:-.3px}
+.nav-links{display:flex;gap:2px}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;padding:7px 14px;border-radius:var(--rs);transition:background .15s,color .15s}
+.nav-links a:hover,.nav-links a.active{background:var(--surface2);color:var(--text)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-pill{font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-light);border:1px solid var(--accent-border);padding:5px 12px;border-radius:20px;display:flex;align-items:center;gap:6px}
+.nav-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.btn-nav{padding:8px 18px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font:600 13px var(--font);cursor:pointer;text-decoration:none;transition:background .15s,transform .1s}
+.btn-nav:hover{background:var(--accent-h);transform:translateY(-1px)}
+@media(max-width:640px){nav{padding:0 20px}.nav-links,.nav-pill{display:none}}
+
+/* ─── Page header ── */
+.page-header{max-width:1120px;margin:0 auto;padding:120px 40px 64px}
+@media(max-width:640px){.page-header{padding:100px 24px 48px}}
+.page-kicker{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.page-h{font-family:var(--font-display);font-size:clamp(38px,5vw,60px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:16px}
+.page-sub{font-size:16px;color:var(--text2);line-height:1.75;max-width:520px;margin-bottom:36px}
+
+/* ─── Filters ── */
+.filter-row{display:flex;gap:6px;flex-wrap:wrap}
+.filter-btn{padding:7px 18px;border-radius:20px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font:600 12px var(--font);cursor:pointer;transition:all .15s;letter-spacing:-.1px}
+.filter-btn:hover{background:var(--surface2);color:var(--text)}
+.filter-btn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ─── Projects grid ── */
+.projects-wrap{max-width:1120px;margin:0 auto;padding:0 40px 96px}
+@media(max-width:640px){.projects-wrap{padding:0 24px 64px}}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:48px}
+@media(max-width:640px){.proj-grid{grid-template-columns:1fr}}
+
+.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:30px;display:flex;flex-direction:column;gap:0;text-decoration:none;transition:border-color .2s,transform .18s,box-shadow .2s;position:relative;overflow:hidden}
+.proj-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-light) 0%,transparent 60%);opacity:0;transition:opacity .3s}
+.proj-card:not(.dim):hover{border-color:var(--accent-border);transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.proj-card:not(.dim):hover::before{opacity:1}
+.proj-card.dim{opacity:.5;cursor:default}
+.proj-card.dim:hover{transform:none;box-shadow:none}
+
+.proj-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;position:relative;z-index:1}
+.proj-icon{width:46px;height:46px;border-radius:12px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s}
+.proj-card:not(.dim):hover .proj-icon{border-color:var(--accent-border);background:var(--accent-light)}
+.proj-icon svg{width:22px;height:22px;fill:none;stroke-width:1.8;transition:stroke .2s}
+.s-live{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(13,148,136,.1);color:var(--accent);border:1px solid var(--accent-border)}
+.s-soon{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.s-build{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(139,92,246,.1);color:var(--violet);border:1px solid rgba(139,92,246,.2)}
+
+.proj-card-name{font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:-.4px;margin-bottom:8px;color:var(--text);position:relative;z-index:1}
+.proj-card-desc{font-size:13px;color:var(--text2);line-height:1.7;flex:1;margin-bottom:18px;position:relative;z-index:1}
+.proj-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:20px;position:relative;z-index:1}
+.proj-tag{font-size:10px;padding:3px 8px;border-radius:6px;background:var(--surface2);color:var(--text3);border:1px solid var(--border)}
+.proj-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);position:relative;z-index:1}
+.proj-card-link{font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:5px;transition:gap .2s}
+.proj-card:not(.dim):hover .proj-card-link{gap:8px}
+.proj-card-link svg{width:12px;height:12px;fill:none;stroke:var(--accent);stroke-width:2.5}
+
+/* ─── Empty state ── */
+.empty{text-align:center;padding:80px 24px;color:var(--text3);font-size:14px}
+
+/* ─── CTA strip ── */
+.cta-strip{max-width:1120px;margin:0 auto 96px;padding:0 40px}
+@media(max-width:640px){.cta-strip{padding:0 24px;margin-bottom:64px}}
+.cta-inner{background:linear-gradient(135deg,var(--accent-h),var(--accent),#0CC9BB);border-radius:var(--rx);padding:56px 56px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;position:relative;overflow:hidden}
+.cta-inner::before{content:'';position:absolute;width:350px;height:350px;border-radius:50%;background:rgba(255,255,255,.05);top:-120px;right:-80px}
+.cta-inner h2{font-family:var(--font-display);font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-1px;color:#fff;position:relative;z-index:1}
+.btn-white{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;background:#fff;color:var(--accent);border:none;border-radius:var(--r);font:700 14px var(--font);cursor:pointer;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,.15);transition:transform .15s,box-shadow .15s;position:relative;z-index:1;flex-shrink:0}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.btn-white svg{width:14px;height:14px;fill:none;stroke:var(--accent);stroke-width:2.5}
+@media(max-width:640px){.cta-inner{padding:40px 32px}}
+
+/* ─── Footer ── */
+footer{border-top:1px solid var(--border);padding:32px 40px}
+@media(max-width:640px){footer{padding:24px}}
+.footer-inner{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.footer-mark{width:22px;height:22px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.footer-mark svg{width:11px;height:11px;fill:none;stroke:#fff;stroke-width:2.5}
+.footer-name{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--text2)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:12px;color:var(--text3);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--text2)}
+.footer-copy{font-size:12px;color:var(--text3)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+    <span class="logo-name">Data Prime Tech</span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/projects" class="active">Projects</a>
+    <a href="/about">About</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-pill"><span class="nav-dot"></span>Available for projects</div>
+    <a href="/about#contact" class="btn-nav">Get in touch</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-kicker">Our work</div>
+  <h1 class="page-h">Everything<br>we've built.</h1>
+  <p class="page-sub">Real applications solving real problems — from healthcare management to personal finance. Every project starts with a genuine need.</p>
+  <div class="filter-row">
+    <button class="filter-btn on" onclick="filterProjects('all',this)">All</button>
+    <button class="filter-btn" onclick="filterProjects('live',this)">Live</button>
+    <button class="filter-btn" onclick="filterProjects('health',this)">Health</button>
+    <button class="filter-btn" onclick="filterProjects('finance',this)">Finance</button>
+    <button class="filter-btn" onclick="filterProjects('building',this)">In Progress</button>
+  </div>
+</div>
+
+<div class="projects-wrap">
+  <div class="proj-grid" id="proj-grid">
+    <div class="empty">Loading projects…</div>
+  </div>
+</div>
+
+<div class="cta-strip">
+  <div class="cta-inner">
+    <h2>Have an idea?<br>Let's build it together.</h2>
+    <a href="/about#contact" class="btn-white">
+      Get in touch
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="footer-logo">
+      <div class="footer-mark"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+      <span class="footer-name">Data Prime Tech</span>
+    </a>
+    <div class="footer-links">
+      <a href="/">Home</a><a href="/projects">Projects</a><a href="/about">About</a>
+      <a href="/medicationtracker">Med Tracker</a><a href="/finance">Finance</a>
+    </div>
+    <div class="footer-copy">© 2026 dataprimetech.com</div>
+  </div>
+</footer>
+
+<script>
+const ICONS={
+  clipboard:`<rect x="9" y="2" width="6" height="4" rx="1"/><path d="M8 6H6a2 2 0 00-2 2v11a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-2"/><path d="M12 12v4M10 14h4"/>`,
+  dollar:`<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>`,
+  code:`<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>`,
+  globe:`<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>`,
+  shield:`<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>`,
+  zap:`<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>`,
+  monitor:`<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>`,
+};
+const BADGES={
+  live:'<span class="s-live">Live</span>',
+  soon:'<span class="s-soon">Coming soon</span>',
+  building:'<span class="s-build">Building</span>',
+};
+
+let _allProjects=[];
+let _activeFilter='all';
+
+function buildCard(p){
+  const isLive=p.status==='live';
+  const icon=ICONS[p.icon]||ICONS.code;
+  const bg=p.color+'18',br=p.color+'33';
+  return`<${isLive?`a href="${p.url}" target="_blank" rel="noopener"`:'div'} class="proj-card${isLive?'':' dim'}">
+    <div class="proj-card-top">
+      <div class="proj-icon" style="background:${bg};border-color:${br}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="${p.color}" stroke-width="1.8">${icon}</svg>
+      </div>
+      ${BADGES[p.status]||BADGES.soon}
+    </div>
+    <div class="proj-card-name">${p.name}</div>
+    <div class="proj-card-desc">${p.description}</div>
+    <div class="proj-tags">${p.tags.map(t=>`<span class="proj-tag">${t}</span>`).join('')}</div>
+    <div class="proj-card-footer">
+      ${isLive?`<span class="proj-card-link">Open app <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>`:'<span style="font-size:12px;color:var(--text3)">In development</span>'}
+      <span style="font-size:10px;color:var(--text3);font-style:italic">${p.tags.length?p.tags[0]:''}</span>
+    </div>
+  </${isLive?'a':'div'}>`;
+}
+
+function renderProjects(filter){
+  const grid=document.getElementById('proj-grid');
+  const filtered=filter==='all'?_allProjects:_allProjects.filter(p=>{
+    if(filter==='live')return p.status==='live';
+    if(filter==='building')return p.status==='building';
+    return p.tags.some(t=>t.toLowerCase().includes(filter));
+  });
+  if(!filtered.length){grid.innerHTML='<div class="empty">No projects in this category yet.</div>';return;}
+  grid.innerHTML=filtered.map(buildCard).join('');
+}
+
+function filterProjects(f,btn){
+  _activeFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderProjects(f);
+}
+
+async function loadProjects(){
+  try{
+    const res=await fetch('/projects.json?v='+Date.now());
+    _allProjects=await res.json();
+    renderProjects(_activeFilter);
+  }catch(e){
+    document.getElementById('proj-grid').innerHTML='<div class="empty">Could not load projects.</div>';
+  }
+}
+loadProjects();
+</script>
+</body>
+</html>

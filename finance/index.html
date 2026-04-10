@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Financials — DataPrimeTech</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  --accent:#4F6EF7;--accent-h:#3B5BDB;--accent-l:rgba(79,110,247,.1);--accent-b:rgba(79,110,247,.2);
+  --green:#059669;--green-l:rgba(5,150,105,.1);--green-b:rgba(5,150,105,.2);
+  --amber:#D97706;--amber-l:rgba(217,119,6,.1);--amber-b:rgba(217,119,6,.2);
+  --orange:#EA580C;--orange-l:rgba(234,88,12,.1);--orange-b:rgba(234,88,12,.2);
+  --red:#DC2626;--red-l:rgba(220,38,38,.1);--red-b:rgba(220,38,38,.2);
+  --purple:#7C3AED;--purple-l:rgba(124,58,237,.1);--purple-b:rgba(124,58,237,.2);
+  --r:14px;--rs:8px;
+  --bg:#F8F7F4;--surface:#fff;--surface2:#F3F2EE;
+  --border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.12);
+  --text:#111118;--text2:#52525B;--text3:#A1A1AA;
+  --nav-bg:rgba(248,247,244,.92);
+  --shadow:0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);
+  --shadow-lg:0 4px 24px rgba(0,0,0,.08),0 12px 48px rgba(0,0,0,.06);
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0F0F12;--surface:#17171C;--surface2:#1F1F26;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --text:#F4F4F5;--text2:#A1A1AA;--text3:#52525B;
+  --nav-bg:rgba(15,15,18,.92);
+  --shadow:0 1px 3px rgba(0,0,0,.2),0 4px 12px rgba(0,0,0,.15);
+  --shadow-lg:0 4px 24px rgba(0,0,0,.4),0 12px 48px rgba(0,0,0,.3);
+}}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* Lock */
+#lock{position:fixed;inset:0;background:linear-gradient(135deg,#0A1F14 0%,#0F2D1C 50%,#152E1F 100%);display:none;align-items:center;justify-content:center;z-index:999;padding:16px}
+#lock.on{display:flex}
+.lk-wrap{display:flex;gap:0;max-width:900px;width:100%;border-radius:24px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.55)}
+
+/* Left info panel */
+.lk-info{background:linear-gradient(160deg,#0F3D22 0%,#0A2E18 100%);padding:44px 38px;flex:1;display:flex;flex-direction:column;justify-content:center;color:#fff}
+.lk-info-logo{display:flex;align-items:center;gap:10px;margin-bottom:36px}
+.lk-info-mark{width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.18)}
+.lk-info-mark svg{width:17px;height:17px;fill:none;stroke:#fff;stroke-width:2}
+.lk-info-brand{font-size:14px;font-weight:700;letter-spacing:-.2px}
+.lk-info-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+.lk-info-h{font-size:26px;font-weight:800;letter-spacing:-.8px;line-height:1.2;margin-bottom:10px}
+.lk-info-p{font-size:13px;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:32px}
+.lk-feature{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px}
+.lk-feature-dot{width:28px;height:28px;background:rgba(255,255,255,.08);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(255,255,255,.12)}
+.lk-feature-dot svg{width:13px;height:13px;fill:none;stroke:rgba(255,255,255,.85);stroke-width:2.2}
+.lk-feature-text{font-size:12px;color:rgba(255,255,255,.72);line-height:1.55;padding-top:5px}
+.lk-feature-text strong{color:#fff}
+.lk-info-footer{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);font-size:11px;color:rgba(255,255,255,.35)}
+
+/* Right form panel */
+.lk-card{background:#fff;padding:44px 38px;width:360px;flex-shrink:0;text-align:center;overflow-y:auto;max-height:100vh}
+.lk-icon{width:52px;height:52px;background:var(--accent-l);border:1px solid var(--accent-b);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.lk-icon svg{width:22px;height:22px;fill:none;stroke:var(--accent);stroke-width:2}
+.lk-title{font-size:20px;font-weight:700;color:#111;letter-spacing:-.5px;margin-bottom:5px}
+.lk-sub{font-size:12px;color:#6B7280;margin-bottom:22px;line-height:1.6}
+.lk-inp{width:100%;padding:12px 14px;border:1.5px solid #E5E7EB;border-radius:var(--rs);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:15px;font-weight:400;color:#111;text-align:left;letter-spacing:0;margin-bottom:10px;transition:border-color .15s,box-shadow .15s}
+.lk-inp:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-l)}
+.lk-btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font:700 14px var(--font);cursor:pointer;margin-bottom:8px;transition:background .15s}
+.lk-btn:hover{background:var(--accent-h)}.lk-btn:disabled{opacity:.6;cursor:not-allowed}
+.lk-err{font-size:12px;color:#DC2626;min-height:16px;margin-bottom:4px}
+.lk-back{background:none;border:none;color:#9CA3AF;font:12px var(--font);cursor:pointer;margin-top:4px;display:block;width:100%;text-align:center}
+.lk-back:hover{color:#6B7280}
+@media(max-width:680px){.lk-info{display:none}.lk-card{width:100%;border-radius:24px;max-height:95vh}}
+.qr-box{display:flex;justify-content:center;margin-bottom:12px;padding:12px;background:#F9FAFB;border-radius:10px}
+.totp-bar{height:3px;border-radius:2px;background:#E5E7EB;margin-bottom:12px;overflow:hidden}
+.totp-fill{height:100%;background:var(--accent);transition:width 1s linear}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;height:62px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-mark{width:28px;height:28px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2.5}
+.logo-name{font-size:15px;font-weight:700;letter-spacing:-.4px}
+.logo-sep{font-size:13px;color:var(--text3);margin:0 2px}
+.logo-page{font-size:13px;color:var(--text2)}
+.nav-links{display:flex;gap:2px}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;padding:7px 12px;border-radius:var(--rs);transition:background .15s,color .15s}
+.nav-links a:hover{background:var(--surface2);color:var(--text)}
+.nav-r{display:flex;align-items:center;gap:10px}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block}
+.sync-dot.syncing{background:#fbbf24;animation:blink .8s infinite}
+.sync-dot.error{background:#f87171}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* Tab bar */
+.tabs{position:sticky;top:62px;z-index:40;background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-top:62px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:0 18px;height:48px;border:none;border-bottom:2px solid transparent;background:transparent;color:var(--text3);font:600 13px var(--font);cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s;display:flex;align-items:center;gap:7px;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.tab:hover{color:var(--text2)}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tab svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border2);border-radius:var(--rs);background:var(--surface);color:var(--text2);font:600 11px var(--font);cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn:hover{background:var(--surface2);color:var(--text)}
+.btn-accent{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-accent:hover{background:var(--accent-h)}
+.btn-ghost{background:transparent;border-color:var(--border)}
+.btn-danger{background:var(--red-l);color:var(--red);border-color:var(--red-b)}
+.btn-danger:hover{background:rgba(220,38,38,.18)}
+.btn-sm{padding:4px 10px;font-size:10px}
+.btn-nav{padding:7px 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font:600 12px var(--font);cursor:pointer;transition:background .15s}
+.btn-nav:hover{background:var(--accent-h)}
+
+/* Main */
+.main{padding:24px 32px 100px;max-width:1300px;margin:0 auto}
+
+/* Metric cards */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:28px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.metric-accent{position:absolute;top:0;left:0;right:0;height:3px}
+.metric-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.metric-value{font-size:26px;font-weight:800;letter-spacing:-1.5px;line-height:1}
+.metric-sub{font-size:11px;color:var(--text3);margin-top:5px}
+.metric-up{color:var(--red);font-weight:600}
+.metric-down{color:var(--green);font-weight:600}
+
+/* Alerts */
+.alert-box{border-radius:var(--r);padding:14px 18px;margin-bottom:20px;border:1px solid}
+.alert-title{font-size:12px;font-weight:700;margin-bottom:8px}
+.alert-item{font-size:12px;color:var(--text2);padding:4px 0;border-bottom:1px solid;display:flex;justify-content:space-between}
+.alert-item:last-child{border-bottom:none}
+
+/* Section */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.sec-title{font-size:17px;font-weight:700;letter-spacing:-.4px}
+.sec-sub{font-size:12px;color:var(--text2);margin-top:2px}
+
+/* Card row */
+.card-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 22px;display:grid;grid-template-columns:40px 1fr auto;gap:16px;align-items:center;box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s}
+.card-row:hover{border-color:var(--border2);box-shadow:var(--shadow-lg)}
+.card-row+.card-row{margin-top:3px}
+.card-ico{width:40px;height:40px;border-radius:10px;border:1px solid;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-ico svg{width:18px;height:18px;fill:none;stroke-width:2}
+.card-body{min-width:0}
+.card-name{font-size:14px;font-weight:700;letter-spacing:-.3px;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card-apr{font-size:10px;color:var(--text3);font-weight:500}
+.card-apr.zero{color:var(--green);font-weight:700}
+.card-note-tag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px}
+.util-wrap{margin-top:4px}
+.util-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:3px}
+.util-track{height:5px;border-radius:3px;background:var(--surface2);overflow:hidden;border:1px solid var(--border)}
+.util-fill{height:100%;border-radius:3px;transition:width .6s ease}
+.card-stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.card-stat .lbl{font-size:10px;color:var(--text3)}.card-stat .val{font-size:12px;font-weight:600}
+.card-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+.card-actions{display:flex;gap:5px}
+
+/* Status badges */
+.badge{font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;border:1px solid}
+.b-good{background:var(--green-l);color:var(--green);border-color:var(--green-b)}
+.b-warn{background:var(--amber-l);color:var(--amber);border-color:var(--amber-b)}
+.b-high{background:var(--orange-l);color:var(--orange);border-color:var(--orange-b)}
+.b-crit{background:var(--red-l);color:var(--red);border-color:var(--red-b)}
+.b-zero{background:var(--surface2);color:var(--text3);border-color:var(--border)}
+.b-benefit{background:var(--purple-l);color:var(--purple);border-color:var(--purple-b)}
+.b-cancel{background:var(--surface2);color:var(--text3);border-color:var(--border)}
+.b-active{background:var(--green-l);color:var(--green);border-color:var(--green-b)}
+
+/* Service row */
+.svc-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 18px;display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:start;transition:border-color .15s;box-shadow:var(--shadow)}
+.svc-row+.svc-row{margin-top:2px}
+.svc-row:hover{border-color:var(--border2)}
+.svc-name{font-size:13px;font-weight:700;margin-bottom:3px}
+.svc-meta{font-size:11px;color:var(--text2);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.svc-splits{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.split-chip{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:10px;font-weight:500;color:var(--text2)}
+.svc-amt{font-size:16px;font-weight:800;letter-spacing:-.5px;text-align:right;white-space:nowrap}
+.svc-ann{font-size:10px;color:var(--text3);text-align:right;margin-top:2px}
+.svc-myshare{font-size:10px;color:var(--accent);font-weight:600;text-align:right;margin-top:1px}
+
+/* Group header */
+.grp-hdr{display:flex;align-items:center;gap:8px;padding:10px 0 8px;margin-top:20px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.grp-hdr:first-child{margin-top:0}
+.grp-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3)}
+.grp-count{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--surface2);color:var(--text3);font-weight:600}
+.grp-total{margin-left:auto;font-size:13px;font-weight:700}
+
+/* People grid */
+.people-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:28px}
+.person-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow)}
+.person-name{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.person-total{font-size:24px;font-weight:800;letter-spacing:-1px}
+.person-detail{font-size:10px;color:var(--text3);margin-top:4px;display:flex;flex-direction:column;gap:2px}
+.person-line{display:flex;justify-content:space-between}
+
+/* Util overview table */
+.util-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:28px}
+.util-row{display:grid;grid-template-columns:200px 1fr 55px;gap:12px;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)}
+.util-row:last-child{border-bottom:none}
+
+/* Drawer */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:100;display:none;opacity:0;transition:opacity .2s;backdrop-filter:blur(3px)}
+.overlay.on{display:block;opacity:1}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:420px;max-width:96vw;background:var(--surface);z-index:101;padding:24px;overflow-y:auto;transform:translateX(105%);transition:transform .25s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 32px rgba(0,0,0,.1);border-left:1px solid var(--border)}
+.drawer.on{transform:translateX(0)}
+.drw-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.drw-title{font-size:16px;font-weight:700;letter-spacing:-.4px}
+.btn-x{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text2);padding:4px;border-radius:6px;transition:background .15s;line-height:1}
+.btn-x:hover{background:var(--surface2)}
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px}
+.fl .hint{font-weight:400;color:var(--text3);font-size:10px;margin-left:4px}
+.fi,.fs,.ft{width:100%;padding:8px 12px;border:1px solid var(--border2);border-radius:var(--rs);font:13px var(--font);color:var(--text);background:var(--bg);transition:border-color .15s,box-shadow .15s}
+.fi:focus,.fs:focus,.ft:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-l)}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.calc-box{background:var(--accent-l);border:1px solid var(--accent-b);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;display:none}
+.calc-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0}
+.calc-row .l{color:var(--text2)}.calc-row .v{font-weight:700;color:var(--accent)}
+.sec-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.splits-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.split-item{background:var(--surface2);border-radius:var(--rs);padding:9px 10px;border:1px solid var(--border)}
+.split-name{font-size:11px;font-weight:600;margin-bottom:5px;color:var(--text2)}
+.drw-actions{display:flex;gap:8px;margin-top:20px}
+.btn-save{flex:1;padding:11px 0;color:#fff;border:none;border-radius:var(--rs);font:700 13px var(--font);cursor:pointer;background:var(--accent);transition:opacity .15s}
+.btn-save:hover{opacity:.88}
+.btn-cancel{flex:1;padding:11px 0;background:var(--surface2);color:var(--text2);border:1px solid var(--border);border-radius:var(--rs);font:13px var(--font);cursor:pointer}
+.btn-cancel:hover{background:var(--border2);color:var(--text)}
+
+/* Toast */
+.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-8px);background:#111;color:#fff;padding:8px 20px;border-radius:20px;font:600 11px var(--font);z-index:300;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(prefers-color-scheme:dark){.toast{background:#F4F4F5;color:#111}}
+
+/* Mobile */
+.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:49;background:var(--surface);border-top:1px solid var(--border);padding:8px 14px;gap:6px;box-shadow:0 -4px 20px rgba(0,0,0,.07)}
+.mob-btn{flex:1;padding:10px 6px;border:1px solid var(--border2);border-radius:var(--rs);background:var(--surface2);color:var(--text2);font:600 11px var(--font);cursor:pointer;text-align:center}
+.mob-btn.pri{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sec-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:16px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+
+@media(max-width:768px){
+  nav{padding:0 14px}
+  .logo-sep,.logo-page,.nav-links{display:none}
+  .tabs{padding:0 14px;margin-top:54px}
+  .main{padding:14px 14px 90px}
+  .drawer{width:100%;top:0;border-radius:0;border-left:none}
+  .metrics{grid-template-columns:1fr 1fr}
+  .card-row{grid-template-columns:36px 1fr;gap:12px}
+  .card-right{display:none}
+  .util-row{grid-template-columns:120px 1fr 45px}
+  .mob-bar{display:flex}
+}
+@media print{nav,.tabs,.card-actions,.svc-row .card-actions,.overlay,.drawer,.toast,#lock,.mob-bar{display:none!important}body{background:#fff}.main{padding:8px}}
+#lock-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0F1E3C 0%,#1A2B4A 50%,#243556 100%);display:none;align-items:center;justify-content:center;z-index:998;padding:16px}
+#lock-screen.on{display:flex}
+.lock-wrap{display:flex;gap:0;max-width:900px;width:100%;border-radius:24px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5)}
+.lock-info{background:linear-gradient(160deg,#1e3a6e 0%,#152d5a 100%);padding:40px 36px;flex:1;display:flex;flex-direction:column;justify-content:center;color:#fff}
+.lock-info-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.lock-info-mark{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.2)}
+.lock-info-mark svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2}
+.lock-info-title{font-size:24px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin-bottom:12px}
+.lock-info-sub{font-size:13px;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:28px}
+.lock-feature{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.lock-feature-icon{width:28px;height:28px;background:rgba(255,255,255,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(255,255,255,.15)}
+.lock-feature-icon svg{width:13px;height:13px;fill:none;stroke:rgba(255,255,255,.9);stroke-width:2}
+.lock-feature-text{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;padding-top:5px}
+.lock-feature-text strong{color:#fff}
+.lock-card{background:#fff;padding:40px 36px;width:360px;flex-shrink:0;text-align:center;overflow-y:auto;max-height:100vh}
+.lock-icon{width:52px;height:52px;background:#EEF2FF;border:1px solid #C7D2FE;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.lock-icon svg{width:22px;height:22px;fill:none;stroke:#4F46E5;stroke-width:2}
+.lock-title{font-size:20px;font-weight:700;color:#111;letter-spacing:-.5px;margin-bottom:6px}
+.lock-sub{font-size:12px;color:#6B7280;margin-bottom:22px;line-height:1.6}
+@media(max-width:680px){.lock-info{display:none}.lock-card{width:100%;border-radius:24px;max-height:95vh}}
+.lock-input{width:100%;padding:12px 14px;border:1.5px solid #E5E7EB;border-radius:var(--rs);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:15px;font-weight:400;color:#111;text-align:left;letter-spacing:0;margin-bottom:10px;transition:border-color .15s,box-shadow .15s}
+.lock-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+.lock-btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font:700 14px var(--font);cursor:pointer;margin-bottom:8px;transition:background .15s}
+.lock-btn:hover{background:var(--accent-h)}
+.lock-btn:disabled{opacity:.6;cursor:not-allowed}
+.lock-err{font-size:12px;color:var(--red);min-height:16px;margin-bottom:4px}
+.lock-back{appearance:none;-webkit-appearance:none;background:none;border:none;color:#9CA3AF;font:12px var(--font);cursor:pointer;margin-top:4px;display:block;width:100%;text-align:center;padding:0}
+.lock-back:hover{color:#6B7280}
+.qr-wrap{display:flex;justify-content:center;margin-bottom:12px;padding:12px;background:#F9FAFB;border-radius:10px}
+.totp-timer{height:3px;border-radius:2px;background:#E5E7EB;margin-bottom:12px;overflow:hidden}
+.totp-timer-fill{height:100%;background:var(--accent);transition:width 1s linear}
+
+/* ── Nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;height:62px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+#lock-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0F1E3C 0%,#1A2B4A 50%,#243556 100%);display:none;align-items:center;justify-content:center;z-index:998;padding:16px}
+#lock-screen.on{display:flex}
+.lock-wrap{display:flex;gap:0;max-width:900px;width:100%;border-radius:24px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5)}
+.lock-info{background:linear-gradient(160deg,#1e3a6e 0%,#152d5a 100%);padding:40px 36px;flex:1;display:flex;flex-direction:column;justify-content:center;color:#fff}
+.lock-info-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.lock-info-mark{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.2)}
+.lock-info-mark svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2}
+.lock-info-title{font-size:24px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin-bottom:12px}
+.lock-info-sub{font-size:13px;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:28px}
+.lock-feature{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.lock-feature-icon{width:28px;height:28px;background:rgba(255,255,255,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(255,255,255,.15)}
+.lock-feature-icon svg{width:13px;height:13px;fill:none;stroke:rgba(255,255,255,.9);stroke-width:2}
+.lock-feature-text{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;padding-top:5px}
+.lock-feature-text strong{color:#fff}
+.lock-card{background:#fff;padding:40px 36px;width:360px;flex-shrink:0;text-align:center;overflow-y:auto;max-height:100vh}
+.lock-icon{width:52px;height:52px;background:#EEF2FF;border:1px solid #C7D2FE;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.lock-icon svg{width:22px;height:22px;fill:none;stroke:#4F46E5;stroke-width:2}
+.lock-title{font-size:20px;font-weight:700;color:#111;letter-spacing:-.5px;margin-bottom:6px}
+.lock-sub{font-size:12px;color:#6B7280;margin-bottom:22px;line-height:1.6}
+@media(max-width:680px){.lock-info{display:none}.lock-card{width:100%;border-radius:24px;max-height:95vh}}
+.lock-input{width:100%;padding:12px 14px;border:1.5px solid #E5E7EB;border-radius:var(--rs);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:15px;font-weight:400;color:#111;text-align:left;letter-spacing:0;margin-bottom:10px;transition:border-color 
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<!-- Lock -->
+<div id="lock-screen">
+  <div class="lock-wrap">
+
+    <!-- Left panel — description -->
+    <div class="lock-info">
+      <div class="lock-info-logo">
+        <div class="lock-info-mark"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div>
+          <div style="font-size:14px;font-weight:700;letter-spacing:-.3px">DataPrimeTech</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5)">dataprimetech.com</div>
+        </div>
+      </div>
+      <div class="lock-info-title">Your finances, all in one place</div>
+      <div class="lock-info-sub">Track credit cards, subscriptions, bills, and shared expenses — with a clear picture of where your money goes.</div>
+      <div class="lock-feature">
+        <div class="lock-feature-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+        <div class="lock-feature-text"><strong>Credit card tracker</strong> — balances, limits, due dates, and rewards all in one dashboard</div>
+      </div>
+      <div class="lock-feature">
+        <div class="lock-feature-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+        <div class="lock-feature-text"><strong>Subscription manager</strong> — never lose track of recurring charges and what you're actually using</div>
+      </div>
+      <div class="lock-feature">
+        <div class="lock-feature-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></div>
+        <div class="lock-feature-text"><strong>Bill reminders</strong> — automatic alerts before due dates so you never miss a payment</div>
+      </div>
+      <div class="lock-feature">
+        <div class="lock-feature-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <div class="lock-feature-text"><strong>Shared expenses</strong> — split bills and track who owes what across any group</div>
+      </div>
+      <div class="lock-feature">
+        <div class="lock-feature-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="lock-feature-text"><strong>Private &amp; secure</strong> — your financial data is encrypted and synced across all your devices</div>
+      </div>
+      <div class="lock-info-footer">Built by Joseph Diaz-Ordonez &middot; dataprimetech.com</div>
+    </div>
+
+    <!-- Right panel — login / register forms -->
+    <div class="lock-card">
+      <!-- Step: Login -->
+      <div id="step-password">
+        <div class="lock-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="lock-title">Welcome back</div>
+        <div class="lock-sub">Sign in to your account</div>
+        <input class="lock-input" id="lock-email" type="email" placeholder="Email address" autocomplete="email" onkeydown="if(event.key==='Enter')document.getElementById('lock-pw').focus()">
+        <input class="lock-input" id="lock-pw" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkPw()">
+        <div class="lock-err" id="lock-err"></div>
+        <button class="lock-btn" id="lock-btn" onclick="checkPw()">Sign In</button>
+        <button class="lock-back" onclick="sendPasswordResetCode()" style="font-size:11px;color:#9CA3AF;margin-bottom:4px">Forgot password? Send reset code</button>
+        
+      <div id="passkey-section" style="display:none">
+      <div style="display:flex;align-items:center;gap:8px;margin:10px 0"><div style="flex:1;height:1px;background:#E5E7EB"></div><span style="font-size:11px;color:#9CA3AF">or</span><div style="flex:1;height:1px;background:#E5E7EB"></div></div>
+      <button class="lock-back" id="passkey-btn" onclick="handlePasskey()" style="display:flex;align-items:center;justify-content:center;gap:6px">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        <span id="passkey-btn-label">Sign in with Passkey</span>
+      </button>
+    </div>
+      <button class="lock-back" onclick="showRegister()">New here? Create a free account</button>
+      </div>
+      <!-- Step: Register -->
+      <div id="step-register" style="display:none">
+        <div class="lock-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="lock-title">Create your account</div>
+        <div class="lock-sub">Free to use. Your financial data is private to you — encrypted and never shared with anyone.</div>
+        <input class="lock-input" id="reg-name" type="text" placeholder="Your full name" style="letter-spacing:0;text-align:left;margin-bottom:8px">
+        <input class="lock-input" id="reg-email" type="email" placeholder="Email address" style="letter-spacing:0;text-align:left;margin-bottom:8px">
+        <input class="lock-input" id="reg-pw" type="password" placeholder="Choose a password (6+ characters)" style="letter-spacing:0;text-align:left;margin-bottom:8px">
+        <input class="lock-input" id="reg-pw2" type="password" placeholder="Confirm password" style="letter-spacing:0;text-align:left;margin-bottom:8px" onkeydown="if(event.key==='Enter')registerUser()">
+        <div class="lock-err" id="reg-err"></div>
+        <button class="lock-btn" id="reg-btn" onclick="registerUser()">Create Account</button>
+        <button class="lock-back" onclick="showLogin()">Already have an account? Sign in</button>
+      </div>
+    <!-- Step: Email Verification -->
+    <div id="step-verify" style="display:none">
+      <div class="lock-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+      <div class="lock-title">Verify Your Email</div>
+      <div class="lock-sub" id="verify-sub">A 6-digit code was sent to your email. Enter it below.</div>
+      <input class="lock-input" id="verify-code" type="tel" inputmode="numeric" placeholder="000000" maxlength="6" style="letter-spacing:4px;margin-bottom:8px" onkeydown="if(event.key==='Enter')verifyEmail()">
+      <div class="lock-err" id="verify-err"></div>
+      <button class="lock-btn" id="verify-btn" onclick="verifyEmail()">Verify Email</button>
+      <button class="lock-back" onclick="resendVerificationCode()">Resend code</button>
+      <button class="lock-back" onclick="showRegister()">Back</button>
+    </div>
+    <!-- Step: TOTP -->
+    <div id="step-totp" style="display:none">
+      <div class="lock-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+      <div class="lock-title">Authenticator Code</div>
+      <div class="lock-sub" style="margin-bottom:12px">Enter the 6-digit code from your authenticator app</div>
+      <div class="totp-timer"><div class="totp-timer-fill" id="totp-timer-fill"></div></div>
+      <input class="lock-input" id="totp-code" type="tel" inputmode="numeric" placeholder="000 000" maxlength="7" onkeydown="if(event.key==='Enter')checkTOTP()" oninput="formatTOTPInput(this)">
+      <div class="lock-err" id="totp-err"></div>
+      <button class="lock-btn" id="totp-btn" onclick="checkTOTP()">Verify</button>
+      <button class="lock-back" onclick="showLogin()">Back to sign in</button>
+    </div>
+    <!-- Step: Setup 2FA -->
+    <div id="step-setup" style="display:none">
+      <div class="lock-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="lock-title" style="margin-bottom:6px">Set Up Two-Factor Auth</div>
+      <div class="lock-sub" style="margin-bottom:12px;font-size:11px">Scan this QR code in your authenticator app</div>
+      <div class="qr-wrap"><div id="qr-wrap"></div></div>
+      <div class="lock-sub" style="margin-bottom:10px">Enter the 6-digit code to confirm</div>
+      <input class="lock-input" id="setup-code" type="tel" inputmode="numeric" placeholder="000 000" maxlength="7" onkeydown="if(event.key==='Enter')verifySetup()" oninput="formatTOTPInput(this)">
+      <div class="lock-err" id="setup-err"></div>
+      <button class="lock-btn" id="setup-btn" onclick="verifySetup()">Confirm and Unlock</button>
+      <button class="lock-back" onclick="skip2FASetup()" style="margin-top:8px">Skip for now — set up later in Settings</button>
+    </div>
+
+
+    <!-- Step: Password Reset via Email -->
+    <div id="step-reset" style="display:none">
+      <div class="lock-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+      <div class="lock-title">Reset Your Password</div>
+      <div class="lock-sub" id="reset-sub">Enter the 6-digit code sent to your email, then set a new password.</div>
+      <input class="lock-input" id="reset-code" type="tel" inputmode="numeric" placeholder="000000" maxlength="6" style="letter-spacing:6px;text-align:center" onkeydown="if(event.key==='Enter')verifyResetCode()">
+      <div id="reset-code-wrap" style="display:none;margin-top:8px">
+        <input class="lock-input" id="reset-new-pw" type="password" placeholder="New password" style="margin-bottom:6px" onkeydown="if(event.key==='Enter')setNewPassword()">
+        <input class="lock-input" id="reset-confirm-pw" type="password" placeholder="Confirm new password" onkeydown="if(event.key==='Enter')setNewPassword()">
+        <button class="lock-btn" onclick="setNewPassword()">Set New Password</button>
+      </div>
+      <div id="reset-err" class="lock-err"></div>
+      <button id="reset-verify-btn" class="lock-btn" onclick="verifyResetCode()" style="margin-top:8px">Verify Code</button>
+      <button class="lock-back" onclick="showLogin()">Back to sign in</button>
+    </div>
+    </div><!-- end lock-card -->
+  </div><!-- end lock-wrap -->
+</div>
+
+
+<!-- Finance App -->
+<div id="app" style="display:none">
+<nav>
+  <a href="/" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+    <span class="logo-name">DataPrimeTech</span>
+    <span class="logo-sep">/</span>
+    <span class="logo-page">Financials</span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/projects">Projects</a>
+    <a href="/about">About</a>
+  </div>
+  <div class="nav-r">
+    <span class="sync-dot" id="sync-dot"></span>
+    <button class="btn btn-ghost" style="font-size:11px" onclick="openSettings()">Settings</button>
+    <button class="btn-nav" onclick="openAdd()">+ Add</button>
+  </div>
+</nav>
+
+<div class="tabs" id="tabs">
+  <button class="tab on" onclick="switchTab('dash',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</button>
+  <button class="tab" onclick="switchTab('cards',this)"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Credit Cards</button>
+  <button class="tab" onclick="switchTab('subs',this)"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Subscriptions</button>
+  <button class="tab" onclick="switchTab('bills',this)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Bills</button>
+  <button class="tab" onclick="switchTab('shared',this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Shared Payments</button>
+  <button class="tab" onclick="switchTab('history',this)"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>History</button>
+  <button class="tab" onclick="switchTab('payoff',this)"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Payoff Plan</button>
+</div>
+
+<div class="main" id="main"></div>
+</div>
+
+<!-- Mobile bar -->
+<div class="mob-bar" id="mob-bar">
+  <button class="mob-btn pri" onclick="openAdd()">+ Add</button>
+  <button class="mob-btn" onclick="openSettings()">Settings</button>
+  <button class="mob-btn" onclick="window.print()">Print</button>
+</div>
+
+<div id="fin-lock-badge" style="position:fixed;bottom:70px;right:16px;background:#FEF3C7;color:#D97706;border:1px solid #D97706;padding:6px 12px;border-radius:20px;font:600 11px var(--font);z-index:48;display:none;box-shadow:var(--shadow)"></div>
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drw-head"><div class="drw-title" id="drw-title"></div><button class="btn-x" onclick="closeDrawer()">&#xD7;</button></div>
+  <div id="drw-body"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Supabase ──────────────────────────────────────────────────────────────────
+const SB='https://tutctowztrueqfyugvjs.supabase.co';
+const SK='sb_publishable_GH77CNxgLZ8Y2qRMyVb8tw_x7zRZJzR';
+const SH={'apikey':SK,'Authorization':`Bearer ${SK}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'};
+async function sbGet(t,k){try{const r=await fetch(`${SB}/rest/v1/${t}?key=eq.${encodeURIComponent(k)}&select=value`,{headers:SH});const d=await r.json();return d.length>0?d[0].value:null;}catch{return null;}}
+async function sbSet(t,k,v){try{const r=await fetch(`${SB}/rest/v1/${t}`,{method:'POST',headers:SH,body:JSON.stringify({key:k,value:v,updated_at:new Date().toISOString()})});return r.ok;}catch(_){return false;}}
+function dot(s){const d=document.getElementById('sync-dot');if(!d)return;d.className='sync-dot'+(s==='syncing'?' syncing':s==='error'?' error':'');d.title=s==='syncing'?'Saving…':s==='error'?'Sync error':'All changes saved';}
+
+// ── TOTP ──────────────────────────────────────────────────────────────────────
+const B32='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+function b32d(s){s=s.toUpperCase().replace(/=+$/,'').replace(/\s/g,'');const b=[];let bits=0,v=0;for(const c of s){const i=B32.indexOf(c);if(i<0)continue;v=(v<<5)|i;bits+=5;if(bits>=8){b.push((v>>>(bits-8))&0xff);bits-=8;}}return new Uint8Array(b);}
+function b32e(b){let r='',bits=0,v=0;for(const x of b){v=(v<<8)|x;bits+=8;while(bits>=5){r+=B32[(v>>>(bits-5))&31];bits-=5;}}if(bits>0)r+=B32[(v<<(5-bits))&31];return r;}
+function genSec(){const b=new Uint8Array(20);crypto.getRandomValues(b);return b32e(b);}
+async function totpNow(sec,off=0){const t=Math.floor(Date.now()/30000)+off;const m=new ArrayBuffer(8);new DataView(m).setUint32(4,t,false);const k=await crypto.subtle.importKey('raw',b32d(sec),{name:'HMAC',hash:'SHA-1'},false,['sign']);const s=new Uint8Array(await crypto.subtle.sign('HMAC',k,m));const o=s[19]&0xf;return String(((s[o]&0x7f)<<24|s[o+1]<<16|s[o+2]<<8|s[o+3])%1000000).padStart(6,'0');}
+async function verifyT(sec,inp){const c=inp.replace(/\s/g,'');for(const o of[-1,0,1]){if(await totpNow(sec,o)===c)return true;}return false;}
+let _tsec=null,_ti=null;
+function fmtT(el){let v=el.value.replace(/\D/g,'').slice(0,6);el.value=v.length>3?v.slice(0,3)+' '+v.slice(3):v;}
+function showStep(id){['s-pw','s-totp','s-setup'].forEach(s=>document.getElementById(s).style.display=s===id?'block':'none');if(id==='s-totp')startTick();else stopTick();}
+function startTick(){stopTick();function t(){const r=30-(Math.floor(Date.now()/1000)%30);const f=document.getElementById('totp-fill');if(f){f.style.width=(r/30*100)+'%';f.style.background=r<=5?'#DC2626':'var(--accent)';}}t();_ti=setInterval(t,1000);}
+function stopTick(){if(_ti){clearInterval(_ti);_ti=null;}}
+function backPw(){document.getElementById('totp-err').textContent='';document.getElementById('totp-in').value='';showStep('s-pw');}
+async function checkTOTP(){
+  const code=(document.getElementById('totp-in').value||'').replace(/\D/g,'');
+  const err=document.getElementById('totp-err');const btn=document.getElementById('totp-btn');
+  if(code.length!==6){err.textContent='Enter the full 6-digit code.';return;}
+  btn.disabled=true;btn.textContent='Verifying…';
+  const sec=_finUser?.role==='owner'?await sbGet('app_settings','totp_secret'):_finUser?.totpSecret||null;
+  if(!sec||sec==='__deleted__'||!sec){if(_finUser?.role==='owner')showSetupQR();else{toast('2FA secret missing — sign in again');showStep('s-pw');}return;}
+  if(await verifyT(sec,code)){stopTick();unlock();}
+  else{err.textContent='Incorrect code — try again.';document.getElementById('totp-in').value='';btn.disabled=false;btn.textContent='Verify';}
+}
+async function verifySetup(){
+  const code=(document.getElementById('setup-in').value||'').replace(/\D/g,'');
+  const err=document.getElementById('setup-err');const btn=document.getElementById('setup-btn');
+  if(code.length!==6){err.textContent='Enter the 6-digit code shown.';return;}
+  if(!_tsec){err.textContent='Something went wrong — refresh.';return;}
+  btn.disabled=true;btn.textContent='Saving…';
+  if(await verifyT(_tsec,code)){
+    let ok;
+    if(_finUser?.role==='owner'){ok=await sbSet('app_settings','totp_secret',_tsec);}
+    else{const reg=await getFinRegistry();const u=reg.find(x=>x.id===_finUser?.id);if(u){u.totpEnabled=true;u.totpSecret=_tsec;ok=await saveFinRegistry(reg);if(_finUser)_finUser.totpSecret=_tsec;}}if(!ok){err.textContent='Could not save — check connection.';btn.disabled=false;btn.textContent='Confirm and Unlock';return;}unlock();toast('Two-factor auth set up!');}
+  else{err.textContent='Code incorrect — scan the QR code first.';document.getElementById('setup-in').value='';btn.disabled=false;btn.textContent='Confirm and Unlock';}
+}
+function showSetupQR(){_tsec=genSec();const label=encodeURIComponent('Finance — '+(_finUser?.email||''));const url=`otpauth://totp/${label}?secret=${_tsec}&issuer=DataPrimeTech&algorithm=SHA1&digits=6&period=30`;document.getElementById('qr-wrap').innerHTML='';new QRCode(document.getElementById('qr-wrap'),{text:url,width:180,height:180,colorDark:'#1A2B4A',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});showStep('s-setup');}
+
+// ── Multi-user Auth ───────────────────────────────────────────────────────────
+const OWNER_EMAIL='joseph@dataprimetech.com';
+const DH=''; // removed: no default password
+let _finUser=null;
+let _currentUser=null; // alias for shared auth // currently logged-in user
+let _pendingFinReg=null,_finVerifyCode=null;
+
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+function emailKey(e){return e.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,30);}
+
+async function getFinRegistry(){return(await sbGet('app_data','fin_user_registry'))||[];}
+async function saveFinRegistry(r){return sbSet('app_data','fin_user_registry',r);}
+
+function showFinReg(){showStep('s-reg');setTimeout(()=>document.getElementById('reg-name')?.focus(),100);}
+
+// ── Smart Passkey Button ───────────────────────────────────────────────────────
+async function handlePasskey(){
+  const btn = document.getElementById('passkey-btn');
+  const label = document.getElementById('passkey-btn-label');
+  if(btn) btn.disabled = true;
+  // Try sign-in first; if no credential found, fall through to registration
+  try {
+    const hasCredential = await checkPasskeyExists();
+    if(hasCredential){
+      await signInWithPasskey();
+    } else {
+      if(label) label.textContent = 'Setting up passkey…';
+      await registerPasskey();
+    }
+  } catch(e) {
+    if(label) label.textContent = 'Sign in / Set up Passkey';
+  } finally {
+    if(btn) btn.disabled = false;
+  }
+}
+
+async function checkPasskeyExists(){
+  try {
+    if(!window.PublicKeyCredential) return false;
+    // Check if conditional mediation is available (means browser has credentials)
+    const available = await PublicKeyCredential.isConditionalMediationAvailable?.() || false;
+    return available;
+  } catch(e){ return false; }
+}
+
+async function signInWithPasskey(){
+  try {
+    const opts = await fetch('/api/passkey/auth-options', {method:'POST'}).then(r=>r.json()).catch(()=>null);
+    if(!opts) { toast('Passkey sign-in not configured on this server'); return; }
+    const cred = await navigator.credentials.get({publicKey: opts});
+    toast('Passkey sign-in successful');
+    finishLogin();
+  } catch(e) {
+    if(e.name !== 'NotAllowedError') toast('No passkey found — set one up first');
+    throw e;
+  }
+}
+
+async function registerPasskey(){
+  const label = document.getElementById('passkey-btn-label');
+  try {
+    const email = document.getElementById('lock-email')?.value?.trim();
+    if(!email){ toast('Enter your email first, then set up a passkey'); if(label) label.textContent = 'Sign in / Set up Passkey'; return; }
+    const opts = await fetch('/api/passkey/register-options', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email})}).then(r=>r.json()).catch(()=>null);
+    if(!opts) { toast('Passkey setup not configured on this server'); if(label) label.textContent = 'Sign in / Set up Passkey'; return; }
+    const cred = await navigator.credentials.create({publicKey: opts});
+    toast('Passkey set up successfully! You can now sign in with it.');
+    if(label) label.textContent = 'Sign in with Passkey';
+  } catch(e) {
+    if(e.name !== 'NotAllowedError') console.error('Passkey register error:', e);
+    if(label) label.textContent = 'Sign in / Set up Passkey';
+    throw e;
+  }
+}
+
+async function checkPw(){
+  const email=(document.getElementById('lock-email')?.value||'').trim().toLowerCase();
+  const pw=document.getElementById('lock-pw').value;
+  if(!pw){document.getElementById('lock-err').textContent='Please enter your password.';return;}
+  const btn=document.getElementById('lock-btn');const err=document.getElementById('lock-err');
+  btn.disabled=true;btn.textContent='Signing in…';err.textContent='';
+  try{
+    const hash=await sha256(pw);
+    // Owner login - check email matches owner email
+    if(email===OWNER_EMAIL||email===OWNER_EMAIL.toLowerCase()){
+      const stored=await Promise.race([sbGet('app_settings','pw_hash'),new Promise((_,r)=>setTimeout(()=>r(),5000))]).catch(()=>null)||DH;
+      if(hash===stored||hash===DH){
+        _finUser={id:'owner',email:OWNER_EMAIL,name:'Joseph',role:'owner',dataKey:'finance_data'};
+        document.getElementById('lock-pw').value='';
+        const hasTOTP=await sbGet('app_settings','totp_secret');
+        if(hasTOTP&&hasTOTP!=='__deleted__'){showStep('s-totp');setTimeout(()=>document.getElementById('totp-in')?.focus(),100);}
+        else{finUnlock();}
+        btn.disabled=false;btn.textContent='Sign In';return;
+      }
+    }
+    // Regular user login
+    if(email){
+      const reg=await getFinRegistry();
+      const user=reg.find(u=>u.email===email);
+      if(!user){err.textContent='No account found with that email.';btn.disabled=false;btn.textContent='Sign In';return;}
+      if(!user.active){err.textContent=user.banned?'Account banned. Contact support.':'Account disabled. Contact support.';btn.disabled=false;btn.textContent='Sign In';return;}
+      if(hash===user.passwordHash){
+        _finUser={...user};
+        document.getElementById('lock-pw').value='';
+        if(user.totpEnabled&&user.totpSecret){showStep('s-totp');setTimeout(()=>document.getElementById('totp-in')?.focus(),100);}
+        else finUnlock();
+        btn.disabled=false;btn.textContent='Sign In';
+        // Update last login
+        user.lastLogin=new Date().toISOString();
+        saveFinRegistry(reg);
+        return;
+      }
+    }
+    err.textContent='Incorrect password. Please try again.';
+    document.getElementById('lock-pw').value='';
+    btn.disabled=false;btn.textContent='Sign In';
+  }catch(e){err.textContent='Connection error — try again.';btn.disabled=false;btn.textContent='Sign In';}
+}
+
+async function finReg(){
+  const name=(document.getElementById('reg-name')?.value||'').trim();
+  const email=(document.getElementById('reg-email')?.value||'').trim().toLowerCase();
+  const pw=document.getElementById('reg-pw')?.value||'';
+  const pw2=document.getElementById('reg-pw2')?.value||'';
+  const err=document.getElementById('reg-err');
+  const btn=document.getElementById('reg-btn');
+  if(!name){err.textContent='Please enter your name.';return;}
+  if(!email||!email.includes('@')){err.textContent='Please enter a valid email.';return;}
+  if(pw.length<6){err.textContent='Password must be at least 6 characters.';return;}
+  if(pw!==pw2){err.textContent='Passwords do not match.';return;}
+  btn.disabled=true;btn.textContent='Checking…';err.textContent='';
+  const reg=await getFinRegistry();
+  if(reg.find(u=>u.email===email)){err.textContent='An account with that email already exists.';btn.disabled=false;btn.textContent='Create Account';return;}
+  const hash=await sha256(pw);
+  _pendingFinReg={id:'fu_'+Date.now(),email,name,passwordHash:hash,role:'user',dataKey:'fin_'+emailKey(email),totpEnabled:false,totpSecret:null,createdAt:new Date().toISOString(),lastLogin:null,active:true};
+  // Try to send verification code
+  const sent=await sendFinVerifyCode(email,name);
+  btn.disabled=false;btn.textContent='Create Account';
+  if(sent){document.getElementById('verify-sub').textContent='A 6-digit code was sent to '+email;showStep('s-verify');setTimeout(()=>document.getElementById('verify-code')?.focus(),100);}
+  else{await completeFinReg();}
+}
+
+async function sendFinVerifyCode(email,name){
+  const cfg=await sbGet('app_settings','finance_config');
+  if(!cfg?.ejsSvc||!cfg?.ejsTpl||!cfg?.ejsKey)return false;
+  _finVerifyCode=String(Math.floor(100000+Math.random()*900000));
+  try{
+    const r=await fetch('https://api.emailjs.com/api/v1.0/email/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service_id:cfg.ejsSvc,template_id:cfg.ejsTpl,user_id:cfg.ejsKey,template_params:{to_email:email,subject:'Your verification code — Finance Tracker',message:'Hi '+name+', your Finance Tracker verification code is: '+_finVerifyCode+'. Expires in 15 minutes.'}})});
+    return r.ok;
+  }catch(_){return false;}
+}
+
+async function finVerify(){
+  const code=(document.getElementById('verify-code')?.value||'').trim().replace(/\s/g,'');
+  const err=document.getElementById('verify-err');
+  const btn=document.getElementById('verify-btn');
+  if(!code||code.length!==6){err.textContent='Enter the 6-digit code from your email.';return;}
+  if(code!==_finVerifyCode){err.textContent='Incorrect code. Check your email and try again.';document.getElementById('verify-code').value='';return;}
+  btn.disabled=true;btn.textContent='Verifying…';
+  await completeFinReg();
+  btn.disabled=false;btn.textContent='Verify Email';
+}
+
+async function resendFinCode(){
+  if(!_pendingFinReg)return;
+  const sent=await sendFinVerifyCode(_pendingFinReg.email,_pendingFinReg.name);
+  toast(sent?'New code sent to '+_pendingFinReg.email:'Could not resend — email not configured');
+}
+
+async function completeFinReg(){
+  if(!_pendingFinReg)return;
+  const reg=await getFinRegistry();
+  reg.push(_pendingFinReg);
+  await saveFinRegistry(reg);
+  _finUser={..._pendingFinReg};
+  _pendingFinReg=null;_finVerifyCode=null;
+  toast('Welcome, '+_finUser.name+'! Account created.');
+  finUnlock();
+}
+
+function finishLogin(){
+  const ls=document.getElementById('lock-screen');
+  if(ls)ls.classList.remove('on');
+  const app=document.getElementById('app');
+  if(app)app.style.display='block';
+  const nu=document.getElementById('nav-user');
+  _currentUser=_currentUser||_finUser;
+  _finUser=_currentUser;
+  if(nu&&_currentUser)nu.textContent=_currentUser.name+(_currentUser.role==='owner'?'  ★':'');
+  try{
+    localStorage.setItem('fin_session',JSON.stringify({
+      id:_currentUser.id,email:_currentUser.email,name:_currentUser.name,
+      role:_currentUser.role,dataKey:_currentUser.dataKey||'fin_data',
+      savedAt:Date.now()
+    }));
+  }catch(e){}
+  if(typeof initApp==='function')initApp();
+}
+
+function finUnlock(){
+  // Save session
+  try{localStorage.setItem('fin_session',JSON.stringify({id:_finUser.id,email:_finUser.email,name:_finUser.name,role:_finUser.role,dataKey:_finUser.dataKey,passwordHash:_finUser.passwordHash||'',totpEnabled:_finUser.totpEnabled,savedAt:Date.now()}));}catch{}
+  document.getElementById('lock').classList.remove('on');
+  document.getElementById('app').style.display='block';
+  document.getElementById('mob-bar').style.display='flex';
+  // Update nav username if present
+  const nu=document.getElementById('nav-user');
+  if(nu&&_finUser)nu.textContent=_finUser.name+(_finUser.role==='owner'?' [owner]':'');
+  if(!_ready)initApp();
+}
+
+// Restore session on refresh
+setTimeout(()=>document.getElementById('lock-email')?.focus(),100);
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+let _uid=0;
+const uid=()=>`f${Date.now()}${++_uid}`;
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const $=(n,d=2)=>n===0?'$0.00':n<0?`-$${Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d})}`:`$${n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d})}`;
+const pct=(b,l)=>l>0?Math.min(100,Math.round(b/l*100)):0;
+function pmt(bal,apr){if(!bal||bal<=0)return 0;if(!apr||apr===0)return bal/12;const r=apr/100/12;return r*bal/(1-Math.pow(1+r,-12));}
+function utilColor(p){return p>=90?'var(--red)':p>=75?'var(--orange)':p>=30?'var(--amber)':'var(--green)';}
+function utilBadge(p,bal){
+  if(!bal||bal<=0)return{cls:'b-zero',label:'Paid Off'};
+  if(p>=90)return{cls:'b-crit',label:'Critical'};
+  if(p>=75)return{cls:'b-high',label:'High'};
+  if(p>=30)return{cls:'b-warn',label:'Moderate'};
+  return{cls:'b-good',label:'Good'};
+}
+function daysUntil(iso){if(!iso)return null;const d=new Date(iso+'T12:00:00');const now=new Date();now.setHours(0,0,0,0);return Math.round((d-now)/86400000);}
+
+// ── Seed Data ─────────────────────────────────────────────────────────────────
+// People list is now dynamic — stored in D.people
+const SEED_CARDS=[
+  {id:'c1',name:'CareCredit',bal:1753.77,lim:8000,apr:29.99,notes:'',ifFree:false,ifDate:''},
+  {id:'c2',name:'Town Fair Tire',bal:1331,lim:1930,apr:0,notes:'Interest Free',ifFree:true,ifDate:''},
+  {id:'c3',name:'Capital One QuickSilver',bal:0,lim:600,apr:29.99,notes:'',ifFree:false,ifDate:''},
+  {id:'c4',name:'Capital One Savor',bal:0,lim:3000,apr:20.24,notes:'',ifFree:false,ifDate:''},
+  {id:'c5',name:'AmEx Cash Preferred',bal:799.07,lim:1000,apr:29.99,notes:'',ifFree:false,ifDate:''},
+  {id:'c6',name:'AmEx Gold',bal:368.71,lim:1000,apr:29.24,notes:'DOP & DDO',ifFree:false,ifDate:''},
+  {id:'c7',name:'AmEx Platinum',bal:2528.65,lim:2800,apr:29.24,notes:'',ifFree:false,ifDate:''},
+  {id:'c8',name:'Best Buy Citi',bal:2260,lim:5700,apr:30.49,notes:'',ifFree:false,ifDate:''},
+  {id:'c9',name:'Citi Double Cash',bal:0,lim:300,apr:29.24,notes:'',ifFree:false,ifDate:''},
+  {id:'c10',name:'Costco Citi',bal:259.37,lim:4000,apr:20.49,notes:'',ifFree:false,ifDate:''},
+  {id:'c11',name:'Citi Simplicity',bal:9399.99,lim:10500,apr:26.99,notes:'Interest Free until 12/18/2026',ifFree:true,ifDate:'2026-12-18'},
+  {id:'c12',name:'Nordstrom Store',bal:0,lim:2800,apr:31.15,notes:'',ifFree:false,ifDate:''},
+  {id:'c13',name:'Apple Card',bal:892.24,lim:2500,apr:27.24,notes:'',ifFree:false,ifDate:''},
+  {id:'c14',name:'Amazon Prime Visa',bal:5722.11,lim:6400,apr:27.24,notes:'',ifFree:false,ifDate:''},
+  {id:'c15',name:'Chase Sapphire Reserve',bal:0,lim:14400,apr:28.49,notes:'Authorized User',ifFree:false,ifDate:''},
+  {id:'c16',name:'IKEA Visa',bal:0,lim:3950,apr:21.99,notes:'',ifFree:false,ifDate:''},
+  {id:'c17',name:'Best Egg',bal:16272.03,lim:20000,apr:20.83,notes:'Goal: reach $10k',ifFree:false,ifDate:''},
+  {id:'c18',name:'UpStart',bal:10850.20,lim:11900,apr:23.27,notes:'Goal: reach $10k',ifFree:false,ifDate:''},
+];
+const SEED_SUBS=[
+  {id:'s1',name:'Amazon Prime',amt:6.99,due:'',src:'Capital One',status:'active',splits:{Damaris:3.50,Joseph:3.49}},
+  {id:'s2',name:'Google One',amt:3.00,due:'',src:'Capital One',status:'active',splits:{Joseph:3.00}},
+  {id:'s3',name:'OpenAI',amt:20.20,due:'',src:'Capital One',status:'active',splits:{Noah:10.10,Joseph:10.10}},
+  {id:'s4',name:'Ring',amt:8.00,due:'',src:'Capital One',status:'active',splits:{Joseph:8.00}},
+  {id:'s5',name:'Spotify Family',amt:21.27,due:'',src:'Capital One',status:'active',splits:{Damaris:3.9,Noah:3.9,Melissa:3.9,'Mel+':3.9,'Noah+':3.9,Joseph:3.87}},
+  {id:'s6',name:'Uber One',amt:0,due:'',src:'AmEx Platinum',status:'benefit',splits:{}},
+  {id:'s7',name:'Sirius XM',amt:0,due:'',src:'AmEx Platinum',status:'benefit',splits:{}},
+  {id:'s8',name:'Disney+',amt:0,due:'',src:'AmEx Platinum',status:'benefit',splits:{}},
+  {id:'s9',name:'HBO Max',amt:0,due:'',src:'AmEx Platinum',status:'benefit',splits:{}},
+  {id:'s10',name:'YouTube Premium',amt:0,due:'',src:'AmEx Platinum',status:'benefit',splits:{}},
+  {id:'s11',name:'Hulu',amt:0,due:'',src:'AmEx Platinum',status:'benefit',splits:{}},
+  {id:'s12',name:'Netflix',amt:0,due:'',src:'T-Mobile',status:'benefit',splits:{}},
+  {id:'s13',name:'Apple TV+',amt:0,due:'',src:'T-Mobile',status:'benefit',splits:{}},
+  {id:'s14',name:'Afterpay',amt:0,due:'',src:'',status:'active',splits:{}},
+  {id:'s15',name:'Affirm',amt:0,due:'',src:'',status:'active',splits:{}},
+  {id:'s16',name:'Klarna',amt:0,due:'',src:'',status:'active',splits:{}},
+  {id:'s17',name:'Splash Car Wash',amt:0,due:'',src:'',status:'cancelled',splits:{}},
+];
+const SEED_BILLS=[
+  {id:'b1',name:'Stellantis Lease',amt:694,due:'',src:'Checking',splits:{}},
+  {id:'b2',name:'Amica Auto Insurance',amt:390.83,due:'',src:'Checking',splits:{Damaris:195.42}},
+  {id:'b3',name:'Lemonade Pet Insurance',amt:0,due:'',src:'Checking',splits:{Mother:0}},
+  {id:'b4',name:'T-Mobile',amt:0,due:'',src:'DOP Checking',splits:{Damaris:0,Mother:0}},
+];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let D={cards:[],subs:[],bills:[],people:['Damaris','Mother','Noah','Melissa','Mel+','Noah+'],prevTotal:52437.14,prevDate:'2026-03-22',history:[],config:{}};
+let _ready=false,_tab='dash',_drwMode=null,_drwId=null;
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function initApp(){
+  _ready=true;
+  dot('syncing');
+  try{
+    const dataKey=_finUser?.dataKey||'finance_data';
+    const r=await sbGet('app_data',dataKey);
+    if(r){D.cards=r.cards||[];D.subs=r.subs||[];D.bills=r.bills||[];D.people=r.people||['Damaris','Mother','Noah','Melissa','Mel+','Noah+'];D.prevTotal=r.prevTotal||52437.14;D.prevDate=r.prevDate||'2026-03-22';D.history=r.history||[];D.config=r.config||{autoLock:15};}
+    else{
+      D.cards=[...SEED_CARDS];D.subs=[...SEED_SUBS];D.bills=[...SEED_BILLS];
+      // Seed initial history snapshot
+      D.history=[{date:'2026-03-22',total:52437.14,note:'Initial snapshot'}];
+      await save();
+    }
+    dot('ok');
+  }catch{D.cards=[...SEED_CARDS];D.subs=[...SEED_SUBS];D.bills=[...SEED_BILLS];D.history=[];D.config={autoLock:15};dot('error');}
+  resetFinanceLockTimer();
+  setTimeout(checkFinanceReminders,4000);
+  renderTab(_tab);
+}
+async function save(){
+  dot('syncing');
+  const dataKey=_finUser?.dataKey||'finance_data';
+  const ok=await sbSet('app_data',dataKey,{cards:D.cards,subs:D.subs,bills:D.bills,people:D.people,prevTotal:D.prevTotal,prevDate:D.prevDate,history:D.history,config:D.config});
+  dot(ok?'ok':'error');
+}
+
+function saveSnapshot(note=''){
+  const total=D.cards.reduce((a,c)=>a+(+c.bal||0),0);
+  const today=new Date().toISOString().slice(0,10);
+  // Don't duplicate same-day snapshots — update instead
+  const existing=D.history.findIndex(h=>h.date===today);
+  if(existing!==-1){D.history[existing]={date:today,total,note:note||D.history[existing].note};}
+  else{D.history.push({date:today,total,note});}
+  // Keep last 52 snapshots (1 year weekly)
+  if(D.history.length>52)D.history=D.history.slice(-52);
+  save();toast('Snapshot saved — '+today);renderTab(_tab);
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function switchTab(tab,btn){
+  _tab=tab;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTab(tab);
+  closeDrawer();
+}
+function renderTab(tab){
+  const el=document.getElementById('main');
+  if(tab==='dash')el.innerHTML=renderDash();
+  else if(tab==='cards')el.innerHTML=renderCards();
+  else if(tab==='subs')el.innerHTML=renderSubs();
+  else if(tab==='bills')el.innerHTML=renderBills();
+  else if(tab==='shared')el.innerHTML=renderShared();
+  else if(tab==='history')el.innerHTML=renderHistory();
+  else if(tab==='payoff')el.innerHTML=renderPayoff();
+}
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+function renderMiniChart(history){
+  if(history.length<2)return'';
+  const vals=history.map(h=>h.total);
+  const min=Math.min(...vals),max=Math.max(...vals),range=max-min||1;
+  const W=280,H=60;
+  const pts=vals.map((v,i)=>{
+    const x=(i/(vals.length-1))*W;
+    const y=H-((v-min)/range)*(H-8)-4;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const last=vals[vals.length-1],prev=vals[vals.length-2];
+  const col=last<=prev?'var(--green)':'var(--red)';
+  const fillPts=`0,${H} ${pts} ${W},${H}`;
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:50px;display:block"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${last<=prev?'#059669':'#DC2626'}" stop-opacity=".25"/><stop offset="100%" stop-color="${last<=prev?'#059669':'#DC2626'}" stop-opacity="0"/></linearGradient></defs><polygon points="${fillPts}" fill="url(#cg)"/><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+}
+
+function quickEdit(id){
+  const card=D.cards.find(c=>c.id===id);if(!card)return;
+  document.getElementById('drw-title').textContent='Quick Balance Update';
+  document.getElementById('drw-body').innerHTML=`
+    <div style="background:var(--surface2);border-radius:var(--rs);padding:14px 16px;margin-bottom:16px;border:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:700;margin-bottom:3px">${card.name}</div>
+      <div style="font-size:12px;color:var(--text2)">Current balance: <strong style="color:var(--red)">${$(+card.bal)}</strong> of ${$(+card.lim)} limit</div>
+    </div>
+    <div class="fg"><label class="fl">New Balance ($)</label><input id="qe-bal" class="fi" type="number" min="0" step="0.01" value="${card.bal}" style="font-size:20px;font-weight:700;padding:12px" onkeydown="if(event.key==='Enter')saveQuickEdit('${id}')"></div>
+    <div class="fg"><label class="fl">Note <span class="hint">- e.g. "after payment"</span></label><input id="qe-note" class="fi" placeholder="Optional note for history log" onkeydown="if(event.key==='Enter')saveQuickEdit('${id}')"></div>
+    <div id="qe-preview" style="background:var(--accent-l);border:1px solid var(--accent-b);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;display:none;font-size:12px"></div>
+    <div class="drw-actions">
+      <button class="btn-save" onclick="saveQuickEdit('${id}')">Save &amp; Update</button>
+      <button class="btn-cancel" onclick="closeDrawer()">Cancel</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+  const inp=document.getElementById('qe-bal');
+  inp.focus();inp.select();
+  inp.addEventListener('input',()=>{
+    const newBal=parseFloat(inp.value)||0;
+    const diff=newBal-card.bal;
+    const p=document.getElementById('qe-preview');
+    p.style.display='block';
+    const arrow=diff<0?'▼':'▲';
+    const col=diff<0?'var(--green)':'var(--red)';
+    p.innerHTML=`<span style="color:${col};font-weight:700">${arrow} ${$(Math.abs(diff))}</span> change — new balance <strong>${$(newBal)}</strong> (${pct(newBal,+card.lim)}% utilization)`;
+  });
+}
+
+function saveQuickEdit(id){
+  const card=D.cards.find(c=>c.id===id);if(!card)return;
+  const newBal=parseFloat(document.getElementById('qe-bal')?.value)||0;
+  const note=document.getElementById('qe-note')?.value||'';
+  const changed=newBal!==card.bal;
+  card.bal=newBal;
+  save();
+  closeDrawer();
+  // Auto-save snapshot after balance update
+  if(changed){
+    const today=new Date().toISOString().slice(0,10);
+    const total=D.cards.reduce((a,c)=>a+(+c.bal||0),0);
+    const existing=D.history.findIndex(h=>h.date===today);
+    if(existing!==-1){D.history[existing]={date:today,total,note:note||'Balance update'};}
+    else{D.history.push({date:today,total,note:note||'Balance update'});}
+    if(D.history.length>52)D.history=D.history.slice(-52);
+    save();
+    toast('Balance updated — snapshot saved');
+  }else{toast('No change — nothing saved');}
+  renderTab(_tab);
+}
+
+function openSnapshotModal(){
+  document.getElementById('drw-title').textContent='Save Balance Snapshot';
+  const total=D.cards.reduce((a,c)=>a+(+c.bal||0),0);
+  const today=new Date().toISOString().slice(0,10);
+  document.getElementById('drw-body').innerHTML=`
+    <div style="background:var(--surface2);border-radius:var(--rs);padding:16px;margin-bottom:16px;border:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Today's snapshot</div>
+      <div style="font-size:28px;font-weight:800;letter-spacing:-1px;color:var(--red)">${$(total)}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:3px">${today}</div>
+    </div>
+    <div class="fg"><label class="fl">Note <span class="hint">- optional</span></label><input id="snap-note" class="fi" placeholder="e.g. After monthly payments" onkeydown="if(event.key==='Enter')saveSnapshot(document.getElementById('snap-note').value)"></div>
+    <div class="drw-actions">
+      <button class="btn-save" onclick="saveSnapshot(document.getElementById('snap-note').value);closeDrawer()">Save Snapshot</button>
+      <button class="btn-cancel" onclick="closeDrawer()">Cancel</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+  setTimeout(()=>document.getElementById('snap-note').focus(),100);
+}
+
+function renderDash(){
+  const totBal=D.cards.reduce((a,c)=>a+(+c.bal||0),0);
+  const totLim=D.cards.reduce((a,c)=>a+(+c.lim||0),0);
+  const totUtil=pct(totBal,totLim);
+  const mo_subs=D.subs.filter(s=>s.status==='active').reduce((a,s)=>a+(+s.amt||0),0);
+  const mo_bills=D.bills.reduce((a,b)=>a+(+b.amt||0),0);
+  const pmt1yr=D.cards.reduce((a,c)=>a+pmt(+c.bal||0,+c.apr||0),0);
+  const hist=D.history||[];
+  const prevSnap=hist.length>=2?hist[hist.length-2]:null;
+  const firstSnap=hist.length>=1?hist[0]:null;
+  const diff=prevSnap?totBal-prevSnap.total:(totBal-(D.prevTotal||0));
+  const diffFirst=firstSnap?totBal-firstSnap.total:0;
+  const diffClass=diff<0?'metric-down':diff>0?'metric-up':'';
+  const diffLabel=diff===0?'No change since last snapshot':diff<0?`▼ ${$(Math.abs(diff))} since ${prevSnap?.date||D.prevDate}`:`▲ ${$(diff)} since ${prevSnap?.date||D.prevDate}`;
+
+  const highUtil=D.cards.filter(c=>(+c.bal)>0&&pct(+c.bal,+c.lim)>=75);
+  const ifExpiring=D.cards.filter(c=>c.ifFree&&c.ifDate&&daysUntil(c.ifDate)!==null&&daysUntil(c.ifDate)<=90&&daysUntil(c.ifDate)>=0);
+  let alerts='';
+  if(highUtil.length>0){alerts+=`<div class="alert-box" style="background:var(--red-l);border-color:var(--red-b);margin-bottom:16px"><div class="alert-title" style="color:var(--red)">${highUtil.length} card${highUtil.length>1?'s':''} above 75% utilization</div>${highUtil.map(c=>{const p=pct(+c.bal,+c.lim);return`<div class="alert-item" style="border-color:var(--red-b)"><span>${esc(c.name)}</span><span style="color:var(--red);font-weight:700">${p}% — ${$(+c.bal)} / ${$(+c.lim)}</span></div>`;}).join('')}</div>`;}
+  if(ifExpiring.length>0){alerts+=`<div class="alert-box" style="background:var(--amber-l);border-color:var(--amber-b);margin-bottom:16px"><div class="alert-title" style="color:var(--amber)">Interest-free periods expiring soon</div>${ifExpiring.map(c=>{const d=daysUntil(c.ifDate);return`<div class="alert-item" style="border-color:var(--amber-b)"><span>${esc(c.name)}</span><span style="color:var(--amber);font-weight:700">${d} days left — expires ${c.ifDate}</span></div>`;}).join('')}</div>`;}
+
+  const top=D.cards.filter(c=>(+c.bal)>0).sort((a,b)=>(+b.bal)-(+a.bal)).slice(0,6);
+  const miniChart=hist.length>=2?renderMiniChart(hist):'';
+
+  return`
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Total Balance</div>
+      <div style="font-size:36px;font-weight:800;letter-spacing:-2px;color:var(--red);line-height:1">${$(totBal)}</div>
+      <div style="font-size:13px;margin-top:5px"><span class="${diffClass}">${diffLabel}</span></div>
+      ${diffFirst!==0?`<div style="font-size:11px;color:var(--text3);margin-top:2px">${diffFirst<0?`▼ ${$(Math.abs(diffFirst))} since start (${firstSnap?.date})`:`▲ ${$(diffFirst)} since start (${firstSnap?.date})`}</div>`:''}
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-ghost" style="gap:6px;font-size:11px" onclick="quickEdit(D.cards.sort((a,b)=>(+b.bal)-(+a.bal))[0]?.id)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Update Balance
+      </button>
+      <button class="btn btn-ghost" style="gap:6px;font-size:11px" onclick="openSnapshotModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Save Snapshot
+      </button>
+      <button class="btn btn-ghost" style="font-size:11px" onclick="switchTab('history',document.querySelectorAll('.tab')[5])">View History</button>
+    </div>
+  </div>
+
+  ${hist.length>=2?`<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:700;color:var(--text2)">Balance Trend — ${hist.length} snapshots</div>
+      <div style="font-size:11px;color:${diff<=0?'var(--green)':'var(--red)'};font-weight:600">${diff<=0?'Trending down ▼':'Trending up ▲'}</div>
+    </div>
+    ${miniChart}
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px"><span>${hist[0].date}</span><span>${hist[hist.length-1].date}</span></div>
+  </div>`:''}
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-accent" style="background:var(--accent)"></div>
+      <div class="metric-label">Total Credit</div>
+      <div class="metric-value">${$(totLim)}</div>
+      <div class="metric-sub">${D.cards.length} accounts</div>
+    </div>
+    <div class="metric"><div class="metric-accent" style="background:${utilColor(totUtil)}"></div>
+      <div class="metric-label">Overall Utilization</div>
+      <div class="metric-value" style="color:${utilColor(totUtil)}">${totUtil}%</div>
+      <div class="metric-sub">Target: under 30%</div>
+    </div>
+    <div class="metric"><div class="metric-accent" style="background:var(--purple)"></div>
+      <div class="metric-label">Monthly Subscriptions</div>
+      <div class="metric-value">${$(mo_subs)}</div>
+      <div class="metric-sub">${$(mo_subs*12)} / year</div>
+    </div>
+    <div class="metric"><div class="metric-accent" style="background:var(--amber)"></div>
+      <div class="metric-label">Monthly Bills</div>
+      <div class="metric-value">${$(mo_bills)}</div>
+      <div class="metric-sub">${$(mo_bills*12)} / year</div>
+    </div>
+    <div class="metric"><div class="metric-accent" style="background:var(--green)"></div>
+      <div class="metric-label">Payoff All in 1 Yr</div>
+      <div class="metric-value" style="font-size:20px">${$(pmt1yr)}<span style="font-size:11px;color:var(--text3)">/mo</span></div>
+      <div class="metric-sub">${$(pmt1yr*12)} total</div>
+    </div>
+    <div class="metric"><div class="metric-accent" style="background:var(--text3)"></div>
+      <div class="metric-label">Monthly Total</div>
+      <div class="metric-value" style="font-size:20px">${$(mo_subs+mo_bills)}</div>
+      <div class="metric-sub">Subs + bills</div>
+    </div>
+  </div>
+
+  ${alerts}
+
+  <div class="sec-hdr">
+    <div><div class="sec-title">Highest Balances</div><div class="sec-sub">Click "Update Balance" to edit any card quickly</div></div>
+    <button class="btn btn-ghost btn-sm" onclick="switchTab('cards',document.querySelectorAll('.tab')[1])">View all cards</button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px;margin-bottom:28px">
+    ${top.map(c=>{const p=pct(+c.bal,+c.lim);const col=utilColor(p);const b=utilBadge(p,+c.bal);return`
+    <div class="card-row">
+      <div class="card-ico" style="background:${col}18;border-color:${col}33"><svg viewBox="0 0 24 24" stroke="${col}" fill="none"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+      <div class="card-body">
+        <div class="card-name"><span>${esc(c.name)}</span>${c.apr>0?`<span class="card-apr">${c.apr}% APR</span>`:'<span class="card-apr zero">0% APR</span>'}${c.notes?`<span class="card-note-tag" style="background:${col}18;color:${col}">${esc(c.notes)}</span>`:''}</div>
+        <div class="util-wrap"><div class="util-labels"><span>${$(+c.bal)} of ${$(+c.lim)}</span><span style="color:${col};font-weight:700">${p}%</span></div><div class="util-track"><div class="util-fill" style="width:${p}%;background:${col}"></div></div></div>
+      </div>
+      <div class="card-right" style="flex-direction:row;align-items:center;gap:10px">
+        <span class="badge ${b.cls}">${b.label}</span>
+        <button class="btn btn-ghost btn-sm" onclick="quickEdit('${c.id}')">Update</button>
+      </div>
+    </div>`}).join('')}
+  </div>
+
+  <div class="sec-hdr"><div class="sec-title">Utilization Overview</div></div>
+  <div class="util-table">
+    ${D.cards.filter(c=>(+c.lim)>0).sort((a,b)=>pct(+b.bal,+b.lim)-pct(+a.bal,+a.lim)).map(c=>{
+      const p=pct(+c.bal,+c.lim);const col=utilColor(p);
+      return`<div class="util-row"><div style="font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(c.name)}</div><div class="util-track"><div class="util-fill" style="width:${p}%;background:${col}"></div></div><div style="font-size:11px;font-weight:700;color:${col};text-align:right">${p}%</div></div>`;
+    }).join('')}
+  </div>`;
+}
+
+
+// ── Cards ─────────────────────────────────────────────────────────────────────
+function renderCards(){
+  const totBal=D.cards.reduce((a,c)=>a+(+c.bal||0),0);
+  const totLim=D.cards.reduce((a,c)=>a+(+c.lim||0),0);
+  const sorted=[...D.cards].sort((a,b)=>pct(+b.bal,+b.lim)-pct(+a.bal,+a.lim));
+  return`
+  <div class="sec-hdr">
+    <div><div class="sec-title">Credit Cards &amp; Loans</div><div class="sec-sub">${$(totBal)} owed across ${D.cards.length} accounts — ${pct(totBal,totLim)}% overall utilization</div></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <select onchange="sortCards(this.value)" style="padding:6px 10px;border:1px solid var(--border2);border-radius:var(--rs);font:12px var(--font);background:var(--surface);color:var(--text)">
+        <option value="util">Sort: Utilization</option>
+        <option value="bal">Sort: Balance</option>
+        <option value="apr">Sort: APR</option>
+        <option value="name">Sort: Name</option>
+      </select>
+      <button class="btn btn-accent" onclick="openDrawer('add-card')">+ Add Card</button>
+    </div>
+  </div>
+  <div id="cards-list">${cardsList(sorted)}</div>`;
+}
+
+function cardsList(cards){
+  return cards.map(c=>{
+    const p=pct(+c.bal,+c.lim);const col=utilColor(p);const b=utilBadge(p,+c.bal);
+    const avail=Math.max(0,(+c.lim)-(+c.bal));
+    const to30=Math.max(0,(+c.bal)-(+c.lim*0.3));
+    const p1y=pmt(+c.bal,+c.apr);
+    const ifDays=c.ifFree&&c.ifDate?daysUntil(c.ifDate):null;
+    return`<div class="card-row">
+      <div class="card-ico" style="background:${col}18;border-color:${col}33"><svg viewBox="0 0 24 24" stroke="${col}" fill="none"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+      <div class="card-body">
+        <div class="card-name">
+          <span>${esc(c.name)}</span>
+          ${c.apr>0?`<span class="card-apr">${c.apr}% APR</span>`:'<span class="card-apr zero">0% APR</span>'}
+          ${c.notes?`<span class="card-note-tag" style="background:${col}18;color:${col}">${esc(c.notes)}</span>`:''}
+          ${ifDays!==null&&ifDays<=90?`<span class="card-note-tag" style="background:var(--amber-l);color:var(--amber)">Int-free expires in ${ifDays}d</span>`:''}
+        </div>
+        <div class="util-wrap">
+          <div class="util-labels"><span>${$(+c.bal)} of ${$(+c.lim)}</span><span style="color:${col};font-weight:700">${p}%</span></div>
+          <div class="util-track"><div class="util-fill" style="width:${p}%;background:${col}"></div></div>
+        </div>
+        <div class="card-stats">
+          <div class="card-stat"><span class="lbl">Available </span><span class="val" style="color:var(--green)">${$(avail)}</span></div>
+          ${p1y>0?`<div class="card-stat"><span class="lbl">Payoff/1yr </span><span class="val">${$(p1y)}/mo</span></div>`:''}
+          ${to30>0?`<div class="card-stat"><span class="lbl">To reach 30% </span><span class="val" style="color:var(--amber)">${$(to30)}</span></div>`:''}
+        </div>
+      </div>
+      <div class="card-right">
+        <span class="badge ${b.cls}">${b.label}</span>
+        <div class="card-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openDrawer('edit-card','${c.id}')">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="delItem('card','${c.id}','${esc(c.name)}')">Remove</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('')||'<div style="padding:40px;text-align:center;color:var(--text3)">No cards added yet</div>';
+}
+
+function sortCards(by){
+  let sorted=[...D.cards];
+  if(by==='util')sorted.sort((a,b)=>pct(+b.bal,+b.lim)-pct(+a.bal,+a.lim));
+  else if(by==='bal')sorted.sort((a,b)=>(+b.bal)-(+a.bal));
+  else if(by==='apr')sorted.sort((a,b)=>(+b.apr)-(+a.apr));
+  else sorted.sort((a,b)=>a.name.localeCompare(b.name));
+  const el=document.getElementById('cards-list');if(el)el.innerHTML=cardsList(sorted);
+}
+
+// ── Subscriptions ─────────────────────────────────────────────────────────────
+function renderSubs(){
+  const active=D.subs.filter(s=>s.status==='active');
+  const benefits=D.subs.filter(s=>s.status==='benefit');
+  const cancelled=D.subs.filter(s=>s.status==='cancelled');
+  const total=active.reduce((a,s)=>a+(+s.amt||0),0);
+  return`
+  <div class="sec-hdr">
+    <div><div class="sec-title">Subscriptions</div><div class="sec-sub">${$(total)}/month — ${$(total*12)}/year</div></div>
+    <button class="btn btn-accent" onclick="openDrawer('add-sub')">+ Add Subscription</button>
+  </div>
+  ${active.length?`<div class="grp-hdr"><span class="grp-title">Active</span><span class="grp-count">${active.length}</span><span class="grp-total">${$(total)}/mo</span></div><div style="display:flex;flex-direction:column;gap:2px">${active.map(svcRow).join('')}</div>`:''}
+  ${benefits.length?`<div class="grp-hdr"><span class="grp-title">Benefits (no cost)</span><span class="grp-count">${benefits.length}</span></div><div style="display:flex;flex-direction:column;gap:2px">${benefits.map(svcRow).join('')}</div>`:''}
+  ${cancelled.length?`<div class="grp-hdr"><span class="grp-title">Cancelled</span><span class="grp-count">${cancelled.length}</span></div><div style="display:flex;flex-direction:column;gap:2px;opacity:.5">${cancelled.map(svcRow).join('')}</div>`:''}`;
+}
+
+function svcRow(s){
+  const splits=Object.entries(s.splits||{}).filter(([,v])=>+v>0);
+  const othersTotal=splits.reduce((a,[,v])=>a+(+v),0);
+  const myShare=Math.max(0,(+s.amt||0)-othersTotal);
+  return`<div class="svc-row">
+    <div>
+      <div class="svc-name">${esc(s.name)}</div>
+      <div class="svc-meta">
+        ${s.src?`<span style="color:var(--text3)">${esc(s.src)}</span>`:''}
+        ${s.due?`<span>Due: ${esc(s.due)}</span>`:''}
+        ${s.status==='benefit'?`<span class="badge b-benefit" style="font-size:9px;padding:1px 6px">Benefit</span>`:''}
+        ${s.status==='cancelled'?`<span class="badge b-cancel" style="font-size:9px;padding:1px 6px">Cancelled</span>`:''}
+      </div>
+      ${splits.length>0?`<div class="svc-splits">${splits.map(([p,v])=>`<span class="split-chip">${esc(p)}: ${$(+v)}</span>`).join('')}</div>`:''}
+    </div>
+    <div>
+      <div class="svc-amt">${$(+s.amt||0)}<span style="font-size:10px;font-weight:400;color:var(--text3)">/mo</span></div>
+      <div class="svc-ann">${$(+(s.amt||0)*12)}/yr</div>
+      ${myShare>0&&splits.length>0?`<div class="svc-myshare">My share: ${$(myShare)}</div>`:''}
+    </div>
+    <div class="card-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openDrawer('edit-sub','${s.id}')">Edit</button>
+      <button class="btn btn-danger btn-sm" onclick="delItem('sub','${s.id}','${esc(s.name)}')">Remove</button>
+    </div>
+  </div>`;
+}
+
+// ── Bills ─────────────────────────────────────────────────────────────────────
+function renderBills(){
+  const total=D.bills.reduce((a,b)=>a+(+b.amt||0),0);
+  return`
+  <div class="sec-hdr">
+    <div><div class="sec-title">Bills</div><div class="sec-sub">${$(total)}/month — ${$(total*12)}/year</div></div>
+    <button class="btn btn-accent" onclick="openDrawer('add-bill')">+ Add Bill</button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:2px">
+    ${D.bills.map(b=>{
+      const splits=Object.entries(b.splits||{}).filter(([,v])=>+v>0);
+      const othersTotal=splits.reduce((a,[,v])=>a+(+v),0);
+      const myShare=Math.max(0,(+b.amt||0)-othersTotal);
+      return`<div class="svc-row">
+        <div>
+          <div class="svc-name">${esc(b.name)}</div>
+          <div class="svc-meta">${b.src?`<span style="color:var(--text3)">${esc(b.src)}</span>`:''} ${b.due?`<span>Due: ${esc(b.due)}</span>`:''}</div>
+          ${splits.length>0?`<div class="svc-splits">${splits.map(([p,v])=>`<span class="split-chip">${esc(p)}: ${$(+v)}</span>`).join('')}</div>`:''}
+        </div>
+        <div>
+          <div class="svc-amt">${$(+b.amt||0)}<span style="font-size:10px;font-weight:400;color:var(--text3)">/mo</span></div>
+          <div class="svc-ann">${$(+(b.amt||0)*12)}/yr</div>
+          ${myShare>0&&splits.length>0?`<div class="svc-myshare">My share: ${$(myShare)}</div>`:''}
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openDrawer('edit-bill','${b.id}')">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="delItem('bill','${b.id}','${esc(b.name)}')">Remove</button>
+        </div>
+      </div>`;
+    }).join('')||'<div style="padding:40px;text-align:center;color:var(--text3)">No bills added yet</div>'}
+  </div>`;
+}
+
+// ── Shared Payments ───────────────────────────────────────────────────────────
+function renderShared(){
+  const people=D.people||[];
+  const totals={};const subDetails={};const billDetails={};
+  people.forEach(p=>{totals[p]=0;subDetails[p]=[];billDetails[p]=[];});
+  D.subs.filter(s=>s.status==='active').forEach(s=>Object.entries(s.splits||{}).forEach(([p,v])=>{if(totals[p]!==undefined&&+v>0){totals[p]+=+v;subDetails[p].push({id:s.id,type:'sub',name:s.name,amt:+v,total:+s.amt||0});}}));
+  D.bills.forEach(b=>Object.entries(b.splits||{}).forEach(([p,v])=>{if(totals[p]!==undefined&&+v>0){totals[p]+=+v;billDetails[p].push({id:b.id,type:'bill',name:b.name,amt:+v,total:+b.amt||0});}}));
+  const grandTotal=Object.values(totals).reduce((a,v)=>a+v,0);
+
+  // All items with any splits
+  const allItems=[
+    ...D.subs.filter(s=>s.status==='active').map(s=>({...s,_type:'sub'})),
+    ...D.bills.map(b=>({...b,_type:'bill'}))
+  ];
+
+  return`
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">Total collected / month</div>
+      <div style="font-size:32px;font-weight:800;letter-spacing:-1.5px;color:var(--accent)">${$(grandTotal)}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:3px">${people.length} people · ${$(grandTotal*12)}/year</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-accent" onclick="openAddPerson()">+ Add Person</button>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><div class="sec-title">People</div><div class="sec-sub">Click Edit to change what each person owes</div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:28px">
+    ${people.length===0?'<div style="grid-column:1/-1;padding:32px;text-align:center;color:var(--text3);font-size:13px">No people added yet. Click + Add Person to get started.</div>':''}
+    ${people.map(p=>{
+      const t=totals[p]||0;
+      const items=[...subDetails[p],...billDetails[p]];
+      return`<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <div>
+            <div style="font-size:14px;font-weight:700;letter-spacing:-.3px">${esc(p)}</div>
+            <div style="font-size:22px;font-weight:800;letter-spacing:-1px;color:${t>0?'var(--accent)':'var(--text3)'};margin-top:2px">${$(t)}<span style="font-size:10px;font-weight:500;color:var(--text3)">/mo</span></div>
+          </div>
+          <div style="display:flex;gap:5px;flex-direction:column;align-items:flex-end">
+            <button class="btn btn-accent btn-sm" onclick="openEditPersonSplits('${esc(p)}')">Edit Splits</button>
+            <button class="btn btn-ghost btn-sm" onclick="openRenamePerson('${esc(p)}')">Rename</button>
+            <button class="btn btn-danger btn-sm" onclick="removePerson('${esc(p)}')">Remove</button>
+          </div>
+        </div>
+        ${items.length>0?`<div style="border-top:1px solid var(--border);padding-top:8px;display:flex;flex-direction:column;gap:3px">
+          ${items.map(i=>`<div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--text2)">${esc(i.name)}</span><span style="font-weight:600;color:var(--accent)">${$(i.amt)}</span></div>`).join('')}
+          ${t>0?`<div style="display:flex;justify-content:space-between;font-size:11px;margin-top:3px;padding-top:4px;border-top:1px solid var(--border)"><span style="font-weight:700">Annual</span><span style="font-weight:700">${$(t*12)}</span></div>`:''}
+        </div>`:'<div style="font-size:11px;color:var(--text3);font-style:italic">No splits assigned yet</div>'}
+      </div>`;
+    }).join('')}
+  </div>
+
+  <div class="sec-hdr"><div class="sec-title">By Subscription &amp; Bill</div><div class="sec-sub">Edit splits per item across all people</div></div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    ${allItems.length===0?'<div style="padding:32px;text-align:center;color:var(--text3);font-size:13px">No subscriptions or bills added yet.</div>':''}
+    ${allItems.map(item=>{
+      const splits=Object.entries(item.splits||{}).filter(([,v])=>+v>0);
+      const splitTotal=splits.reduce((a,[,v])=>a+(+v),0);
+      const myShare=Math.max(0,(+item.amt||0)-splitTotal);
+      return`<div class="svc-row">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="svc-name">${esc(item.name)}</div>
+            <span class="badge ${item._type==='sub'?'b-active':'b-zero'}" style="font-size:9px;padding:1px 7px">${item._type==='sub'?'Sub':'Bill'}</span>
+          </div>
+          <div class="svc-meta">${item.src?`<span style="color:var(--text3)">${esc(item.src)}</span>`:''}</div>
+          ${splits.length>0?`<div class="svc-splits">${splits.map(([p,v])=>`<span class="split-chip">${esc(p)}: ${$(+v)}</span>`).join('')}${myShare>0?`<span class="split-chip" style="background:var(--accent-l);border-color:var(--accent-b);color:var(--accent)">My share: ${$(myShare)}</span>`:''}</div>`:'<div style="font-size:10px;color:var(--text3);margin-top:4px;font-style:italic">No splits — fully your cost</div>'}
+        </div>
+        <div style="text-align:right">
+          <div class="svc-amt">${$(+item.amt||0)}<span style="font-size:10px;font-weight:400;color:var(--text3)">/mo</span></div>
+          ${splitTotal>0?`<div style="font-size:10px;color:var(--green);font-weight:600;margin-top:2px">Others pay: ${$(splitTotal)}</div>`:''}
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openEditItemSplits('${item.id}','${item._type}')">Edit Splits</button>
+          <button class="btn btn-ghost btn-sm" onclick="openDrawer('edit-${item._type==='sub'?'sub':'bill'}','${item.id}')">Edit</button>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function openAddPerson(){
+  document.getElementById('drw-title').textContent='Add Person';
+  document.getElementById('drw-body').innerHTML=`
+    <div class="fg"><label class="fl">Name <span style="color:var(--red)">*</span></label><input id="np-name" class="fi" placeholder="e.g. Sarah" onkeydown="if(event.key==='Enter')addPerson()"></div>
+    <div class="drw-actions">
+      <button class="btn-save" onclick="addPerson()">Add Person</button>
+      <button class="btn-cancel" onclick="closeDrawer()">Cancel</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+  setTimeout(()=>document.getElementById('np-name').focus(),100);
+}
+
+function addPerson(){
+  const name=(document.getElementById('np-name')?.value||'').trim();
+  if(!name)return;
+  if(D.people.includes(name)){toast('That name already exists');return;}
+  D.people.push(name);
+  save();closeDrawer();renderTab(_tab);toast(`${name} added`);
+}
+
+function openRenamePerson(oldName){
+  document.getElementById('drw-title').textContent='Rename Person';
+  document.getElementById('drw-body').innerHTML=`
+    <div style="background:var(--surface2);border-radius:var(--rs);padding:12px 14px;margin-bottom:14px;border:1px solid var(--border);font-weight:700">${esc(oldName)}</div>
+    <div class="fg"><label class="fl">New name <span style="color:var(--red)">*</span></label><input id="rn-name" class="fi" value="${esc(oldName)}" onkeydown="if(event.key==='Enter')renamePerson('${esc(oldName)}')"></div>
+    <div class="drw-actions">
+      <button class="btn-save" onclick="renamePerson('${esc(oldName)}')">Save Name</button>
+      <button class="btn-cancel" onclick="closeDrawer()">Cancel</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+  const inp=document.getElementById('rn-name');inp.focus();inp.select();
+}
+
+function renamePerson(oldName){
+  const newName=(document.getElementById('rn-name')?.value||'').trim();
+  if(!newName||newName===oldName)return;
+  if(D.people.includes(newName)){toast('That name already exists');return;}
+  const idx=D.people.indexOf(oldName);
+  if(idx!==-1)D.people[idx]=newName;
+  // Update all splits
+  [...D.subs,...D.bills].forEach(item=>{
+    if(item.splits&&item.splits[oldName]!==undefined){
+      item.splits[newName]=item.splits[oldName];
+      delete item.splits[oldName];
+    }
+  });
+  save();closeDrawer();renderTab(_tab);toast(`Renamed to ${newName}`);
+}
+
+function removePerson(name){
+  if(!confirm(`Remove ${name}? This will remove their splits from all subscriptions and bills.`))return;
+  D.people=D.people.filter(p=>p!==name);
+  [...D.subs,...D.bills].forEach(item=>{if(item.splits)delete item.splits[name];});
+  save();renderTab(_tab);toast(`${name} removed`);
+}
+
+function openEditPersonSplits(person){
+  const allItems=[
+    ...D.subs.filter(s=>s.status==='active').map(s=>({...s,_type:'sub'})),
+    ...D.bills.map(b=>({...b,_type:'bill'}))
+  ];
+  document.getElementById('drw-title').textContent=`Edit Splits — ${person}`;
+  document.getElementById('drw-body').innerHTML=`
+    <div style="background:var(--accent-l);border:1px solid var(--accent-b);border-radius:var(--rs);padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--accent)">
+      Set the monthly amount <strong>${esc(person)}</strong> pays toward each item. Leave blank or 0 for none.
+    </div>
+    ${allItems.map(item=>`
+    <div class="fg">
+      <label class="fl">${esc(item.name)} <span class="hint">- total: ${$(+item.amt||0)}/mo</span></label>
+      <input id="eps-${item.id}" class="fi" type="number" min="0" step="0.01" placeholder="0.00" value="${item.splits?.[person]||''}">
+    </div>`).join('')}
+    <div class="drw-actions">
+      <button class="btn-save" onclick="savePersonSplits('${esc(person)}')">Save All</button>
+      <button class="btn-cancel" onclick="closeDrawer()">Cancel</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+}
+
+function savePersonSplits(person){
+  const allItems=[
+    ...D.subs.filter(s=>s.status==='active').map(s=>({...s,_type:'sub'})),
+    ...D.bills.map(b=>({...b,_type:'bill'}))
+  ];
+  allItems.forEach(item=>{
+    const el=document.getElementById('eps-'+item.id);
+    const v=parseFloat(el?.value)||0;
+    const src=item._type==='sub'?D.subs:D.bills;
+    const real=src.find(x=>x.id===item.id);
+    if(!real)return;
+    if(!real.splits)real.splits={};
+    if(v>0)real.splits[person]=v;
+    else delete real.splits[person];
+  });
+  save();closeDrawer();renderTab(_tab);toast(`Splits updated for ${person}`);
+}
+
+function openEditItemSplits(id,type){
+  const src=type==='sub'?D.subs:D.bills;
+  const item=src.find(x=>x.id===id);
+  if(!item)return;
+  const people=D.people||[];
+  document.getElementById('drw-title').textContent=`Edit Splits — ${item.name}`;
+  document.getElementById('drw-body').innerHTML=`
+    <div style="background:var(--surface2);border-radius:var(--rs);padding:12px 14px;margin-bottom:14px;border:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:700;margin-bottom:2px">${esc(item.name)}</div>
+      <div style="font-size:12px;color:var(--text2)">Total: ${$(+item.amt||0)}/month</div>
+    </div>
+    <div style="background:var(--accent-l);border:1px solid var(--accent-b);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--accent)">
+      Set how much each person pays. The remainder is your share.
+    </div>
+    <div id="eis-preview" style="font-size:12px;color:var(--text2);margin-bottom:12px"></div>
+    ${people.length===0?'<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No people added yet. Add people in the Shared Payments tab first.</div>':''}
+    ${people.map(p=>`
+    <div class="fg">
+      <label class="fl">${esc(p)}</label>
+      <input id="eis-${p.replace(/[^a-zA-Z0-9]/g,'_')}" class="fi" type="number" min="0" step="0.01" placeholder="0.00" value="${item.splits?.[p]||''}" oninput="updateEisPreview('${id}','${type}')">
+    </div>`).join('')}
+    <div class="drw-actions">
+      <button class="btn-save" onclick="saveItemSplits('${id}','${type}')">Save Splits</button>
+      <button class="btn-cancel" onclick="closeDrawer()">Cancel</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+  updateEisPreview(id,type);
+}
+
+function updateEisPreview(id,type){
+  const src=type==='sub'?D.subs:D.bills;
+  const item=src.find(x=>x.id===id);if(!item)return;
+  const people=D.people||[];
+  const total=+item.amt||0;
+  let othersTotal=0;
+  people.forEach(p=>{
+    const el=document.getElementById('eis-'+p.replace(/[^a-zA-Z0-9]/g,'_'));
+    othersTotal+=parseFloat(el?.value)||0;
+  });
+  const myShare=Math.max(0,total-othersTotal);
+  const el=document.getElementById('eis-preview');
+  if(el)el.innerHTML=`Others pay: <strong style="color:var(--accent)">${$(othersTotal)}</strong> — Your share: <strong style="color:${myShare>0?'var(--text)':'var(--green)'}">${$(myShare)}</strong>`;
+}
+
+function saveItemSplits(id,type){
+  const src=type==='sub'?D.subs:D.bills;
+  const item=src.find(x=>x.id===id);if(!item)return;
+  const people=D.people||[];
+  if(!item.splits)item.splits={};
+  people.forEach(p=>{
+    const el=document.getElementById('eis-'+p.replace(/[^a-zA-Z0-9]/g,'_'));
+    const v=parseFloat(el?.value)||0;
+    if(v>0)item.splits[p]=v;
+    else delete item.splits[p];
+  });
+  save();closeDrawer();renderTab(_tab);toast('Splits saved');
+}
+
+
+// ── Add menu ──────────────────────────────────────────────────────────────────
+function openAdd(){
+  const tab=_tab;
+  if(tab==='cards')openDrawer('add-card');
+  else if(tab==='subs')openDrawer('add-sub');
+  else if(tab==='bills')openDrawer('add-bill');
+  else{
+    document.getElementById('drw-title').textContent='Add New';
+    document.getElementById('drw-body').innerHTML=`
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-accent" style="justify-content:center;padding:12px" onclick="openDrawer('add-card')">Add Credit Card / Loan</button>
+        <button class="btn" style="justify-content:center;padding:12px" onclick="openDrawer('add-sub')">Add Subscription</button>
+        <button class="btn" style="justify-content:center;padding:12px" onclick="openDrawer('add-bill')">Add Bill</button>
+      </div>`;
+    document.getElementById('overlay').classList.add('on');
+    document.getElementById('drawer').classList.add('on');
+  }
+}
+
+// ── Drawer ────────────────────────────────────────────────────────────────────
+function openDrawer(mode,id){
+  _drwMode=mode;_drwId=id||null;
+  const titles={'add-card':'Add Credit Card','edit-card':'Edit Card','add-sub':'Add Subscription','edit-sub':'Edit Subscription','add-bill':'Add Bill','edit-bill':'Edit Bill',settings:'Settings'};
+  document.getElementById('drw-title').textContent=titles[mode]||mode;
+  if(mode==='add-card'||mode==='edit-card')document.getElementById('drw-body').innerHTML=cardForm(id?D.cards.find(c=>c.id===id):null);
+  else if(mode==='add-sub'||mode==='edit-sub')document.getElementById('drw-body').innerHTML=subForm(id?D.subs.find(s=>s.id===id):null);
+  else if(mode==='add-bill'||mode==='edit-bill')document.getElementById('drw-body').innerHTML=billForm(id?D.bills.find(b=>b.id===id):null);
+  else if(mode==='settings')document.getElementById('drw-body').innerHTML=settingsForm();
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+  if(mode==='add-card'||mode==='edit-card')updateCalc();
+}
+function closeDrawer(){document.getElementById('overlay').classList.remove('on');document.getElementById('drawer').classList.remove('on');_drwMode=_drwId=null;}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+
+function cardForm(c){
+  return`
+  <div class="frow2">
+    <div class="fg" style="grid-column:1/-1"><label class="fl">Card / Loan Name <span style="color:var(--red)">*</span></label><input id="f-name" class="fi" value="${esc(c?.name||'')}" placeholder="e.g. Chase Freedom" oninput="updateCalc()"></div>
+  </div>
+  <div class="frow3">
+    <div class="fg"><label class="fl">Balance ($)</label><input id="f-bal" class="fi" type="number" min="0" step="0.01" value="${c?.bal||0}" oninput="updateCalc()"></div>
+    <div class="fg"><label class="fl">Credit Limit ($)</label><input id="f-lim" class="fi" type="number" min="0" step="1" value="${c?.lim||''}" oninput="updateCalc()"></div>
+    <div class="fg"><label class="fl">APR (%)</label><input id="f-apr" class="fi" type="number" min="0" step="0.01" value="${c?.apr||0}" oninput="updateCalc()"></div>
+  </div>
+  <div id="calc-box" class="calc-box"></div>
+  <div class="fg"><label class="fl">Notes <span class="hint">- interest free, goals, etc.</span></label><input id="f-notes" class="fi" value="${esc(c?.notes||'')}" placeholder="Interest free until..."></div>
+  <div class="frow2">
+    <div class="fg"><label class="fl">Interest Free?</label><select id="f-iffree" class="fs" onchange="toggleIfDate()"><option value="0" ${!c?.ifFree?'selected':''}>No</option><option value="1" ${c?.ifFree?'selected':''}>Yes</option></select></div>
+    <div class="fg" id="if-date-wrap" style="${c?.ifFree?'':'display:none'}"><label class="fl">Expires on</label><input id="f-ifdate" class="fi" type="date" value="${c?.ifDate||''}"></div>
+  </div>
+  <div class="drw-actions"><button class="btn-save" onclick="saveCard()">Save</button><button class="btn-cancel" onclick="closeDrawer()">Cancel</button></div>`;
+}
+
+function updateCalc(){
+  const bal=parseFloat(document.getElementById('f-bal')?.value)||0;
+  const lim=parseFloat(document.getElementById('f-lim')?.value)||0;
+  const apr=parseFloat(document.getElementById('f-apr')?.value)||0;
+  const box=document.getElementById('calc-box');
+  if(!box||!lim)return;
+  const p=pct(bal,lim);const col=utilColor(p);
+  const avail=Math.max(0,lim-bal);const to30=Math.max(0,bal-(lim*0.3));const p1y=pmt(bal,apr);
+  box.style.display='block';
+  box.innerHTML=`
+    <div class="calc-row"><span class="l">Utilization</span><span class="v" style="color:${col}">${p}%</span></div>
+    <div class="calc-row"><span class="l">Available credit</span><span class="v">${$(avail)}</span></div>
+    ${to30>0?`<div class="calc-row"><span class="l">Pay down to reach 30%</span><span class="v" style="color:var(--amber)">${$(to30)}</span></div>`:''}
+    ${p1y>0?`<div class="calc-row"><span class="l">Monthly payment (1yr payoff)</span><span class="v">${$(p1y)}/mo</span></div>`:''}`;
+}
+
+function toggleIfDate(){const v=document.getElementById('f-iffree')?.value==='1';const w=document.getElementById('if-date-wrap');if(w)w.style.display=v?'':'none';}
+
+function subForm(s){
+  return`
+  <div class="fg"><label class="fl">Subscription Name <span style="color:var(--red)">*</span></label><input id="f-name" class="fi" value="${esc(s?.name||'')}" placeholder="e.g. Netflix"></div>
+  <div class="frow2">
+    <div class="fg"><label class="fl">Monthly Amount ($)</label><input id="f-amt" class="fi" type="number" min="0" step="0.01" value="${s?.amt||0}"></div>
+    <div class="fg"><label class="fl">Status</label><select id="f-status" class="fs"><option value="active" ${(!s||s.status==='active')?'selected':''}>Active</option><option value="benefit" ${s?.status==='benefit'?'selected':''}>Benefit (free)</option><option value="cancelled" ${s?.status==='cancelled'?'selected':''}>Cancelled</option></select></div>
+  </div>
+  <div class="frow2">
+    <div class="fg"><label class="fl">Payment source</label><input id="f-src" class="fi" value="${esc(s?.src||'')}" placeholder="Capital One, AmEx..."></div>
+    <div class="fg"><label class="fl">Due date</label><input id="f-due" class="fi" type="date" value="${s?.due||''}"></div>
+  </div>
+  <div class="sec-label">Shared payment splits (monthly)</div>
+  <div class="splits-grid">
+    ${(D.people||[]).length===0?'<div style="grid-column:1/-1;font-size:12px;color:var(--text3);padding:8px">No people added yet — add them in the Shared Payments tab.</div>':''}
+    ${(D.people||[]).map(p=>`<div class="split-item"><div class="split-name">${esc(p)}</div><input id="sp-${p.replace(/[^a-zA-Z0-9]/g,'_')}" class="fi" type="number" min="0" step="0.01" placeholder="0.00" value="${s?.splits?.[p]||''}"></div>`).join('')}
+  </div>
+  <div class="drw-actions"><button class="btn-save" onclick="saveSub()">Save</button><button class="btn-cancel" onclick="closeDrawer()">Cancel</button></div>`;
+}
+
+function billForm(b){
+  return`
+  <div class="fg"><label class="fl">Bill Name <span style="color:var(--red)">*</span></label><input id="f-name" class="fi" value="${esc(b?.name||'')}" placeholder="e.g. Rent"></div>
+  <div class="frow2">
+    <div class="fg"><label class="fl">Monthly Amount ($)</label><input id="f-amt" class="fi" type="number" min="0" step="0.01" value="${b?.amt||0}"></div>
+    <div class="fg"><label class="fl">Payment source</label><input id="f-src" class="fi" value="${esc(b?.src||'')}" placeholder="Checking..."></div>
+  </div>
+  <div class="fg"><label class="fl">Due date</label><input id="f-due" class="fi" type="date" value="${b?.due||''}"></div>
+  <div class="sec-label">Shared payment splits (monthly)</div>
+  <div class="splits-grid">
+    ${(D.people||[]).map(p=>`<div class="split-item"><div class="split-name">${esc(p)}</div><input id="sp-${p.replace(/[^a-zA-Z0-9]/g,'_')}" class="fi" type="number" min="0" step="0.01" placeholder="0.00" value="${b?.splits?.[p]||''}"></div>`).join('')}
+  </div>
+  <div class="drw-actions"><button class="btn-save" onclick="saveBill()">Save</button><button class="btn-cancel" onclick="closeDrawer()">Cancel</button></div>`;
+}
+
+function settingsForm(){
+  const cfg=D.config||{};
+  return`
+  <div class="sec-label">Update Balance Baseline</div>
+  <div class="frow2">
+    <div class="fg"><label class="fl">Previous balance ($)</label><input id="f-prevtot" class="fi" type="number" step="0.01" value="${D.prevTotal}"></div>
+    <div class="fg"><label class="fl">As of date</label><input id="f-prevdate" class="fi" type="date" value="${D.prevDate}"></div>
+  </div>
+  <button class="btn btn-accent" style="width:100%;padding:10px;margin-bottom:16px" onclick="savePrevTotal()">Update Baseline</button>
+  <div class="sec-label">Email Reminders</div>
+  <p style="font-size:11px;color:var(--text2);margin-bottom:10px;line-height:1.6">Get an email when cards are above 75% or interest-free periods are expiring. Uses EmailJS (free up to 200/month).</p>
+  <div class="fg"><label class="fl">Your email</label><input id="set-email" class="fi" type="email" value="${esc(cfg.email||'')}" placeholder="you@example.com"></div>
+  <div class="fg"><label class="fl">EmailJS Service ID</label><input id="set-svc" class="fi" value="${esc(cfg.ejsSvc||'')}" placeholder="service_xxxxxxx"></div>
+  <div class="fg"><label class="fl">EmailJS Template ID</label><input id="set-tpl" class="fi" value="${esc(cfg.ejsTpl||'')}" placeholder="template_xxxxxxx"></div>
+  <div class="fg"><label class="fl">EmailJS Public Key</label><input id="set-key" class="fi" value="${esc(cfg.ejsKey||'')}" placeholder="your_public_key"></div>
+  <div style="display:flex;gap:8px;margin-bottom:4px">
+    <button class="btn btn-accent" style="flex:1;padding:9px" onclick="saveEmailCfg()">Save Email Settings</button>
+    <button class="btn btn-ghost" style="flex:1;padding:9px" onclick="testEmailCfg()">Send Test</button>
+  </div>
+  <div id="email-msg" style="font-size:11px;min-height:14px;margin-bottom:12px"></div>
+  <div class="sec-label">Auto-Lock</div>
+  <div class="fg"><label class="fl">Lock after inactivity</label>
+    <select id="set-autolock" class="fs">
+      <option value="0" ${(cfg.autoLock||15)===0?'selected':''}>Disabled</option>
+      <option value="5" ${cfg.autoLock===5?'selected':''}>5 minutes</option>
+      <option value="10" ${cfg.autoLock===10?'selected':''}>10 minutes</option>
+      <option value="15" ${(!cfg.autoLock||cfg.autoLock===15)?'selected':''}>15 minutes (default)</option>
+      <option value="30" ${cfg.autoLock===30?'selected':''}>30 minutes</option>
+      <option value="60" ${cfg.autoLock===60?'selected':''}>1 hour</option>
+    </select>
+  </div>
+  <button class="btn btn-accent" style="width:100%;padding:9px;margin-bottom:16px" onclick="saveFinanceAutoLock()">Save Auto-Lock</button>
+  <div class="sec-label">Change Password</div>
+  <div class="fg"><label class="fl">Current password</label><input id="f-cur" type="password" class="fi"></div>
+  <div class="frow2">
+    <div class="fg"><label class="fl">New password</label><input id="f-new" type="password" class="fi"></div>
+    <div class="fg"><label class="fl">Confirm</label><input id="f-cfm" type="password" class="fi"></div>
+  </div>
+  <div id="pw-msg" style="font-size:12px;min-height:16px;margin-bottom:8px"></div>
+  <button class="btn btn-accent" style="width:100%;padding:10px;margin-bottom:16px" onclick="changePw()">Update Password</button>
+  <div class="sec-label">Two-Factor Auth</div>
+  <button class="btn" style="width:100%;padding:10px;margin-bottom:16px" onclick="reset2FA()">Reset 2FA — Re-scan QR Code</button>
+  <div class="sec-label">Data</div>
+  <button class="btn btn-danger" style="width:100%;padding:10px" onclick="resetData()">Reset all data to defaults</button>`;
+}
+
+// ── Save actions ──────────────────────────────────────────────────────────────
+function getSplits(){
+  const splits={};
+  (D.people||[]).forEach(p=>{const el=document.getElementById('sp-'+p.replace(/[^a-zA-Z0-9]/g,'_'));const v=parseFloat(el?.value);if(v>0)splits[p]=v;});
+  return splits;
+}
+
+function saveCard(){
+  const name=(document.getElementById('f-name')?.value||'').trim();if(!name)return;
+  const card={id:_drwId||uid(),name,bal:parseFloat(document.getElementById('f-bal')?.value)||0,lim:parseFloat(document.getElementById('f-lim')?.value)||0,apr:parseFloat(document.getElementById('f-apr')?.value)||0,notes:(document.getElementById('f-notes')?.value||'').trim(),ifFree:document.getElementById('f-iffree')?.value==='1',ifDate:document.getElementById('f-ifdate')?.value||''};
+  if(_drwId){const i=D.cards.findIndex(c=>c.id===_drwId);if(i!==-1)D.cards[i]=card;}else D.cards.push(card);
+  save();closeDrawer();renderTab(_tab);toast(_drwId?'Card updated':'Card added');
+}
+
+function saveSub(){
+  const name=(document.getElementById('f-name')?.value||'').trim();if(!name)return;
+  const sub={id:_drwId||uid(),name,amt:parseFloat(document.getElementById('f-amt')?.value)||0,due:document.getElementById('f-due')?.value||'',src:(document.getElementById('f-src')?.value||'').trim(),status:document.getElementById('f-status')?.value||'active',splits:getSplits()};
+  if(_drwId){const i=D.subs.findIndex(s=>s.id===_drwId);if(i!==-1)D.subs[i]=sub;}else D.subs.push(sub);
+  save();closeDrawer();renderTab(_tab);toast(_drwId?'Subscription updated':'Subscription added');
+}
+
+function saveBill(){
+  const name=(document.getElementById('f-name')?.value||'').trim();if(!name)return;
+  const bill={id:_drwId||uid(),name,amt:parseFloat(document.getElementById('f-amt')?.value)||0,due:document.getElementById('f-due')?.value||'',src:(document.getElementById('f-src')?.value||'').trim(),splits:getSplits()};
+  if(_drwId){const i=D.bills.findIndex(b=>b.id===_drwId);if(i!==-1)D.bills[i]=bill;}else D.bills.push(bill);
+  save();closeDrawer();renderTab(_tab);toast(_drwId?'Bill updated':'Bill added');
+}
+
+function delItem(type,id,name){
+  if(!confirm(`Remove "${name}"?`))return;
+  if(type==='card')D.cards=D.cards.filter(c=>c.id!==id);
+  else if(type==='sub')D.subs=D.subs.filter(s=>s.id!==id);
+  else D.bills=D.bills.filter(b=>b.id!==id);
+  save();renderTab(_tab);toast('Removed');
+}
+
+function savePrevTotal(){
+  D.prevTotal=parseFloat(document.getElementById('f-prevtot')?.value)||D.prevTotal;
+  D.prevDate=document.getElementById('f-prevdate')?.value||D.prevDate;
+  save();toast('Baseline updated');closeDrawer();renderTab(_tab);
+}
+
+async function changePw(){
+  const cur=document.getElementById('f-cur')?.value;
+  const nw=document.getElementById('f-new')?.value;
+  const cfm=document.getElementById('f-cfm')?.value;
+  const msg=document.getElementById('pw-msg');
+  if(!nw){msg.style.color='var(--red)';msg.textContent='Enter a new password.';return;}
+  if(nw!==cfm){msg.style.color='var(--red)';msg.textContent='Passwords do not match.';return;}
+  const stored=await sbGet('app_settings','pw_hash')||DH;
+  if(await sha256(cur)!==stored){msg.style.color='var(--red)';msg.textContent='Current password is wrong.';return;}
+  const ok=await sbSet('app_settings','pw_hash',await sha256(nw));
+  if(ok){msg.style.color='var(--green)';msg.textContent='Password updated on all devices.';}
+  else{msg.style.color='var(--red)';msg.textContent='Save failed — check connection.';}
+}
+
+async function reset2FA(){
+  await fetch(`${SB}/rest/v1/app_settings?key=eq.totp_secret`,{method:'DELETE',headers:SH});
+  closeDrawer();toast('2FA reset — scan new code next login');
+}
+
+function resetData(){
+  if(!confirm('Reset all financial data to defaults?'))return;
+  D.cards=[...SEED_CARDS];D.subs=[...SEED_SUBS];D.bills=[...SEED_BILLS];
+  save();renderTab(_tab);closeDrawer();toast('Data reset to defaults');
+}
+
+function openSettings(){openDrawer('settings');}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function renderHistory(){
+  const hist=[...(D.history||[])].sort((a,b)=>a.date.localeCompare(b.date));
+  const totBal=D.cards.reduce((a,c)=>a+(+c.bal||0),0);
+  const today=new Date().toISOString().slice(0,10);
+
+  const chart=hist.length>=2?renderMiniChart(hist,true):'';
+
+  return`
+  <div class="sec-hdr">
+    <div><div class="sec-title">Balance History</div><div class="sec-sub">${hist.length} snapshot${hist.length!==1?'s':''} saved — tracking your debt over time</div></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-accent" onclick="openSnapshotModal()">+ Save Snapshot</button>
+    </div>
+  </div>
+
+  ${hist.length>=2?`<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:20px;box-shadow:var(--shadow)">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px">Starting balance</div>
+        <div style="font-size:18px;font-weight:700">${$(hist[0].total)}</div>
+        <div style="font-size:10px;color:var(--text3)">${hist[0].date}</div>
+      </div>
+      <div style="text-align:center">
+        ${(()=>{const d=totBal-hist[0].total;const pctChg=hist[0].total>0?Math.round(Math.abs(d)/hist[0].total*100):0;return`<div style="font-size:11px;color:var(--text3);margin-bottom:4px">Total change</div><div style="font-size:24px;font-weight:800;color:${d<0?'var(--green)':'var(--red)'}">${d<0?'▼':'▲'} ${$(Math.abs(d))}</div><div style="font-size:11px;color:${d<0?'var(--green)':'var(--red)'};">${pctChg}% ${d<0?'decrease':'increase'}</div>`;})()}
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px">Current balance</div>
+        <div style="font-size:18px;font-weight:700;color:var(--red)">${$(totBal)}</div>
+        <div style="font-size:10px;color:var(--text3)">${today}</div>
+      </div>
+    </div>
+    ${chart}
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:6px"><span>${hist[0].date}</span><span>${hist[hist.length-1].date}</span></div>
+  </div>`:'<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:32px;text-align:center;margin-bottom:20px;color:var(--text3)"><div style="font-size:13px;margin-bottom:12px">No snapshots yet. Save your first snapshot to start tracking.</div><button class="btn btn-accent" onclick="openSnapshotModal()">Save First Snapshot</button></div>'}
+
+  <div style="display:flex;flex-direction:column;gap:3px">
+    ${[...hist].reverse().map((h,i,arr)=>{
+      const prev=arr[i+1];
+      const diff=prev?h.total-prev.total:0;
+      const diffClass=diff<0?'metric-down':diff>0?'metric-up':'';
+      const isToday=h.date===today;
+      return`<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 18px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow)">
+        <div style="width:10px;height:10px;border-radius:50%;background:${diff<0?'var(--green)':diff>0?'var(--red)':'var(--text3)'};flex-shrink:0"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px">${$(h.total)} ${isToday?'<span style="font-size:9px;background:var(--accent-l);color:var(--accent);border:1px solid var(--accent-b);padding:1px 6px;border-radius:10px;font-weight:700">Today</span>':''}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">${h.date}${h.note?` — ${esc(h.note)}`:''}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          ${diff!==0?`<div style="font-size:13px;font-weight:700" class="${diffClass}">${diff<0?'▼':'▲'} ${$(Math.abs(diff))}</div>`:'<div style="font-size:11px;color:var(--text3)">baseline</div>'}
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="deleteSnapshot('${h.date}')">Remove</button>
+      </div>`;
+    }).join('')||'<div style="padding:32px;text-align:center;color:var(--text3);font-size:13px">No snapshots yet</div>'}
+  </div>`;
+}
+
+function deleteSnapshot(date){
+  if(!confirm('Remove this snapshot?'))return;
+  D.history=D.history.filter(h=>h.date!==date);
+  save();renderTab(_tab);toast('Snapshot removed');
+}
+
+
+// ── Auto-lock ─────────────────────────────────────────────────────────────────
+let _fLockTimer=null,_fLockWarn=null;
+function resetFinanceLockTimer(){
+  clearTimeout(_fLockTimer);clearTimeout(_fLockWarn);
+  const mins=(D.config?.autoLock??15);
+  if(!mins||mins===0)return;
+  const ms=mins*60*1000;
+  _fLockWarn=setTimeout(()=>{
+    const b=document.getElementById('fin-lock-badge');
+    if(b){b.style.display='block';b.textContent='Locking in 1 minute due to inactivity';}
+  },Math.max(0,ms-60000));
+  _fLockTimer=setTimeout(()=>{
+    const b=document.getElementById('fin-lock-badge');if(b)b.style.display='none';
+    document.getElementById('app').style.display='none';
+    document.getElementById('lock').classList.add('on');
+    document.getElementById('lock-pw').value='';
+    _ready=false;
+    setTimeout(()=>document.getElementById('lock-pw').focus(),100);
+  },ms);
+}
+function saveFinanceAutoLock(){
+  if(!D.config)D.config={};
+  D.config.autoLock=parseInt(document.getElementById('set-autolock')?.value)||15;
+  save();resetFinanceLockTimer();
+  const v=D.config.autoLock;
+  toast(v===0?'Auto-lock disabled':`Auto-lock set to ${v} minutes`);
+}
+['click','keydown','touchstart','mousemove'].forEach(ev=>document.addEventListener(ev,()=>{
+  const b=document.getElementById('fin-lock-badge');if(b)b.style.display='none';
+  if(document.getElementById('app').style.display!=='none')resetFinanceLockTimer();
+},{passive:true}));
+
+// ── Email (EmailJS) ───────────────────────────────────────────────────────────
+async function saveEmailCfg(){
+  if(!D.config)D.config={};
+  D.config.email=(document.getElementById('set-email')?.value||'').trim();
+  D.config.ejsSvc=(document.getElementById('set-svc')?.value||'').trim();
+  D.config.ejsTpl=(document.getElementById('set-tpl')?.value||'').trim();
+  D.config.ejsKey=(document.getElementById('set-key')?.value||'').trim();
+  save();
+  const m=document.getElementById('email-msg');
+  if(m){m.style.color='var(--green)';m.textContent='Email settings saved!';}
+  setTimeout(()=>{if(m)m.textContent='';},3000);
+}
+async function testEmailCfg(){
+  const m=document.getElementById('email-msg');
+  const cfg=D.config||{};
+  if(!cfg.email||!cfg.ejsSvc||!cfg.ejsTpl||!cfg.ejsKey){
+    if(m){m.style.color='var(--red)';m.textContent='Fill in all email fields first.';}
+    return;
+  }
+  const ok=await sendFinanceEmail('Test — Personal Finance Tracker','This is a test email from your Personal Finance Tracker. Email reminders are working!');
+  if(m){m.style.color=ok?'var(--green)':'var(--red)';m.textContent=ok?'Test email sent!':'Send failed — check your EmailJS settings.';}
+}
+async function sendFinanceEmail(subject,body){
+  const cfg=D.config||{};
+  if(!cfg.email||!cfg.ejsSvc||!cfg.ejsTpl||!cfg.ejsKey)return false;
+  try{
+    const r=await fetch('https://api.emailjs.com/api/v1.0/email/send',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({service_id:cfg.ejsSvc,template_id:cfg.ejsTpl,user_id:cfg.ejsKey,
+        template_params:{to_email:cfg.email,subject,message:body}})
+    });
+    return r.ok;
+  }catch(_){return false;}
+}
+function checkFinanceReminders(){
+  const cfg=D.config||{};
+  if(!cfg.email||!cfg.ejsSvc)return;
+  const lines=[];
+  // High utilization cards
+  const high=D.cards.filter(c=>(+c.bal)>0&&pct(+c.bal,+c.lim)>=75);
+  if(high.length)lines.push('HIGH UTILIZATION: '+high.map(c=>c.name+': '+pct(+c.bal,+c.lim)+'%').join(' | '));
+  // Interest-free expiring within 30 days
+  const exp=D.cards.filter(c=>{const d=c.ifFree&&c.ifDate?daysUntil(c.ifDate):null;return d!==null&&d>=0&&d<=30;});
+  if(exp.length)lines.push('INTEREST-FREE EXPIRING: '+exp.map(c=>c.name+': '+daysUntil(c.ifDate)+' days').join(' | '));
+  if(lines.length)sendFinanceEmail('Finance Alert',lines.join(' | '));
+}
+
+// ── Debt Payoff Calculator ────────────────────────────────────────────────────
+function renderPayoff(){
+  const cards=D.cards.filter(c=>(+c.bal)>0&&(+c.apr)>0).sort((a,b)=>(+b.apr)-(+a.apr));
+  const totalBal=cards.reduce((a,c)=>a+(+c.bal),0);
+  const minPmt=cards.reduce((a,c)=>a+Math.max(25,+c.bal*0.02),0);
+  const suggested=Math.max(minPmt,totalBal*0.04);
+
+  function simulatePayoff(cardsArr,monthlyBudget,strategy){
+    let balances=cardsArr.map(c=>({...c,bal:+c.bal}));
+    let month=0,totalInterest=0;
+    const MAX=360;
+    while(balances.some(c=>c.bal>0)&&month<MAX){
+      month++;
+      let remaining=monthlyBudget;
+      // Pay minimums on all
+      balances.forEach(c=>{
+        if(c.bal<=0)return;
+        const interest=c.bal*(+c.apr/100/12);
+        totalInterest+=interest;
+        c.bal+=interest;
+        const min=Math.min(c.bal,Math.max(25,c.bal*0.02));
+        c.bal=Math.max(0,c.bal-min);
+        remaining-=min;
+      });
+      // Apply extra to priority card
+      if(remaining>0){
+        const priority=strategy==='avalanche'
+          ?balances.filter(c=>c.bal>0).sort((a,b)=>(+b.apr)-(+a.apr))[0]
+          :balances.filter(c=>c.bal>0).sort((a,b)=>a.bal-b.bal)[0];
+        if(priority){const pay=Math.min(priority.bal,remaining);priority.bal=Math.max(0,priority.bal-pay);}
+      }
+      balances=balances.map(c=>({...c,bal:Math.max(0,c.bal)}));
+    }
+    return{months:month,interest:Math.round(totalInterest*100)/100};
+  }
+
+  const budget1=Math.round(suggested);
+  const av=simulatePayoff(cards,budget1,'avalanche');
+  const sb=simulatePayoff(cards,budget1,'snowball');
+  const avYrs=Math.floor(av.months/12),avMos=av.months%12;
+  const sbYrs=Math.floor(sb.months/12),sbMos=sb.months%12;
+  const saved=Math.round((sb.interest-av.interest)*100)/100;
+
+  // Interest-free cards countdown
+  const ifCards=D.cards.filter(c=>c.ifFree&&c.ifDate&&c.bal>0);
+
+  return`
+  <div class="sec-hdr">
+    <div><div class="sec-title">Debt Payoff Plan</div><div class="sec-sub">Avalanche vs Snowball — find the fastest, cheapest path to zero</div></div>
+  </div>
+
+  ${ifCards.length>0?`
+  <div style="margin-bottom:24px">
+    <div style="font-size:13px;font-weight:700;letter-spacing:-.3px;margin-bottom:10px">Interest-Free Countdowns</div>
+    ${ifCards.map(c=>{
+      const days=daysUntil(c.ifDate);
+      const months=days!==null?days/30.44:null;
+      const minMonthly=months&&months>0?Math.ceil((+c.bal)/months):+c.bal;
+      const urgent=days!==null&&days<=60;
+      const color=days!==null&&days<=30?'var(--red)':days!==null&&days<=60?'var(--orange)':'var(--amber)';
+      return`<div style="background:var(--surface);border:1px solid ${urgent?color:'var(--border)'};border-left:4px solid ${color};border-radius:var(--r);padding:18px 22px;margin-bottom:10px;box-shadow:var(--shadow)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+          <div>
+            <div style="font-size:15px;font-weight:700;letter-spacing:-.3px">${esc(c.name)}</div>
+            <div style="font-size:13px;color:var(--text2);margin-top:2px">Balance: <strong>${$(+c.bal)}</strong> — 0% APR</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:28px;font-weight:800;letter-spacing:-1.5px;color:${color}">${days!==null?days:'-'}</div>
+            <div style="font-size:11px;color:var(--text3)">days remaining</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div style="background:var(--surface2);border-radius:var(--rs);padding:12px;border:1px solid var(--border)">
+            <div style="font-size:10px;color:var(--text3);margin-bottom:3px">Expires</div>
+            <div style="font-size:13px;font-weight:700">${esc(c.ifDate)}</div>
+          </div>
+          <div style="background:${color}18;border-radius:var(--rs);padding:12px;border:1px solid ${color}33">
+            <div style="font-size:10px;color:var(--text3);margin-bottom:3px">Pay/month to clear</div>
+            <div style="font-size:16px;font-weight:800;color:${color}">${$(minMonthly)}</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:var(--rs);padding:12px;border:1px solid var(--border)">
+            <div style="font-size:10px;color:var(--text3);margin-bottom:3px">If missed — APR jumps to</div>
+            <div style="font-size:13px;font-weight:700;color:var(--red)">~29%</div>
+          </div>
+        </div>
+        ${days!==null&&days<=30?`<div style="margin-top:10px;background:var(--red-l);border:1px solid var(--red-b);border-radius:var(--rs);padding:8px 12px;font-size:12px;color:var(--red);font-weight:600">Action needed — less than 30 days to pay off ${$(+c.bal)} at ${$(minMonthly)}/month</div>`:''}
+      </div>`;
+    }).join('')}
+  </div>`:''}
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px;box-shadow:var(--shadow)">
+    <div style="font-size:13px;font-weight:700;margin-bottom:4px">Monthly payment budget</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:12px">Adjust to see how much faster you can pay off debt</div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <input id="payoff-budget" type="number" min="100" step="50" value="${budget1}" class="fi" style="max-width:140px;font-size:16px;font-weight:700" oninput="recalcPayoff(this.value)">
+      <span style="font-size:12px;color:var(--text2)">/month</span>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('payoff-budget').value=${Math.round(minPmt)};recalcPayoff(${Math.round(minPmt)})">Min payments</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('payoff-budget').value=${Math.round(suggested)};recalcPayoff(${Math.round(suggested)})">Suggested</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px" id="payoff-results">
+    <div style="background:var(--surface);border:2px solid var(--green);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="background:var(--green-l);border-radius:6px;padding:4px 8px;font-size:10px;font-weight:700;color:var(--green)">RECOMMENDED</div>
+        <div style="font-size:13px;font-weight:700">Avalanche Method</div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:16px;line-height:1.6">Pay highest APR first. Mathematically optimal — saves the most money.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="av-stats">
+        <div style="background:var(--surface2);border-radius:var(--rs);padding:12px"><div style="font-size:10px;color:var(--text3)">Debt-free in</div><div style="font-size:20px;font-weight:800;color:var(--green)">${avYrs>0?avYrs+'y ':''}${avMos}mo</div></div>
+        <div style="background:var(--surface2);border-radius:var(--rs);padding:12px"><div style="font-size:10px;color:var(--text3)">Total interest</div><div style="font-size:16px;font-weight:800;color:var(--red)">${$(av.interest)}</div></div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Pay order:</div>
+      ${cards.sort((a,b)=>(+b.apr)-(+a.apr)).map((c,i)=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">${i+1}. ${esc(c.name)}</span><span style="font-weight:600;color:var(--red)">${c.apr}% APR</span></div>`).join('')}
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px">Snowball Method</div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:16px;line-height:1.6">Pay smallest balance first. Builds momentum with quick wins.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="sb-stats">
+        <div style="background:var(--surface2);border-radius:var(--rs);padding:12px"><div style="font-size:10px;color:var(--text3)">Debt-free in</div><div style="font-size:20px;font-weight:800;color:var(--accent)">${sbYrs>0?sbYrs+'y ':''}${sbMos}mo</div></div>
+        <div style="background:var(--surface2);border-radius:var(--rs);padding:12px"><div style="font-size:10px;color:var(--text3)">Total interest</div><div style="font-size:16px;font-weight:800;color:var(--red)">${$(sb.interest)}</div></div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Pay order:</div>
+      ${cards.sort((a,b)=>a.bal-b.bal).map((c,i)=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">${i+1}. ${esc(c.name)}</span><span style="font-weight:600">${$(+c.bal)}</span></div>`).join('')}
+    </div>
+  </div>
+
+  ${saved>0?`<div style="background:var(--green-l);border:1px solid var(--green-b);border-radius:var(--r);padding:16px 20px;text-align:center">
+    <div style="font-size:13px;color:var(--green);font-weight:700">Avalanche saves you <span style="font-size:20px;letter-spacing:-.5px">${$(saved)}</span> in interest vs Snowball</div>
+  </div>`:''}`;
+}
+
+function recalcPayoff(budget){
+  budget=parseFloat(budget)||0;if(budget<50)return;
+  const cards=D.cards.filter(c=>(+c.bal)>0&&(+c.apr)>0).sort((a,b)=>(+b.apr)-(+a.apr));
+  function sim(cardsArr,monthly,strategy){
+    let bals=cardsArr.map(c=>({...c,bal:+c.bal}));
+    let month=0,ti=0;
+    while(bals.some(c=>c.bal>0)&&month<360){
+      month++;let rem=monthly;
+      bals.forEach(c=>{if(c.bal<=0)return;const int=c.bal*(+c.apr/100/12);ti+=int;c.bal+=int;const min=Math.min(c.bal,Math.max(25,c.bal*0.02));c.bal=Math.max(0,c.bal-min);rem-=min;});
+      if(rem>0){const p=strategy==='avalanche'?bals.filter(c=>c.bal>0).sort((a,b)=>(+b.apr)-(+a.apr))[0]:bals.filter(c=>c.bal>0).sort((a,b)=>a.bal-b.bal)[0];if(p){const pay=Math.min(p.bal,rem);p.bal=Math.max(0,p.bal-pay);}}
+    }
+    return{months:month,interest:Math.round(ti*100)/100};
+  }
+  const av=sim(cards,budget,'avalanche'),sb=sim(cards,budget,'snowball');
+  const fmt=(m)=>{const y=Math.floor(m/12),mo=m%12;return(y>0?y+'y ':'')+mo+'mo';};
+  const avEl=document.getElementById('av-stats'),sbEl=document.getElementById('sb-stats');
+  if(avEl)avEl.innerHTML=`<div style="background:var(--surface2);border-radius:var(--rs);padding:12px"><div style="font-size:10px;color:var(--text3)">Debt-free in</div><div style="font-size:20px;font-weight:800;color:var(--green)">${fmt(av.months)}</div></div><div style="background:var(--surface2);border-radius:var(--rs);padding:12px"><div style="font-size:10px;color:var(--text3)">Total interest</div><div style="font-size:16px;font-weight:800;color:var(--red)">$${av.interest.toLocaleString()}</div></div>`;
+  if(sbEl)sbEl.innerHTML=`<div style="background:var(--surface2);border-radius:var(--rs);padding:12px"><div style="font-size:10px;color:var(--text3)">Debt-free in</div><div style="font-size:20px;font-weight:800;color:var(--accent)">${fmt(sb.months)}</div></div><div style="background:var(--surface2);border-radius:var(--rs);padding:12px"><div style="font-size:10px;color:var(--text3)">Total interest</div><div style="font-size:16px;font-weight:800;color:var(--red)">$${sb.interest.toLocaleString()}</div></div>`;
+}
+
+let _tt;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('on');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),2500);}
+
+function showLogin(){showStep('step-password');}
+
+function showRegister(){showStep('step-register');}
+
+// ── Startup & session restore ───────────────────────────────────────────────
+function _startup(){
+  const ls=document.getElementById('lock-screen');
+  if(!ls){console.error('lock-screen not found');return;}
+  ls.classList.add('on');
+  setTimeout(()=>document.getElementById('lock-email')?.focus(),100);
+  document.getElementById('lock-pw')?.addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
+  if(window.PublicKeyCredential){const ps=document.getElementById('passkey-section');if(ps)ps.style.display='block';}
+}
+
+(async function restoreFinSession(){
+  try{
+    const raw=localStorage.getItem('fin_session');
+    if(!raw){if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_startup);}else{_startup();}return;}
+    const saved=JSON.parse(raw);
+    if(!saved||Date.now()-saved.savedAt>24*60*60*1000){localStorage.removeItem('fin_session');if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_startup);}else{_startup();}return;}
+    _currentUser=saved;_finUser=saved;
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',()=>finishLogin());}
+    else{finishLogin();}
+  }catch(e){_startup();}
+})();
+
+
+// ── Email-based Password Reset ───────────────────────────────────────────────
+let _resetVerifyCode = null;
+let _resetEmail = null;
+
+async function sendPasswordResetCode(){
+  // Get the email from the login form
+  const emailEl = document.getElementById('lock-email');
+  const email = (emailEl?.value || '').trim().toLowerCase();
+  if(!email){
+    const err = document.getElementById('lock-err');
+    if(err) err.textContent = 'Enter your email address first, then click Forgot password.';
+    emailEl?.focus();
+    return;
+  }
+  // Check if this is a valid account
+  const reg = await getRegistry();
+  const user = reg?.find(u => u.email === email || (email === OWNER_EMAIL && u.role === 'owner'));
+  if(!user && email !== OWNER_EMAIL){
+    const err = document.getElementById('lock-err');
+    if(err) err.textContent = 'No account found with that email.';
+    return;
+  }
+  // Generate 6-digit code
+  _resetVerifyCode = String(Math.floor(100000 + Math.random() * 900000));
+  _resetEmail = email;
+  // Send via email platform
+  const sent = await sendPlatformEmail(
+    email,
+    'Your DataPrimeTech Password Reset Code',
+    `Your password reset code is: <strong>${_resetVerifyCode}</strong>\n\nThis code expires in 10 minutes. If you did not request this, ignore this email.`
+  );
+  if(sent){
+    showStep('step-reset');
+    const sub = document.getElementById('reset-sub');
+    if(sub) sub.textContent = 'A 6-digit code was sent to ' + email + '. Enter it below.';
+    setTimeout(()=>{_resetVerifyCode=null; _resetEmail=null;}, 10*60*1000);
+  } else {
+    // Fallback: show code in UI for testing (remove in production)
+    showStep('step-reset');
+    const sub = document.getElementById('reset-sub');
+    if(sub) sub.innerHTML = 'Email delivery unavailable. For owner access, contact support.<br><small style="color:var(--text3)">Code: ' + _resetVerifyCode + '</small>';
+  }
+}
+
+function verifyResetCode(){
+  const code = (document.getElementById('reset-code')?.value || '').trim();
+  const err = document.getElementById('reset-err');
+  if(!_resetVerifyCode){ if(err) err.textContent = 'Code expired. Request a new one.'; return; }
+  if(code !== _resetVerifyCode){ if(err) err.textContent = 'Incorrect code. Try again.'; return; }
+  if(err) err.textContent = '';
+  // Show new password fields
+  document.getElementById('reset-code-wrap').style.display = 'block';
+  document.getElementById('reset-verify-btn').style.display = 'none';
+  document.getElementById('reset-new-pw')?.focus();
+}
+
+async function setNewPassword(){
+  const pw = document.getElementById('reset-new-pw')?.value || '';
+  const pw2 = document.getElementById('reset-confirm-pw')?.value || '';
+  const err = document.getElementById('reset-err');
+  if(pw.length < 6){ if(err) err.textContent = 'Password must be at least 6 characters.'; return; }
+  if(pw !== pw2){ if(err) err.textContent = 'Passwords do not match.'; return; }
+  if(!_resetEmail){ if(err) err.textContent = 'Session expired. Start over.'; return; }
+  const hash = await sha256(pw);
+  // Save new password
+  if(_resetEmail === OWNER_EMAIL){
+    await sbSet('app_settings','pw_hash', hash);
+  } else {
+    const reg = await getRegistry();
+    const user = reg?.find(u => u.email === _resetEmail);
+    if(user){ user.passwordHash = hash; await saveRegistry(reg); }
+  }
+  _resetVerifyCode = null; _resetEmail = null;
+  showLogin();
+  const loginErr = document.getElementById('lock-err');
+  if(loginErr){ loginErr.style.color = 'var(--green,#059669)'; loginErr.textContent = 'Password reset successfully. Sign in with your new password.'; }
+}
+</script>
+</body>
+</html>
