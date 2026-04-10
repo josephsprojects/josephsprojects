@@ -1,6 +1,7 @@
 import { requireOwner } from '@/lib/auth'
 import Sidebar from '@/components/owner/Sidebar'
 import { prisma } from '@/lib/prisma'
+import { isRedirectError } from 'next/dist/client/components/redirect-error'
 
 export default async function OwnerLayout({ children }: { children: React.ReactNode }) {
   let user: any, pendingRR = 0, unreadNotifs = 0, unreadMsgs = 0
@@ -12,6 +13,7 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
       prisma.message.count({ where: { status: 'unread' } }),
     ])
   } catch (e: any) {
+    if (isRedirectError(e)) throw e  // let Next.js handle redirects normally
     const dbUrl = process.env.DATABASE_URL?.replace(/:([^:@]+)@/, ':***@') ?? 'NOT SET'
     return (
       <div style={{ padding: 40, fontFamily: 'monospace', fontSize: 13 }}>
