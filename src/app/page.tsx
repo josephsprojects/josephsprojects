@@ -512,8 +512,8 @@ const clientJs = `
   };
 
   var FALLBACK = [
-    { name:'CuraLog', description:'Full medication management platform for caregivers and care teams. Multi-patient support, refill tracking, provider lookup, and role-based access.', tags:['Healthcare','Supabase','2FA','Prisma'], status:'live', icon:'clipboard', color:'#0E4F54', url:'/medicationtracker' },
-    { name:'Finance Tracker', description:'Personal finance dashboard for tracking credit cards, subscriptions, and bills. Debt payoff calculator and utilization alerts.', tags:['Finance','Supabase','Dashboard'], status:'live', icon:'dollar', color:'#1A7A42', url:'/finance' },
+    { name:'CuraLog', description:'Full medication management platform for caregivers and care teams. Multi-patient support, refill tracking, provider lookup, and role-based access.', tags:['Healthcare','2FA Secured','Multi-patient'], status:'live', icon:'clipboard', color:'#0E4F54', url:'/medicationtracker' },
+    { name:'Finance Tracker', description:'Personal finance dashboard for tracking credit cards, subscriptions, and bills. Debt payoff calculator and utilization alerts.', tags:['Finance','Dashboard','Alerts'], status:'live', icon:'dollar', color:'#1A7A42', url:'/finance' },
     { name:'Client Portal', description:'Private project delivery and file-sharing portal for DataPrimeTech clients. Milestone tracking, feedback threads, and secure document handoff.', tags:['Workflow','Collaboration','Security'], status:'building', icon:'briefcase', color:'#C9762A', url:null },
     { name:'Field Ops Tracker', description:'Job scheduling and crew management tool for small field-service businesses. Work orders, photo logs, and invoice generation.', tags:['Operations','Scheduling','Mobile'], status:'building', icon:'map', color:'#5B3BA8', url:null },
   ];
@@ -772,7 +772,7 @@ export default function DataPrimeTechHome() {
                     <div className="about-stat"><div className="about-stat-num">0</div><div className="about-stat-lbl">Templates used</div></div>
                   </div>
                   <div className="tech-tags">
-                    {['Next.js', 'Supabase', 'Prisma', 'TypeScript', 'Vercel', 'Postgres'].map(t => (
+                    {['TypeScript', 'React', 'PostgreSQL', 'Node.js', 'REST APIs', 'Cloud Hosted'].map(t => (
                       <span key={t} className="tech-tag">{t}</span>
                     ))}
                   </div>
@@ -872,7 +872,7 @@ export default function DataPrimeTechHome() {
                 { num:'01', icon:'M2 3h20v14H2zM8 21h8M12 17v4', name:'Web Applications', desc:'Full custom apps built from the ground up. Fast, secure, and designed to work on every device.', items:['Password-protected with two-factor auth','Cloud database — syncs in real time','Works on any screen size'] },
                 { num:'02', icon:'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', name:'Secure Private Tools', desc:'For sensitive data. Built with real security layers — TOTP auth, encrypted storage, session management.', items:['TOTP two-factor authentication','Role-based access for teams','Works with 1Password, Authy, Google Auth'] },
                 { num:'03', icon:'M22 12h-4l-3 9L9 3l-3 9H2', name:'Tracking & Automation', desc:'Apps that do the work for you. Auto-calculations, smart alerts, status tracking, and data that updates live.', items:['Auto-calculated fields and schedules','Email and SMS notifications','Real-time sync across all users'] },
-                { num:'04', icon:'M12 2a10 10 0 100 20A10 10 0 0012 2zM2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20', name:'Websites & Pages', desc:'Clean, professional websites that load fast. No page builders — built from scratch with your brand in mind.', items:['Custom design, no templates','Dark mode support','Deployed globally on Vercel CDN'] },
+                { num:'04', icon:'M12 2a10 10 0 100 20A10 10 0 0012 2zM2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20', name:'Websites & Pages', desc:'Clean, professional websites that load fast. No page builders — built from scratch with your brand in mind.', items:['Custom design, no templates','Dark mode support','Deployed globally on enterprise-grade CDN'] },
               ].map(s => (
                 <div key={s.num} className="svc-card">
                   <div className="svc-num">{s.num}</div>
