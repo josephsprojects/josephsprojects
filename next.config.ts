@@ -20,6 +20,15 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  async redirects() {
+    return [
+      {
+        source: '/medicationtracker',
+        destination: '/curalog',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {

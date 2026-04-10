@@ -512,7 +512,7 @@ const clientJs = `
   };
 
   var FALLBACK = [
-    { name:'CuraLog', description:'Full medication management platform for caregivers and care teams. Multi-patient support, refill tracking, provider lookup, and role-based access.', tags:['Healthcare','2FA Secured','Multi-patient'], status:'live', icon:'clipboard', color:'#0E4F54', url:'/medicationtracker' },
+    { name:'CuraLog', description:'Full medication management platform for caregivers and care teams. Multi-patient support, refill tracking, provider lookup, and role-based access.', tags:['Healthcare','2FA Secured','Multi-patient'], status:'live', icon:'clipboard', color:'#0E4F54', url:'/curalog' },
     { name:'Finance Tracker', description:'Personal finance dashboard for tracking credit cards, subscriptions, and bills. Debt payoff calculator and utilization alerts.', tags:['Finance','Dashboard','Alerts'], status:'live', icon:'dollar', color:'#1A7A42', url:'/finance' },
     { name:'Client Portal', description:'Private project delivery and file-sharing portal for DataPrimeTech clients. Milestone tracking, feedback threads, and secure document handoff.', tags:['Workflow','Collaboration','Security'], status:'building', icon:'briefcase', color:'#C9762A', url:null },
     { name:'Field Ops Tracker', description:'Job scheduling and crew management tool for small field-service businesses. Work orders, photo logs, and invoice generation.', tags:['Operations','Scheduling','Mobile'], status:'building', icon:'map', color:'#5B3BA8', url:null },
@@ -628,7 +628,7 @@ export default function DataPrimeTechHome() {
               If you have a problem worth solving, we&apos;ll build the tool to solve it.
             </p>
             <div className="hero-actions fade-up fade-3">
-              <a href="/medicationtracker" className="btn-primary">
+              <a href="/curalog" className="btn-primary">
                 See CuraLog live
                 <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
@@ -664,7 +664,7 @@ export default function DataPrimeTechHome() {
                 </div>
               </div>
               <div className="hero-panel-apps">
-                <a href="/medicationtracker" className="app-row">
+                <a href="/curalog" className="app-row">
                   <div className="app-icon" style={{ background: 'rgba(14,79,84,.1)', border: '1px solid rgba(14,79,84,.18)' }} aria-hidden="true">
                     <svg viewBox="0 0 24 24" stroke="#0E4F54"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M8 6H6a2 2 0 00-2 2v11a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-2"/><path d="M12 12v4M10 14h4"/></svg>
                   </div>
@@ -799,7 +799,7 @@ export default function DataPrimeTechHome() {
                   </div>
                   <h3 className="spotlight-h">Multi-patient care,<br/>built for real teams.</h3>
                   <p className="spotlight-p">CuraLog is a full medication management platform with caregiver portals, refill tracking, provider lookup, and secure messaging — all in one place.</p>
-                  <a href="/medicationtracker" className="spotlight-cta">
+                  <a href="/curalog" className="spotlight-cta">
                     Open CuraLog
                     <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </a>
@@ -920,7 +920,7 @@ export default function DataPrimeTechHome() {
                 Send us a message
                 <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
-              <a href="/medicationtracker" className="btn-cta-ghost">View CuraLog</a>
+              <a href="/curalog" className="btn-cta-ghost">View CuraLog</a>
             </div>
           </div>
         </section>
@@ -939,7 +939,7 @@ export default function DataPrimeTechHome() {
             <a href="#projects">Projects</a>
             <a href="#about">About</a>
             <a href="mailto:joseph@dataprimetech.com">Contact</a>
-            <a href="/medicationtracker">CuraLog</a>
+            <a href="/curalog">CuraLog</a>
           </div>
           <span className="footer-copy">© 2026 DataPrimeTech</span>
         </div>
