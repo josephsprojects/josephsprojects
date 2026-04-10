@@ -62,7 +62,7 @@ export default function PatientsClient({ initialPatients, workspaces }: { initia
 
       {patients.length > 0 && (
         <div className="crd" style={{ marginBottom: 20, padding: '12px 16px' }}>
-          <input className="form-inp" placeholder="Search patients…" value={search} onChange={e => setSearch(e.target.value)} style={{ margin: 0 }} />
+          <input className="form-inp" data-1p-ignore autoComplete="off" placeholder="Search patients…" value={search} onChange={e => setSearch(e.target.value)} style={{ margin: 0 }} />
         </div>
       )}
 
@@ -119,40 +119,40 @@ export default function PatientsClient({ initialPatients, workspaces }: { initia
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <div className="form-grp" style={{ gridColumn: '1/-1' }}>
                     <label className="form-lbl">Full name *</label>
-                    <input className="form-inp" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="First Last" required />
+                    <input className="form-inp" data-1p-ignore autoComplete="off" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="First Last" required />
                   </div>
                   <div className="form-grp">
                     <label className="form-lbl">Workspace *</label>
-                    <select className="form-inp" value={form.workspace_id} onChange={e => setForm(f => ({ ...f, workspace_id: e.target.value }))}>
+                    <select className="form-inp" data-1p-ignore autoComplete="off" value={form.workspace_id} onChange={e => setForm(f => ({ ...f, workspace_id: e.target.value }))}>
                       {workspaces.map((w: any) => <option key={w.id} value={w.id}>{w.name}</option>)}
                     </select>
                   </div>
                   <div className="form-grp">
                     <label className="form-lbl">Relationship</label>
-                    <select className="form-inp" value={form.relationship} onChange={e => setForm(f => ({ ...f, relationship: e.target.value }))}>
+                    <select className="form-inp" data-1p-ignore autoComplete="off" value={form.relationship} onChange={e => setForm(f => ({ ...f, relationship: e.target.value }))}>
                       <option value="">Select…</option>
                       {RELATIONSHIPS.map((r: any) => <option key={r} value={r}>{r}</option>)}
                     </select>
                   </div>
                   <div className="form-grp">
                     <label className="form-lbl">Date of birth</label>
-                    <input className="form-inp" type="date" value={form.dob} onChange={e => setForm(f => ({ ...f, dob: e.target.value }))} />
+                    <input className="form-inp" data-1p-ignore autoComplete="off" type="date" value={form.dob} onChange={e => setForm(f => ({ ...f, dob: e.target.value }))} />
                   </div>
                   <div className="form-grp" style={{ gridColumn: '1/-1' }}>
                     <label className="form-lbl">Allergies</label>
-                    <input className="form-inp" value={form.allergies} onChange={e => setForm(f => ({ ...f, allergies: e.target.value }))} placeholder="None known" />
+                    <input className="form-inp" data-1p-ignore autoComplete="off" value={form.allergies} onChange={e => setForm(f => ({ ...f, allergies: e.target.value }))} placeholder="None known" />
                   </div>
                   <div className="form-grp">
                     <label className="form-lbl">Emergency contact name</label>
-                    <input className="form-inp" value={form.emergency_name} onChange={e => setForm(f => ({ ...f, emergency_name: e.target.value }))} />
+                    <input className="form-inp" data-1p-ignore autoComplete="off" value={form.emergency_name} onChange={e => setForm(f => ({ ...f, emergency_name: e.target.value }))} />
                   </div>
                   <div className="form-grp">
                     <label className="form-lbl">Emergency contact phone</label>
-                    <input className="form-inp" value={form.emergency_phone} onChange={e => setForm(f => ({ ...f, emergency_phone: e.target.value }))} />
+                    <input className="form-inp" data-1p-ignore autoComplete="off" value={form.emergency_phone} onChange={e => setForm(f => ({ ...f, emergency_phone: e.target.value }))} />
                   </div>
                   <div className="form-grp" style={{ gridColumn: '1/-1' }}>
                     <label className="form-lbl">Notes</label>
-                    <textarea className="form-inp" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} rows={2} />
+                    <textarea className="form-inp" data-1p-ignore autoComplete="off" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} rows={2} />
                   </div>
                   <div className="form-grp" style={{ gridColumn: '1/-1' }}>
                     <label className="form-lbl">Color</label>

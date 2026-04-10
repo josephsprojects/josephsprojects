@@ -71,16 +71,16 @@ export default function SettingsClient({ user }: { user: { id: string; name: str
             <form onSubmit={saveProfile}>
               <div className="form-grp">
                 <label className="form-lbl">Full name</label>
-                <input className="form-inp" value={name} onChange={e => setName(e.target.value)} required />
+                <input className="form-inp" data-1p-ignore autoComplete="off" value={name} onChange={e => setName(e.target.value)} required />
               </div>
               <div className="form-grp">
                 <label className="form-lbl">Email</label>
-                <input className="form-inp" value={user.email} disabled style={{ opacity: .6 }} />
+                <input className="form-inp" data-1p-ignore autoComplete="off" value={user.email} disabled style={{ opacity: .6 }} />
                 <span style={{ fontSize: '.72rem', color: 'var(--text3)' }}>Email cannot be changed from this panel.</span>
               </div>
               <div className="form-grp">
                 <label className="form-lbl">Role</label>
-                <input className="form-inp" value={user.role.replace('_', ' ')} disabled style={{ opacity: .6, textTransform: 'capitalize' }} />
+                <input className="form-inp" data-1p-ignore autoComplete="off" value={user.role.replace('_', ' ')} disabled style={{ opacity: .6, textTransform: 'capitalize' }} />
               </div>
               {profileMsg && <div style={{ fontSize: '.8rem', color: profileMsg.includes('Failed') ? 'var(--red)' : 'var(--green)', marginBottom: 8 }}>{profileMsg}</div>}
               <button type="submit" className="btn btn-primary" disabled={savingProfile}>{savingProfile ? 'Saving…' : 'Save profile'}</button>
@@ -96,11 +96,11 @@ export default function SettingsClient({ user }: { user: { id: string; name: str
             <form onSubmit={changePassword}>
               <div className="form-grp">
                 <label className="form-lbl">New password</label>
-                <input className="form-inp" type="password" value={newPw} onChange={e => setNewPw(e.target.value)} placeholder="Min. 8 characters" required />
+                <input className="form-inp" data-1p-ignore autoComplete="off" type="password" value={newPw} onChange={e => setNewPw(e.target.value)} placeholder="Min. 8 characters" required />
               </div>
               <div className="form-grp">
                 <label className="form-lbl">Confirm new password</label>
-                <input className="form-inp" type="password" value={conPw} onChange={e => setConPw(e.target.value)} placeholder="Repeat new password" required />
+                <input className="form-inp" data-1p-ignore autoComplete="off" type="password" value={conPw} onChange={e => setConPw(e.target.value)} placeholder="Repeat new password" required />
               </div>
               {pwErr && <div style={{ fontSize: '.8rem', color: 'var(--red)', background: '#fef2f2', padding: '8px 12px', borderRadius: 6, marginBottom: 10 }}>{pwErr}</div>}
               {pwMsg && <div style={{ fontSize: '.8rem', color: 'var(--green)', marginBottom: 10 }}>{pwMsg}</div>}

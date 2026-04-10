@@ -114,15 +114,15 @@ export default function RequestsClient({ initialRequests, patients }: { initialR
             <form onSubmit={createRequest}>
               <div className="modal-body">
                 <div className="form-grp"><label className="form-lbl">Patient</label>
-                  <select className="form-inp" value={newForm.patient_id} onChange={e => setNewForm(f => ({ ...f, patient_id: e.target.value }))}>
+                  <select className="form-inp" data-1p-ignore autoComplete="off" value={newForm.patient_id} onChange={e => setNewForm(f => ({ ...f, patient_id: e.target.value }))}>
                     {patients.map((p: any) => <option key={p.id} value={p.id}>{p.name}</option>)}
                   </select></div>
                 <div className="form-grp"><label className="form-lbl">Method</label>
-                  <select className="form-inp" value={newForm.method} onChange={e => setNewForm(f => ({ ...f, method: e.target.value }))}>
+                  <select className="form-inp" data-1p-ignore autoComplete="off" value={newForm.method} onChange={e => setNewForm(f => ({ ...f, method: e.target.value }))}>
                     <option value="electronic">Electronic</option><option value="phone">Phone</option><option value="fax">Fax</option><option value="in_person">In Person</option>
                   </select></div>
                 <div className="form-grp"><label className="form-lbl">Notes</label>
-                  <textarea className="form-inp" value={newForm.notes} onChange={e => setNewForm(f => ({ ...f, notes: e.target.value }))} rows={2} /></div>
+                  <textarea className="form-inp" data-1p-ignore autoComplete="off" value={newForm.notes} onChange={e => setNewForm(f => ({ ...f, notes: e.target.value }))} rows={2} /></div>
               </div>
               <div className="modal-ft">
                 <button type="button" className="btn btn-secondary" onClick={() => setShowNew(false)}>Cancel</button>

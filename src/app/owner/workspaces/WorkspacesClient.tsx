@@ -96,17 +96,17 @@ export default function WorkspacesClient({ initialWorkspaces }: { initialWorkspa
                 {error && <div style={{ background: '#fef2f2', borderRadius: 6, padding: '8px 12px', marginBottom: 12, fontSize: '.8rem', color: 'var(--red)' }}>{error}</div>}
                 <div className="form-grp">
                   <label className="form-lbl">Workspace name <span style={{ color: 'var(--red)' }}>*</span></label>
-                  <input className="form-inp" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Smith Family Care" required />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Smith Family Care" required />
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Type</label>
-                  <select className="form-inp" value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))}>
+                  <select className="form-inp" data-1p-ignore autoComplete="off" value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))}>
                     {Object.entries(TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                   </select>
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Description</label>
-                  <textarea className="form-inp" value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} placeholder="Optional description" />
+                  <textarea className="form-inp" data-1p-ignore autoComplete="off" value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} placeholder="Optional description" />
                 </div>
               </div>
               <div className="modal-ft">

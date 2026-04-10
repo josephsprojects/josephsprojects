@@ -129,7 +129,7 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
       {patients.length === 0 && <div className="crd" style={{ marginBottom: 20, borderLeft: '4px solid var(--amber)' }}><p style={{ fontSize: '.875rem' }}>Add a <a href="/owner/patients" style={{ color: 'var(--teal)', fontWeight: 600 }}>patient</a> before adding medications.</p></div>}
 
       <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
-        <input className="form-inp" placeholder="Search medications or patients…" value={search} onChange={e => setSearch(e.target.value)} style={{ flex: 1, minWidth: 200, margin: 0 }} />
+        <input className="form-inp" data-1p-ignore autoComplete="off" placeholder="Search medications or patients…" value={search} onChange={e => setSearch(e.target.value)} style={{ flex: 1, minWidth: 200, margin: 0 }} />
         {['all','active','on_hold','discontinued','archived'].map((s: any) => (
           <button key={s} onClick={() => setStatusFilter(s)} className={`btn ${statusFilter === s ? 'btn-primary' : 'btn-secondary'}`} style={{ padding: '8px 14px', fontSize: '.8rem', textTransform: 'capitalize' }}>{s === 'all' ? 'All' : s.replace('_', ' ')}</button>
         ))}
@@ -186,7 +186,7 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
                 {/* Medication name with RxNorm autocomplete */}
                 <div className="form-grp" style={{ gridColumn: '1/-1', position: 'relative' }}>
                   <label className="form-lbl">Medication name * <span style={{ fontWeight: 400, color: 'var(--text3)' }}>— type to search</span></label>
-                  <input className="form-inp" value={form.name} onChange={e => { f('name', e.target.value); searchMed(e.target.value) }} onBlur={() => setTimeout(() => setMedAC([]), 200)} placeholder="e.g. Metformin, Lisinopril…" required />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" value={form.name} onChange={e => { f('name', e.target.value); searchMed(e.target.value) }} onBlur={() => setTimeout(() => setMedAC([]), 200)} placeholder="e.g. Metformin, Lisinopril…" required />
                   {medAC.length > 0 && (
                     <div className="ac-list">
                       {medAC.map((m: any, i) => (
@@ -201,61 +201,61 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
 
                 <div className="form-grp">
                   <label className="form-lbl">Generic name</label>
-                  <input className="form-inp" value={form.generic} onChange={e => f('generic', e.target.value)} placeholder="e.g. metformin" />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" value={form.generic} onChange={e => f('generic', e.target.value)} placeholder="e.g. metformin" />
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Patient *</label>
-                  <select className="form-inp" value={form.patient_id} onChange={e => f('patient_id', e.target.value)}>
+                  <select className="form-inp" data-1p-ignore autoComplete="off" value={form.patient_id} onChange={e => f('patient_id', e.target.value)}>
                     {patients.map((p: any) => <option key={p.id} value={p.id}>{p.name}</option>)}
                   </select>
                 </div>
 
                 <div className="form-grp">
                   <label className="form-lbl">Prescribed dosage</label>
-                  <input className="form-inp" value={form.dosage} onChange={e => f('dosage', e.target.value)} placeholder="e.g. 500 mg" />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" value={form.dosage} onChange={e => f('dosage', e.target.value)} placeholder="e.g. 500 mg" />
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Actual dose taken</label>
-                  <input className="form-inp" value={form.actual_dose} onChange={e => f('actual_dose', e.target.value)} placeholder="e.g. ½ tablet, 250 mg" />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" value={form.actual_dose} onChange={e => f('actual_dose', e.target.value)} placeholder="e.g. ½ tablet, 250 mg" />
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Form</label>
-                  <select className="form-inp" value={form.form} onChange={e => f('form', e.target.value)}>
+                  <select className="form-inp" data-1p-ignore autoComplete="off" value={form.form} onChange={e => f('form', e.target.value)}>
                     {FORMS.map((fm: any) => <option key={fm} value={fm}>{fm}</option>)}
                   </select>
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Frequency</label>
-                  <select className="form-inp" value={form.frequency} onChange={e => f('frequency', e.target.value)}>
+                  <select className="form-inp" data-1p-ignore autoComplete="off" value={form.frequency} onChange={e => f('frequency', e.target.value)}>
                     <option value="">Select…</option>
                     {FREQS.map((fr: any) => <option key={fr} value={fr}>{fr}</option>)}
                   </select>
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Instructions</label>
-                  <input className="form-inp" value={form.instructions} onChange={e => f('instructions', e.target.value)} placeholder="e.g. Take with food" />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" value={form.instructions} onChange={e => f('instructions', e.target.value)} placeholder="e.g. Take with food" />
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Purpose</label>
-                  <input className="form-inp" value={form.purpose} onChange={e => f('purpose', e.target.value)} placeholder="e.g. Blood pressure" />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" value={form.purpose} onChange={e => f('purpose', e.target.value)} placeholder="e.g. Blood pressure" />
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Days supply</label>
-                  <input className="form-inp" type="number" min="1" value={form.days_supply} onChange={e => f('days_supply', parseInt(e.target.value))} />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" type="number" min="1" value={form.days_supply} onChange={e => f('days_supply', parseInt(e.target.value))} />
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Refills remaining</label>
-                  <input className="form-inp" type="number" min="0" value={form.refills} onChange={e => f('refills', parseInt(e.target.value))} />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" type="number" min="0" value={form.refills} onChange={e => f('refills', parseInt(e.target.value))} />
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Last fill date</label>
-                  <input className="form-inp" type="date" value={form.last_fill} onChange={e => f('last_fill', e.target.value)} />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" type="date" value={form.last_fill} onChange={e => f('last_fill', e.target.value)} />
                 </div>
 
                 {/* Provider with NPI autocomplete */}
                 <div className="form-grp" style={{ position: 'relative' }}>
                   <label className="form-lbl">Prescriber name <span style={{ fontWeight: 400, color: 'var(--text3)' }}>— type first or last name</span></label>
-                  <input className="form-inp" value={form.provider_name} onChange={e => { f('provider_name', e.target.value); searchProvider(e.target.value) }} onBlur={() => setTimeout(() => setNpiAC([]), 200)} placeholder="e.g. Dr. Smith or Mohammad Ahmed…" />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" value={form.provider_name} onChange={e => { f('provider_name', e.target.value); searchProvider(e.target.value) }} onBlur={() => setTimeout(() => setNpiAC([]), 200)} placeholder="e.g. Dr. Smith or Mohammad Ahmed…" />
                   {npiAC.length > 0 && (
                     <div className="ac-list">
                       {npiAC.map((p: any, i) => (
@@ -271,7 +271,7 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
                 {/* Pharmacy with autocomplete */}
                 <div className="form-grp" style={{ position: 'relative' }}>
                   <label className="form-lbl">Pharmacy <span style={{ fontWeight: 400, color: 'var(--text3)' }}>— type pharmacy name or ZIP code</span></label>
-                  <input className="form-inp" value={form.pharmacy_name} onChange={e => { f('pharmacy_name', e.target.value); searchPharmacy(e.target.value) }} onBlur={() => setTimeout(() => setPharmAC([]), 200)} placeholder="e.g. CVS Pharmacy, Walgreens, or 06850…" />
+                  <input className="form-inp" data-1p-ignore autoComplete="off" value={form.pharmacy_name} onChange={e => { f('pharmacy_name', e.target.value); searchPharmacy(e.target.value) }} onBlur={() => setTimeout(() => setPharmAC([]), 200)} placeholder="e.g. CVS Pharmacy, Walgreens, or 06850…" />
                   {pharmAC.length > 0 && (
                     <div className="ac-list">
                       {pharmAC.map((p: any, i) => (
@@ -286,7 +286,7 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
 
                 <div className="form-grp" style={{ gridColumn: '1/-1' }}>
                   <label className="form-lbl">Notes</label>
-                  <textarea className="form-inp" value={form.notes} onChange={e => f('notes', e.target.value)} rows={2} />
+                  <textarea className="form-inp" data-1p-ignore autoComplete="off" value={form.notes} onChange={e => f('notes', e.target.value)} rows={2} />
                 </div>
               </div>
               <div className="modal-ft">
