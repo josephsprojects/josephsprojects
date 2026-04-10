@@ -23,9 +23,9 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
   const [medAC, setMedAC] = useState<any[]>([])
   const [npiAC, setNpiAC] = useState<any[]>([])
   const [pharmAC, setPharmAC] = useState<any[]>([])
-  const medTimer = useRef<ReturnType<typeof setTimeout>>()
-  const npiTimer = useRef<ReturnType<typeof setTimeout>>()
-  const pharmTimer = useRef<ReturnType<typeof setTimeout>>()
+  const medTimer = useRef<any>(undefined)
+  const npiTimer = useRef<any>(undefined)
+  const pharmTimer = useRef<any>(undefined)
 
   const [form, setForm] = useState({
     workspace_id: workspaces[0]?.id || '', patient_id: patients[0]?.id || '',
@@ -114,7 +114,7 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
     setShowModal(false); router.refresh()
   }
 
-  const filtered = meds.filter(m =>
+  const filtered = meds.filter((m: any) =>
     (statusFilter === 'all' || m.status === statusFilter) &&
     (m.name.toLowerCase().includes(search.toLowerCase()) || m.patient.name.toLowerCase().includes(search.toLowerCase()))
   )
@@ -130,7 +130,7 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
 
       <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
         <input className="form-inp" placeholder="Search medications or patients…" value={search} onChange={e => setSearch(e.target.value)} style={{ flex: 1, minWidth: 200, margin: 0 }} />
-        {['all','active','on_hold','discontinued','archived'].map(s => (
+        {['all','active','on_hold','discontinued','archived'].map((s: any) => (
           <button key={s} onClick={() => setStatusFilter(s)} className={`btn ${statusFilter === s ? 'btn-primary' : 'btn-secondary'}`} style={{ padding: '8px 14px', fontSize: '.8rem', textTransform: 'capitalize' }}>{s === 'all' ? 'All' : s.replace('_', ' ')}</button>
         ))}
       </div>
@@ -147,7 +147,7 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
           <table className="tbl">
             <thead><tr><th>Medication</th><th>Patient</th><th>Dosage</th><th>Frequency</th><th>Days Left</th><th>Provider</th><th>Status</th></tr></thead>
             <tbody>
-              {filtered.map(m => {
+              {filtered.map((m: any) => {
                 const daysLeft = m.last_fill && m.days_supply
                   ? Math.max(0, m.days_supply - Math.floor((Date.now() - new Date(m.last_fill).getTime()) / 86400000))
                   : null
@@ -206,7 +206,7 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
                 <div className="form-grp">
                   <label className="form-lbl">Patient *</label>
                   <select className="form-inp" value={form.patient_id} onChange={e => f('patient_id', e.target.value)}>
-                    {patients.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                    {patients.map((p: any) => <option key={p.id} value={p.id}>{p.name}</option>)}
                   </select>
                 </div>
 
@@ -221,14 +221,14 @@ export default function MedicationsClient({ initialMeds, patients, workspaces }:
                 <div className="form-grp">
                   <label className="form-lbl">Form</label>
                   <select className="form-inp" value={form.form} onChange={e => f('form', e.target.value)}>
-                    {FORMS.map(fm => <option key={fm} value={fm}>{fm}</option>)}
+                    {FORMS.map((fm: any) => <option key={fm} value={fm}>{fm}</option>)}
                   </select>
                 </div>
                 <div className="form-grp">
                   <label className="form-lbl">Frequency</label>
                   <select className="form-inp" value={form.frequency} onChange={e => f('frequency', e.target.value)}>
                     <option value="">Select…</option>
-                    {FREQS.map(fr => <option key={fr} value={fr}>{fr}</option>)}
+                    {FREQS.map((fr: any) => <option key={fr} value={fr}>{fr}</option>)}
                   </select>
                 </div>
                 <div className="form-grp">
