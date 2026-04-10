@@ -29,6 +29,61 @@ export async function sendEmail(params: SendEmailParams): Promise<boolean> {
   }
 }
 
+export function refillRequestedEmail(patientName: string, medName: string, requestedBy: string, appUrl: string) {
+  return `
+    <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
+      <div style="background:#0E4F54;color:#fff;padding:16px 24px;border-radius:8px 8px 0 0">
+        <strong>CuraLog</strong> · New Refill Request
+      </div>
+      <div style="background:#f8f9fa;padding:24px;border-radius:0 0 8px 8px">
+        <h2 style="color:#0E4F54;margin:0 0 12px">New Refill Request</h2>
+        <p><strong>${requestedBy}</strong> submitted a refill request for <strong>${patientName}</strong>'s <strong>${medName}</strong>.</p>
+        <p>Log in to review and update the request status.</p>
+        <a href="${appUrl}/owner/requests"
+           style="display:inline-block;background:#0E4F54;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;margin-top:8px">
+          View Requests
+        </a>
+      </div>
+      <p style="font-size:11px;color:#999;margin-top:16px;text-align:center">
+        © 2026 CuraLog · DataPrimeTech
+      </p>
+    </div>
+  `
+}
+
+export function refillStatusEmail(patientName: string, medName: string, status: string, appUrl: string) {
+  const statusLabels: Record<string, string> = {
+    submitted: 'Submitted to prescriber',
+    at_prescriber: 'At prescriber',
+    at_pharmacy: 'Sent to pharmacy',
+    ready: 'Ready for pickup',
+    picked_up: 'Picked up',
+    denied: 'Denied',
+  }
+  const label = statusLabels[status] || status
+  const isReady = status === 'ready'
+
+  return `
+    <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
+      <div style="background:#0E4F54;color:#fff;padding:16px 24px;border-radius:8px 8px 0 0">
+        <strong>CuraLog</strong> · Refill Status Update
+      </div>
+      <div style="background:#f8f9fa;padding:24px;border-radius:0 0 8px 8px">
+        <h2 style="color:#0E4F54;margin:0 0 12px">${isReady ? '✓ Ready for Pickup' : 'Status Update'}</h2>
+        <p><strong>${patientName}</strong>'s refill for <strong>${medName}</strong> is now: <strong>${label}</strong>.</p>
+        ${isReady ? '<p style="color:#1A7A42;font-weight:600;">The prescription is ready to be picked up.</p>' : ''}
+        <a href="${appUrl}/owner/requests"
+           style="display:inline-block;background:#0E4F54;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;margin-top:8px">
+          View in CuraLog
+        </a>
+      </div>
+      <p style="font-size:11px;color:#999;margin-top:16px;text-align:center">
+        © 2026 CuraLog · DataPrimeTech
+      </p>
+    </div>
+  `
+}
+
 export function refillReminderEmail(patientName: string, medName: string, daysLeft: number) {
   return `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">

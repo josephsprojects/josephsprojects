@@ -2,6 +2,8 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth, createAuditLog } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { sendEmail, refillRequestedEmail, refillStatusEmail } from '@/services/email'
+import { sendSMS, refillReadySMS, refillSubmittedSMS } from '@/services/sms'
 import { z } from 'zod'
 import type { ApiResponse } from '@/types'
 
@@ -17,6 +19,9 @@ const UpdateRRSchema = z.object({
   status: z.enum(['pending','submitted','at_prescriber','at_pharmacy','ready','picked_up','denied']),
   notes: z.string().optional(),
 })
+
+const OWNER_EMAIL = process.env.OWNER_EMAIL || 'joseph@dataprimetech.com'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://curalog.dataprimetech.com'
 
 export async function GET(req: NextRequest) {
   const user = await requireAuth()
@@ -44,6 +49,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json<ApiResponse>({ success: false, message: 'Invalid data' }, { status: 400 })
   }
 
+  // Fetch patient + medication for notification context
+  const [patient, medication] = await Promise.all([
+    prisma.patient.findUnique({
+      where: { id: parsed.data.patient_id },
+      select: { name: true, emergency_phone: true },
+    }),
+    parsed.data.medication_id
+      ? prisma.medication.findUnique({
+          where: { id: parsed.data.medication_id },
+          select: { name: true },
+        })
+      : Promise.resolve(null),
+  ])
+
   const rr = await prisma.refillRequest.create({
     data: {
       ...parsed.data,
@@ -59,6 +78,23 @@ export async function POST(req: NextRequest) {
     toValue: 'pending',
   })
 
+  // Notify owner by email
+  if (patient && medication) {
+    sendEmail({
+      to: OWNER_EMAIL,
+      subject: `New refill request — ${patient.name} · ${medication.name}`,
+      html: refillRequestedEmail(patient.name, medication.name, user.name, APP_URL),
+    }).catch(e => console.error('Refill email error:', e))
+
+    // SMS emergency contact to confirm request submitted
+    if (patient.emergency_phone) {
+      sendSMS({
+        to: patient.emergency_phone,
+        body: refillSubmittedSMS(patient.name, medication.name),
+      }).catch(e => console.error('Refill SMS error:', e))
+    }
+  }
+
   return NextResponse.json<ApiResponse>({ success: true, data: rr }, { status: 201 })
 }
 
@@ -71,7 +107,13 @@ export async function PATCH(req: NextRequest) {
   const parsed = UpdateRRSchema.safeParse(body)
   if (!parsed.success) return NextResponse.json<ApiResponse>({ success: false, message: 'Invalid data' }, { status: 400 })
 
-  const existing = await prisma.refillRequest.findUnique({ where: { id } })
+  const existing = await prisma.refillRequest.findUnique({
+    where: { id },
+    include: {
+      patient: { select: { name: true, emergency_phone: true } },
+      medication: { select: { name: true } },
+    },
+  })
   if (!existing) return NextResponse.json<ApiResponse>({ success: false, message: 'Not found' }, { status: 404 })
 
   const history = Array.isArray(existing.status_history) ? existing.status_history as any[] : []
@@ -88,6 +130,30 @@ export async function PATCH(req: NextRequest) {
     entityType: 'refill_request', field: 'status',
     fromValue: existing.status, toValue: parsed.data.status,
   })
+
+  const { patient, medication } = existing
+  const statusChanged = existing.status !== parsed.data.status
+
+  if (statusChanged && patient && medication) {
+    const notifyStatuses = ['submitted', 'at_pharmacy', 'ready', 'denied']
+
+    if (notifyStatuses.includes(parsed.data.status)) {
+      // Email owner on meaningful status changes
+      sendEmail({
+        to: OWNER_EMAIL,
+        subject: `Refill update — ${patient.name} · ${medication.name}: ${parsed.data.status.replace(/_/g, ' ')}`,
+        html: refillStatusEmail(patient.name, medication.name, parsed.data.status, APP_URL),
+      }).catch(e => console.error('Status email error:', e))
+    }
+
+    // SMS emergency contact when prescription is ready
+    if (parsed.data.status === 'ready' && patient.emergency_phone) {
+      sendSMS({
+        to: patient.emergency_phone,
+        body: refillReadySMS(patient.name, medication.name),
+      }).catch(e => console.error('Ready SMS error:', e))
+    }
+  }
 
   return NextResponse.json<ApiResponse>({ success: true, data: updated })
 }

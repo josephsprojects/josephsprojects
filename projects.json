@@ -1,22 +1,42 @@
 [
   {
-    "id": "medicationtracker",
-    "name": "Medication Tracker",
-    "description": "A private web app for tracking medications, refill schedules, and pharmacy details. Includes automatic low-supply alerts, pill count tracking, and secure two-factor authentication.",
+    "id": "curalog",
+    "name": "CuraLog",
+    "description": "Full medication management platform for caregivers and care teams. Multi-patient support, refill tracking, provider lookup, secure messaging, and role-based access.",
     "url": "/medicationtracker",
     "status": "live",
-    "tags": ["Health", "Supabase", "2FA", "Real-time sync"],
+    "tags": ["Healthcare", "Supabase", "2FA", "Prisma"],
     "color": "#4F6EF7",
     "icon": "clipboard"
   },
   {
     "id": "finance",
-    "name": "Personal Finance Tracker",
-    "description": "A private web app for tracking credit cards, subscriptions, and bills. Includes utilization alerts, payoff calculations, and shared payment splits.",
+    "name": "Finance Tracker",
+    "description": "Personal finance dashboard for tracking credit cards, subscriptions, and bills. Includes utilization alerts, debt payoff calculator, and shared payment splits.",
     "url": "/finance",
     "status": "live",
-    "tags": ["Finance", "Supabase", "2FA", "Real-time sync"],
-    "color": "#7C3AED",
+    "tags": ["Finance", "Supabase", "2FA", "Dashboard"],
+    "color": "#10B981",
     "icon": "dollar"
+  },
+  {
+    "id": "clientportal",
+    "name": "Client Portal",
+    "description": "Private project delivery and file-sharing portal for DataPrimeTech clients. Milestone tracking, feedback threads, and secure document handoff.",
+    "url": null,
+    "status": "building",
+    "tags": ["Workflow", "Collaboration", "Security"],
+    "color": "#6366F1",
+    "icon": "briefcase"
+  },
+  {
+    "id": "fieldops",
+    "name": "Field Ops Tracker",
+    "description": "Job scheduling and crew management tool for small field-service businesses. Work orders, photo logs, client sign-off, and invoice generation.",
+    "url": null,
+    "status": "building",
+    "tags": ["Operations", "Scheduling", "Mobile"],
+    "color": "#F59E0B",
+    "icon": "map"
   }
 ]

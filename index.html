@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DataPrimeTech — Custom Web Applications</title>
-<meta name="description" content="We build fast, secure, custom web applications. Tools that solve real problems for real people.">
+<meta name="description" content="We design and build fast, secure, custom web applications. Real tools built around real workflows — not templates, not demos.">
 
 <!-- SEO / Open Graph -->
 <meta property="og:title" content="DataPrimeTech — Custom Web Applications">
@@ -36,11 +36,12 @@
   --font:'DM Sans',sans-serif;
   --font-display:'Syne',sans-serif;
 
-  --accent:#0D9488;
-  --accent-h:#0F766E;
-  --accent-light:rgba(13,148,136,.08);
-  --accent-border:rgba(13,148,136,.18);
-  --accent-glow:rgba(13,148,136,.25);
+  /* Indigo accent — distinct from CuraLog's teal */
+  --accent:#6366F1;
+  --accent-h:#4F46E5;
+  --accent-light:rgba(99,102,241,.08);
+  --accent-border:rgba(99,102,241,.18);
+  --accent-glow:rgba(99,102,241,.28);
 
   --emerald:#10B981;
   --amber:#F59E0B;
@@ -48,31 +49,31 @@
   --violet:#8B5CF6;
 
   --r:16px;--rs:10px;--rx:24px;
-  --bg:#FAFAF9;
+  --bg:#F8F8FF;
   --surface:#FFFFFF;
-  --surface2:#F5F5F3;
-  --surface3:#EEEDE9;
+  --surface2:#F3F3FD;
+  --surface3:#EAEAF8;
   --border:rgba(0,0,0,.06);
   --border2:rgba(0,0,0,.11);
-  --text:#1C1917;
-  --text2:#57534E;
-  --text3:#A8A29E;
-  --nav-bg:rgba(250,250,249,.85);
+  --text:#1C1B2E;
+  --text2:#52526A;
+  --text3:#9B9BB5;
+  --nav-bg:rgba(248,248,255,.88);
   --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
   --shadow-lg:0 4px 24px rgba(0,0,0,.06),0 16px 64px rgba(0,0,0,.06);
 }
 
 @media(prefers-color-scheme:dark){:root{
-  --bg:#111110;
-  --surface:#1C1B1A;
-  --surface2:#242320;
-  --surface3:#2E2C29;
+  --bg:#0E0E18;
+  --surface:#17172A;
+  --surface2:#1E1E32;
+  --surface3:#26263C;
   --border:rgba(255,255,255,.06);
   --border2:rgba(255,255,255,.1);
-  --text:#F5F5F4;
-  --text2:#A8A29E;
-  --text3:#57534E;
-  --nav-bg:rgba(17,17,16,.85);
+  --text:#EEEEFF;
+  --text2:#9090B0;
+  --text3:#55557A;
+  --nav-bg:rgba(14,14,24,.88);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
   --shadow-lg:0 4px 24px rgba(0,0,0,.4),0 16px 64px rgba(0,0,0,.35);
 }}
@@ -83,7 +84,6 @@
 
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-
 .display{font-family:var(--font-display)}
 
 /* ─── Nav ────────────────────────────────────────────────────────────────── */
@@ -131,7 +131,6 @@ nav{
 }
 .btn-nav:hover{background:var(--accent-h);transform:translateY(-1px)}
 
-/* Mobile menu button */
 .mobile-menu-btn{
   display:none;background:none;border:none;
   font-size:20px;color:var(--text);cursor:pointer;
@@ -278,8 +277,9 @@ nav{
   font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;
   padding:3px 8px;border-radius:6px;flex-shrink:0;
 }
-.badge-live{background:rgba(13,148,136,.1);color:var(--accent);border:1px solid var(--accent-border)}
+.badge-live{background:rgba(16,185,129,.1);color:#059669;border:1px solid rgba(16,185,129,.22)}
 .badge-soon{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.badge-build{background:rgba(99,102,241,.1);color:var(--accent);border:1px solid var(--accent-border)}
 .hero-panel-footer{
   padding:14px 20px;
   border-top:1px solid var(--border);
@@ -294,7 +294,6 @@ nav{
 @media(max-width:640px){.wrap{padding:0 24px}}
 .divider{border:none;border-top:1px solid var(--border);margin:0 40px}
 @media(max-width:640px){.divider{margin:0 24px}}
-
 section{padding:96px 0}
 @media(max-width:640px){section{padding:64px 0}}
 
@@ -310,7 +309,56 @@ section{padding:96px 0}
 }
 .section-sub{font-size:15px;color:var(--text2);line-height:1.7;max-width:520px}
 
-/* ─── Trust / Proof section ──────────────────────────────────────────────── */
+/* ─── About section ──────────────────────────────────────────────────────── */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+  margin-top:56px;
+}
+@media(max-width:860px){.about-grid{grid-template-columns:1fr;gap:48px}}
+
+.about-bio{font-size:15px;color:var(--text2);line-height:1.85}
+.about-bio p+p{margin-top:18px}
+.about-bio strong{color:var(--text);font-weight:600}
+
+.about-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rx);padding:32px;
+  box-shadow:var(--shadow-lg);
+}
+.about-card-label{
+  font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:18px;
+}
+.about-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.about-stat{
+  background:var(--surface2);border-radius:var(--rs);padding:16px;
+  border:1px solid var(--border);
+}
+.about-stat-num{
+  font-family:var(--font-display);font-size:24px;font-weight:800;
+  letter-spacing:-.5px;color:var(--text);
+}
+.about-stat-label{font-size:10px;color:var(--text3);margin-top:3px}
+.about-tag-row{display:flex;gap:6px;flex-wrap:wrap}
+.about-tag{
+  font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;
+  background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-border);
+}
+
+.founder-row{
+  margin-top:24px;padding-top:20px;border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:14px;
+}
+.founder-av{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:15px;font-weight:800;color:#fff;
+}
+.founder-name{font-size:14px;font-weight:700;color:var(--text)}
+.founder-title{font-size:12px;color:var(--text3);margin-top:1px}
+
+/* ─── Proof cards ────────────────────────────────────────────────────────── */
 .proof-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
   gap:2px;background:var(--border);border-radius:var(--rx);
@@ -343,6 +391,71 @@ section{padding:96px 0}
 }
 .proof-desc{font-size:13px;color:var(--text2);line-height:1.7;position:relative;z-index:1}
 
+/* ─── Live projects ──────────────────────────────────────────────────────── */
+.proj-grid{display:flex;flex-direction:column;gap:2px;margin-top:48px}
+.proj{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:26px 28px;
+  display:grid;grid-template-columns:52px 1fr auto;gap:20px;align-items:center;
+  text-decoration:none;
+  transition:border-color .18s,transform .18s,box-shadow .18s;
+}
+.proj:not(.proj-dim):hover{
+  border-color:var(--accent-border);
+  transform:translateX(3px);
+  box-shadow:var(--shadow);
+}
+.proj-dim{opacity:.55;cursor:default}
+.proj-ico{
+  width:52px;height:52px;border-radius:14px;
+  border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.proj-ico svg{width:22px;height:22px;fill:none;stroke-width:1.7}
+.proj-name{font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-.3px;margin-bottom:5px}
+.proj-desc{font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:10px}
+.proj-tags{display:flex;gap:5px;flex-wrap:wrap}
+.proj-tag{font-size:10px;padding:2px 9px;border-radius:5px;background:var(--surface2);color:var(--text3);border:1px solid var(--border)}
+.proj-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
+.s-live{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:#059669;border:1px solid rgba(16,185,129,.22)}
+.s-soon{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.s-build{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-border)}
+.proj-arr{
+  width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .18s,border-color .18s;
+}
+.proj:not(.proj-dim):hover .proj-arr{background:var(--accent);border-color:var(--accent)}
+.proj-arr svg{width:12px;height:12px;fill:none;stroke:var(--text3);stroke-width:2.5;transition:stroke .18s}
+.proj:not(.proj-dim):hover .proj-arr svg{stroke:#fff}
+@media(max-width:580px){.proj-right{display:none}}
+
+/* Skeleton */
+.proj-skeleton{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:26px 28px;
+  display:grid;grid-template-columns:52px 1fr;gap:20px;align-items:center;
+}
+.skel{background:var(--surface3);border-radius:6px;animation:shimmer 1.4s ease infinite}
+@keyframes shimmer{0%,100%{opacity:.5}50%{opacity:1}}
+.skel-icon{width:52px;height:52px;border-radius:14px}
+.skel-line{height:12px;margin-bottom:8px}
+.skel-short{width:40%}
+.skel-med{width:65%}
+.skel-long{width:85%}
+
+/* ─── Section divider with label ─────────────────────────────────────────── */
+.section-label-divider{
+  display:flex;align-items:center;gap:14px;margin:40px 0 0;
+}
+.section-label-divider span{
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--text3);white-space:nowrap;
+}
+.section-label-divider::before,.section-label-divider::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+
 /* ─── CuraLog Spotlight ──────────────────────────────────────────────────── */
 .spotlight{
   background:var(--surface);border:1px solid var(--border);
@@ -361,11 +474,11 @@ section{padding:96px 0}
 @media(max-width:860px){.spotlight-left{padding:40px 32px;border-right:none;border-bottom:1px solid var(--border)}}
 .spotlight-label{
   display:inline-flex;align-items:center;gap:7px;
-  background:rgba(79,110,247,.08);border:1px solid rgba(79,110,247,.2);
-  color:#4F6EF7;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);
+  color:#059669;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
   padding:5px 12px;border-radius:20px;margin-bottom:24px;
 }
-.spotlight-label-dot{width:5px;height:5px;border-radius:50%;background:#4F6EF7;animation:pulse 2s infinite}
+.spotlight-label-dot{width:5px;height:5px;border-radius:50%;background:#059669;animation:pulse 2s infinite}
 .spotlight-h{
   font-family:var(--font-display);font-size:clamp(26px,2.8vw,36px);font-weight:800;
   letter-spacing:-1.2px;line-height:1.1;margin-bottom:14px;
@@ -374,30 +487,30 @@ section{padding:96px 0}
 .spotlight-cta{
   display:inline-flex;align-items:center;gap:8px;
   padding:12px 22px;
-  background:#4F6EF7;color:#fff;
+  background:var(--accent);color:#fff;
   border:none;border-radius:var(--rs);
   font:600 13px var(--font);cursor:pointer;text-decoration:none;
   transition:background .15s,transform .12s;
 }
-.spotlight-cta:hover{background:#3B5BDB;transform:translateY(-1px)}
+.spotlight-cta:hover{background:var(--accent-h);transform:translateY(-1px)}
 .spotlight-cta svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2.5;transition:transform .2s}
 .spotlight-cta:hover svg{transform:translateX(2px)}
-.spotlight-right{padding:40px 44px;display:flex;flex-direction:column;gap:16px;justify-content:center}
+.spotlight-right{padding:40px 44px;display:flex;flex-direction:column;gap:14px;justify-content:center}
 @media(max-width:860px){.spotlight-right{padding:32px}}
 .feature-item{
   display:flex;align-items:flex-start;gap:16px;
-  padding:18px 20px;
+  padding:16px 18px;
   background:var(--surface2);border:1px solid var(--border);
   border-radius:var(--r);
   transition:border-color .15s,background .15s;
 }
-.feature-item:hover{border-color:rgba(79,110,247,.25);background:rgba(79,110,247,.04)}
+.feature-item:hover{border-color:var(--accent-border);background:var(--accent-light)}
 .feature-icon{
   width:36px;height:36px;border-radius:9px;
-  background:rgba(79,110,247,.1);border:1px solid rgba(79,110,247,.2);
+  background:var(--accent-light);border:1px solid var(--accent-border);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-.feature-icon svg{width:16px;height:16px;fill:none;stroke:#4F6EF7;stroke-width:2}
+.feature-icon svg{width:16px;height:16px;fill:none;stroke:var(--accent);stroke-width:2}
 .feature-text strong{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
 .feature-text span{font-size:12px;color:var(--text2);line-height:1.5}
 
@@ -445,7 +558,7 @@ section{padding:96px 0}
   background:var(--accent);flex-shrink:0;opacity:.6;
 }
 
-/* ─── How it works ───────────────────────────────────────────────────────── */
+/* ─── Process ────────────────────────────────────────────────────────────── */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;position:relative}
 @media(max-width:640px){.steps{grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}}
 .steps::before{
@@ -468,67 +581,9 @@ section{padding:96px 0}
 .step-title{font-weight:700;font-size:14px;margin-bottom:6px;letter-spacing:-.2px}
 .step-desc{font-size:12px;color:var(--text2);line-height:1.65}
 
-/* ─── Projects ───────────────────────────────────────────────────────────── */
-.proj-grid{display:flex;flex-direction:column;gap:2px;margin-top:48px}
-.proj{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-  padding:26px 28px;
-  display:grid;grid-template-columns:48px 1fr auto;gap:20px;align-items:center;
-  text-decoration:none;
-  transition:border-color .18s,transform .18s,box-shadow .18s;
-}
-.proj:not(.proj-dim):hover{
-  border-color:var(--accent-border);
-  transform:translateX(3px);
-  box-shadow:var(--shadow);
-}
-.proj-dim{opacity:.5;cursor:default}
-.proj-ico{
-  width:48px;height:48px;border-radius:12px;
-  border:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.proj-ico svg{width:22px;height:22px;fill:none;stroke-width:1.7}
-.proj-name{font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-.3px;margin-bottom:4px}
-.proj-desc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:8px}
-.proj-tags{display:flex;gap:4px;flex-wrap:wrap}
-.proj-tag{font-size:10px;padding:2px 8px;border-radius:5px;background:var(--surface2);color:var(--text3);border:1px solid var(--border)}
-.proj-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
-.s-live{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(13,148,136,.1);color:var(--accent);border:1px solid var(--accent-border)}
-.s-soon{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
-.s-build{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(139,92,246,.1);color:var(--violet);border:1px solid rgba(139,92,246,.2)}
-.proj-arr{
-  width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;
-  transition:background .18s,border-color .18s;
-}
-.proj:not(.proj-dim):hover .proj-arr{background:var(--accent);border-color:var(--accent)}
-.proj-arr svg{width:12px;height:12px;fill:none;stroke:var(--text3);stroke-width:2.5;transition:stroke .18s}
-.proj:not(.proj-dim):hover .proj-arr svg{stroke:#fff}
-@media(max-width:580px){.proj-right{display:none}}
-
-/* Skeleton loading */
-.proj-skeleton{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-  padding:26px 28px;
-  display:grid;grid-template-columns:48px 1fr;gap:20px;align-items:center;
-}
-.skel{
-  background:var(--surface3);border-radius:6px;
-  animation:shimmer 1.4s ease infinite;
-}
-@keyframes shimmer{
-  0%,100%{opacity:.5}50%{opacity:1}
-}
-.skel-icon{width:48px;height:48px;border-radius:12px}
-.skel-line{height:12px;margin-bottom:8px}
-.skel-short{width:40%}
-.skel-med{width:65%}
-.skel-long{width:85%}
-
 /* ─── CTA ────────────────────────────────────────────────────────────────── */
 .cta-wrap{
-  background:linear-gradient(135deg,var(--accent-h) 0%,var(--accent) 50%,#0CC9BB 100%);
+  background:linear-gradient(135deg,var(--accent-h) 0%,var(--accent) 50%,#818CF8 100%);
   border-radius:var(--rx);
   padding:72px 64px;
   text-align:center;
@@ -548,7 +603,7 @@ section{padding:96px 0}
   background:rgba(255,255,255,.04);
   bottom:-80px;left:-60px;
 }
-.cta-wrap > *{position:relative;z-index:1}
+.cta-wrap>*{position:relative;z-index:1}
 .cta-h{
   font-family:var(--font-display);
   font-size:clamp(28px,4vw,44px);font-weight:800;
@@ -626,15 +681,16 @@ footer{
   </a>
   <div class="nav-links" role="navigation" aria-label="Primary">
     <a href="/" class="active">Home</a>
-    <a href="/projects">Projects</a>
-    <a href="/about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
   </div>
   <div class="nav-right">
     <div class="nav-pill" aria-label="Currently available for new projects">
       <span class="nav-dot" aria-hidden="true"></span>
       Available for projects
     </div>
-    <a href="/about#contact" class="btn-nav">Get in touch</a>
+    <a href="#contact" class="btn-nav">Get in touch</a>
   </div>
   <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -644,9 +700,9 @@ footer{
 <!-- Mobile menu -->
 <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
   <a href="/">Home</a>
-  <a href="/projects">Projects</a>
-  <a href="/about">About</a>
-  <a href="/about#contact" class="mobile-menu-cta">Get in touch →</a>
+  <a href="#projects">Projects</a>
+  <a href="#about">About</a>
+  <a href="#contact" class="mobile-menu-cta">Get in touch →</a>
 </div>
 
 <!-- Hero -->
@@ -670,7 +726,7 @@ footer{
         See CuraLog live
         <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href="/about#contact" class="btn-ghost">Start a custom build</a>
+      <a href="#contact" class="btn-ghost">Start a project</a>
     </div>
     <div class="hero-proof fade-up fade-up-4">
       <div class="hero-proof-stat">
@@ -693,7 +749,7 @@ footer{
   <div class="hero-right fade-up fade-up-5">
     <div class="hero-panel">
       <div class="hero-panel-header">
-        <span class="hero-panel-title">Live products</span>
+        <span class="hero-panel-title">All products</span>
         <div class="hero-panel-dots" aria-hidden="true">
           <div class="hero-panel-dot" style="background:#F87171"></div>
           <div class="hero-panel-dot" style="background:#FBBF24"></div>
@@ -707,7 +763,7 @@ footer{
           </div>
           <div class="app-row-info">
             <div class="app-row-name">CuraLog</div>
-            <div class="app-row-sub">Medication & care management</div>
+            <div class="app-row-sub">Medication &amp; care management</div>
           </div>
           <span class="app-row-badge badge-live">Live</span>
         </a>
@@ -721,13 +777,23 @@ footer{
           </div>
           <span class="app-row-badge badge-live">Live</span>
         </a>
-        <div class="app-row" style="opacity:.45;cursor:default" aria-hidden="true">
-          <div class="app-row-icon" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2)">
-            <svg viewBox="0 0 24 24" stroke="#F59E0B"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <div class="app-row" style="cursor:default" aria-hidden="true">
+          <div class="app-row-icon" style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.15)">
+            <svg viewBox="0 0 24 24" stroke="#6366F1"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
           </div>
           <div class="app-row-info">
-            <div class="app-row-name">More coming soon</div>
-            <div class="app-row-sub">New projects in development</div>
+            <div class="app-row-name">Client Portal</div>
+            <div class="app-row-sub">Project delivery &amp; file handoff</div>
+          </div>
+          <span class="app-row-badge badge-build">Building</span>
+        </div>
+        <div class="app-row" style="cursor:default" aria-hidden="true">
+          <div class="app-row-icon" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2)">
+            <svg viewBox="0 0 24 24" stroke="#F59E0B"><circle cx="12" cy="12" r="3"/><path d="M3 12h3M18 12h3M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+          </div>
+          <div class="app-row-info">
+            <div class="app-row-name">Field Ops Tracker</div>
+            <div class="app-row-sub">Job scheduling &amp; crew management</div>
           </div>
           <span class="app-row-badge badge-soon">Soon</span>
         </div>
@@ -742,12 +808,12 @@ footer{
 
 <hr class="divider">
 
-<!-- Trust & Proof -->
+<!-- Why us / Proof -->
 <section aria-labelledby="proof-heading">
   <div class="wrap">
-    <div class="section-kicker">Why people trust us</div>
+    <div class="section-kicker">Why DataPrimeTech</div>
     <h2 id="proof-heading" class="section-h display">Practical software,<br>not demos.</h2>
-    <p class="section-sub">Every app shipped is live, used daily, and built around a real workflow — not a portfolio piece.</p>
+    <p class="section-sub">Every app we ship is live, used daily, and built around a real workflow — not a portfolio piece.</p>
 
     <div class="proof-grid">
       <div class="proof-card">
@@ -777,10 +843,72 @@ footer{
 
 <hr class="divider">
 
-<!-- CuraLog Feature Spotlight -->
+<!-- About DataPrimeTech -->
+<section id="about" aria-labelledby="about-heading">
+  <div class="wrap">
+    <div class="section-kicker">About</div>
+    <h2 id="about-heading" class="section-h display">Who we are.</h2>
+
+    <div class="about-grid">
+      <div>
+        <div class="about-bio">
+          <p><strong>DataPrimeTech</strong> is a boutique software studio focused on building custom web applications for individuals, small teams, and growing businesses.</p>
+          <p>We don't sell templates, adapters, or off-the-shelf tools. Every project starts from a blank canvas and is designed specifically around how you and your team actually work — your terminology, your workflow, your edge cases.</p>
+          <p>We care about craft. That means clean architecture, real security, thoughtful UX, and software that's maintainable long after launch. No technical debt handed to you on day one.</p>
+          <p>Our products are used daily by real people solving real problems. That's the bar we hold every build to.</p>
+        </div>
+
+        <div class="founder-row">
+          <div class="founder-av" aria-hidden="true">JD</div>
+          <div>
+            <div class="founder-name">Joseph Diaz-Ordonez</div>
+            <div class="founder-title">Founder &amp; Developer · DataPrimeTech</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="about-card">
+          <div class="about-card-label">By the numbers</div>
+          <div class="about-stat-grid">
+            <div class="about-stat">
+              <div class="about-stat-num">2</div>
+              <div class="about-stat-label">Live apps</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-num">2</div>
+              <div class="about-stat-label">In progress</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-num">100%</div>
+              <div class="about-stat-label">Custom built</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-num">0</div>
+              <div class="about-stat-label">Templates used</div>
+            </div>
+          </div>
+          <div class="about-tag-row">
+            <span class="about-tag">Next.js</span>
+            <span class="about-tag">Supabase</span>
+            <span class="about-tag">Prisma</span>
+            <span class="about-tag">TypeScript</span>
+            <span class="about-tag">Vercel</span>
+            <span class="about-tag">Tailwind</span>
+            <span class="about-tag">Postgres</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- Featured project: CuraLog -->
 <section aria-labelledby="spotlight-heading">
   <div class="wrap">
-    <div class="section-kicker">Featured product</div>
+    <div class="section-kicker">Featured project</div>
     <h2 id="spotlight-heading" class="section-h display">CuraLog — medication<br>management that works.</h2>
     <p class="section-sub">Our most comprehensive app. Built for caregivers, patients, and providers who need more than a reminder app.</p>
 
@@ -831,7 +959,7 @@ footer{
               <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
             </div>
             <div class="feature-text">
-              <strong>Secure patient messaging</strong>
+              <strong>Secure messaging</strong>
               <span>In-app messaging between caregivers, patients, and care team members</span>
             </div>
           </div>
@@ -841,10 +969,36 @@ footer{
             </div>
             <div class="feature-text">
               <strong>2FA secured portal</strong>
-              <span>TOTP authentication, encrypted storage, and session management built in</span>
+              <span>TOTP authentication, encrypted storage, and full audit logging</span>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- All Projects -->
+<section id="projects" aria-labelledby="projects-heading">
+  <div class="wrap">
+    <div class="section-kicker">Projects</div>
+    <h2 id="projects-heading" class="section-h display">What we've built<br>and what's next.</h2>
+    <p class="section-sub" style="margin-bottom:0">Real apps solving real problems — used every day, and more on the way.</p>
+
+    <div class="section-label-divider" style="margin-top:40px">
+      <span>Live now</span>
+    </div>
+    <div class="proj-grid" id="live-projects-list" aria-live="polite" aria-label="Live project list" style="margin-top:16px"></div>
+
+    <div class="section-label-divider" style="margin-top:36px">
+      <span>Currently building</span>
+    </div>
+    <div class="proj-grid" id="wip-projects-list" aria-live="polite" aria-label="In-progress project list" style="margin-top:16px">
+      <div class="proj-skeleton">
+        <div class="skel skel-icon"></div>
+        <div><div class="skel skel-line skel-med" style="margin-bottom:10px"></div><div class="skel skel-line skel-long"></div></div>
       </div>
     </div>
   </div>
@@ -872,7 +1026,7 @@ footer{
         <ul class="svc-list">
           <li>Password-protected with two-factor auth</li>
           <li>Cloud database — syncs in real time</li>
-          <li>Works offline and on any screen size</li>
+          <li>Works on any screen size</li>
         </ul>
       </div>
 
@@ -943,42 +1097,13 @@ footer{
   </div>
 </section>
 
-<hr class="divider">
-
-<!-- Projects -->
-<section aria-labelledby="projects-heading">
-  <div class="wrap">
-    <div class="section-kicker">Projects</div>
-    <h2 id="projects-heading" class="section-h display">What we've built.</h2>
-    <p class="section-sub" style="margin-bottom:0">Real apps solving real problems — used every day.</p>
-
-    <div class="proj-grid" id="projects-list" aria-live="polite" aria-label="Project list">
-      <!-- Skeleton loading state -->
-      <div class="proj-skeleton">
-        <div class="skel skel-icon"></div>
-        <div><div class="skel skel-line skel-med" style="margin-bottom:10px"></div><div class="skel skel-line skel-long"></div></div>
-      </div>
-      <div class="proj-skeleton">
-        <div class="skel skel-icon"></div>
-        <div><div class="skel skel-line skel-short" style="margin-bottom:10px"></div><div class="skel skel-line skel-med"></div></div>
-      </div>
-    </div>
-    <div style="margin-top:20px">
-      <a href="/projects" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;transition:gap .2s" onmouseover="this.style.gap='10px'" onmouseout="this.style.gap='6px'">
-        View all projects
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section style="padding-top:0" aria-labelledby="cta-heading">
+<!-- CTA / Contact -->
+<section id="contact" style="padding-top:0" aria-labelledby="cta-heading">
   <div class="cta-wrap">
     <h2 id="cta-heading" class="cta-h display">Have an idea?<br>Let's build it.</h2>
     <p class="cta-p">Whether it's a tool for your team, a personal project, or something you've never seen built before — if you can describe it, we can build it.</p>
     <div class="cta-actions">
-      <a href="/about#contact" class="btn-cta">
+      <a href="mailto:joseph@dataprimetech.com" class="btn-cta">
         Book a project call
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
@@ -998,10 +1123,11 @@ footer{
     </a>
     <nav class="footer-links" aria-label="Footer navigation">
       <a href="/">Home</a>
-      <a href="/projects">Projects</a>
-      <a href="/about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
       <a href="/medicationtracker">CuraLog</a>
       <a href="/finance">Finance</a>
+      <a href="mailto:joseph@dataprimetech.com">Contact</a>
     </nav>
     <div class="footer-copy">© 2026 dataprimetech.com</div>
   </div>
@@ -1015,7 +1141,6 @@ const mobileMenu = document.getElementById('mobileMenu');
 mobileMenuBtn?.addEventListener('click', () => {
   const open = mobileMenu.classList.toggle('open');
   mobileMenuBtn.setAttribute('aria-expanded', String(open));
-  // Toggle icon between hamburger and X
   mobileMenuBtn.innerHTML = open
     ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`
     : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`;
@@ -1029,15 +1154,17 @@ mobileMenu?.querySelectorAll('a').forEach(a => {
   });
 });
 
-/* ─── Projects loader ─────────────────────────────────────────────────────── */
+/* ─── Project renderer ────────────────────────────────────────────────────── */
 const ICONS = {
-  clipboard: `<rect x="9" y="2" width="6" height="4" rx="1"/><path d="M8 6H6a2 2 0 00-2 2v11a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-2"/><path d="M12 12v4M10 14h4"/>`,
-  dollar:    `<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>`,
-  code:      `<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>`,
-  globe:     `<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>`,
-  shield:    `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>`,
-  zap:       `<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>`,
-  monitor:   `<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>`,
+  clipboard:  `<rect x="9" y="2" width="6" height="4" rx="1"/><path d="M8 6H6a2 2 0 00-2 2v11a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-2"/><path d="M12 12v4M10 14h4"/>`,
+  dollar:     `<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>`,
+  briefcase:  `<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>`,
+  map:        `<polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>`,
+  code:       `<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>`,
+  globe:      `<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>`,
+  shield:     `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>`,
+  zap:        `<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>`,
+  monitor:    `<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>`,
 };
 
 const SBADGE = {
@@ -1046,38 +1173,21 @@ const SBADGE = {
   building: `<span class="s-build">Building</span>`,
 };
 
-const FALLBACK_PROJECTS = [
-  {
-    name: 'CuraLog / Medication Tracker',
-    description: 'Multi-patient medication management with refill alerts, role-based access, and NPI provider lookup.',
-    tags: ['Healthcare', 'Security', 'Workflow'],
-    status: 'live',
-    icon: 'clipboard',
-    color: '#4F6EF7',
-    url: '/medicationtracker'
-  },
-  {
-    name: 'Finance Tracker',
-    description: 'Subscription management, debt payoff calculator, and personal financial tracking tools.',
-    tags: ['Finance', 'Dashboard', 'Planning'],
-    status: 'live',
-    icon: 'dollar',
-    color: '#10B981',
-    url: '/finance'
+function renderProjects(projects, targetId, statuses) {
+  const filtered = projects.filter(p => statuses.includes(p.status));
+  const el = document.getElementById(targetId);
+  if (!el) return;
+
+  if (filtered.length === 0) {
+    el.innerHTML = '';
+    return;
   }
-];
 
-function renderProjects(projects) {
-  const el = document.getElementById('projects-list');
-  const liveCount = projects.filter(p => p.status === 'live').length;
-  const liveEl = document.getElementById('live-count');
-  if (liveEl) liveEl.textContent = liveCount;
-
-  el.innerHTML = projects.map(p => {
+  el.innerHTML = filtered.map(p => {
     const isLive = p.status === 'live';
     const icon = ICONS[p.icon] || ICONS.code;
     const bg = p.color + '18';
-    const br = p.color + '33';
+    const br = p.color + '30';
     return `<${isLive ? `a href="${p.url}" target="_blank" rel="noopener"` : 'div'} class="proj${isLive ? '' : ' proj-dim'}">
       <div class="proj-ico" style="background:${bg};border-color:${br}" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="${p.color}" stroke-width="1.7">${icon}</svg>
@@ -1089,22 +1199,65 @@ function renderProjects(projects) {
       </div>
       <div class="proj-right">
         ${SBADGE[p.status] || SBADGE.soon}
-        <div class="proj-arr" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        ${isLive ? `<div class="proj-arr" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>` : ''}
       </div>
     </${isLive ? 'a' : 'div'}>`;
   }).join('');
+
+  // Update live count in hero
+  const liveCount = projects.filter(p => p.status === 'live').length;
+  const liveEl = document.getElementById('live-count');
+  if (liveEl) liveEl.textContent = liveCount;
 }
 
+const FALLBACK = [
+  {
+    name: 'CuraLog',
+    description: 'Full medication management platform for caregivers and care teams. Multi-patient support, refill tracking, provider lookup, secure messaging, and role-based access.',
+    tags: ['Healthcare', 'Supabase', '2FA', 'Prisma'],
+    status: 'live',
+    icon: 'clipboard',
+    color: '#4F6EF7',
+    url: '/medicationtracker'
+  },
+  {
+    name: 'Finance Tracker',
+    description: 'Personal finance dashboard for tracking credit cards, subscriptions, and bills. Includes utilization alerts, debt payoff calculator, and shared payment splits.',
+    tags: ['Finance', 'Supabase', '2FA', 'Dashboard'],
+    status: 'live',
+    icon: 'dollar',
+    color: '#10B981',
+    url: '/finance'
+  },
+  {
+    name: 'Client Portal',
+    description: 'Private project delivery and file-sharing portal for DataPrimeTech clients. Milestone tracking, feedback threads, and secure document handoff.',
+    tags: ['Workflow', 'Collaboration', 'Security'],
+    status: 'building',
+    icon: 'briefcase',
+    color: '#6366F1',
+    url: null
+  },
+  {
+    name: 'Field Ops Tracker',
+    description: 'Job scheduling and crew management tool for small field-service businesses. Work orders, photo logs, client sign-off, and invoice generation.',
+    tags: ['Operations', 'Scheduling', 'Mobile'],
+    status: 'building',
+    icon: 'map',
+    color: '#F59E0B',
+    url: null
+  }
+];
+
 async function loadProjects() {
+  let projects = FALLBACK;
   try {
     const res = await fetch('/projects.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error('Failed to load');
-    const projects = await res.json();
-    renderProjects(projects);
-  } catch (e) {
-    // Graceful fallback to static data — no broken UI
-    renderProjects(FALLBACK_PROJECTS);
-  }
+    if (res.ok) projects = await res.json();
+  } catch (_) {}
+
+  renderProjects(projects, 'live-projects-list', ['live']);
+  renderProjects(projects, 'wip-projects-list', ['building', 'soon']);
 }
 
 loadProjects();
