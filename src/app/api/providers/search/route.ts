@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchProviders } from '@/services/npi'
 import { requireAuth } from '@/lib/auth'

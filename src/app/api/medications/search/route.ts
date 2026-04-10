@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchMedications } from '@/services/rxnorm'
 import type { ApiResponse, MedSearchResult } from '@/types'
