@@ -44,7 +44,9 @@ export default function ResetPasswordPage() {
 
         {!ready ? (
           <div style={{ textAlign: 'center', padding: '20px 0' }}>
-            <div style={{ fontSize: '2rem', marginBottom: 12 }}>🔗</div>
+            <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--teal-light)', border: '1px solid rgba(14,79,84,.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
             <p style={{ color: 'var(--text2)', fontSize: '.875rem' }}>Validating your reset link…</p>
           </div>
         ) : (

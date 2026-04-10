@@ -69,7 +69,7 @@ export function refillStatusEmail(patientName: string, medName: string, status: 
         <strong>CuraLog</strong> · Refill Status Update
       </div>
       <div style="background:#f8f9fa;padding:24px;border-radius:0 0 8px 8px">
-        <h2 style="color:#0E4F54;margin:0 0 12px">${isReady ? '✓ Ready for Pickup' : 'Status Update'}</h2>
+        <h2 style="color:#0E4F54;margin:0 0 12px">${isReady ? 'Ready for Pickup' : 'Status Update'}</h2>
         <p><strong>${patientName}</strong>'s refill for <strong>${medName}</strong> is now: <strong>${label}</strong>.</p>
         ${isReady ? '<p style="color:#1A7A42;font-weight:600;">The prescription is ready to be picked up.</p>' : ''}
         <a href="${appUrl}/owner/requests"
@@ -100,7 +100,7 @@ export function refillReminderEmail(patientName: string, medName: string, daysLe
         </a>
       </div>
       <p style="font-size:11px;color:#999;margin-top:16px;text-align:center">
-        © 2026 CuraLog · DataPrimeTech · DataPrimeTech
+        © 2026 CuraLog · DataPrimeTech
       </p>
     </div>
   `

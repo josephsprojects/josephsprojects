@@ -99,7 +99,7 @@ export default function RequestsClient({ initialRequests, patients }: { initialR
                   {rr.status === 'submitted' && <button className="btn btn-secondary" style={{ fontSize: '.75rem', padding: '5px 12px' }} onClick={() => updateStatus(rr.id, 'at_prescriber')}>At prescriber</button>}
                   {rr.status === 'at_prescriber' && <button className="btn btn-secondary" style={{ fontSize: '.75rem', padding: '5px 12px' }} onClick={() => updateStatus(rr.id, 'at_pharmacy')}>At pharmacy</button>}
                   {rr.status === 'at_pharmacy' && <button className="btn btn-primary" style={{ fontSize: '.75rem', padding: '5px 12px' }} onClick={() => updateStatus(rr.id, 'ready')}>Ready for pickup</button>}
-                  {rr.status === 'ready' && <button className="btn btn-primary" style={{ fontSize: '.75rem', padding: '5px 12px' }} onClick={() => updateStatus(rr.id, 'picked_up')}>✓ Picked up</button>}
+                  {rr.status === 'ready' && <button className="btn btn-primary" style={{ fontSize: '.75rem', padding: '5px 12px', display:'inline-flex', alignItems:'center', gap:5 }} onClick={() => updateStatus(rr.id, 'picked_up')}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Picked up</button>}
                 </div>
               </div>
             )

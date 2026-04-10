@@ -53,7 +53,7 @@ function LoginContent() {
     setLoading(true); setError('')
     const supabase = createClient()
     const { error: err } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/reset-password`,
     })
     setLoading(false)
     if (err) { setError('Failed to send reset email. Try again.'); return }
@@ -111,7 +111,9 @@ function LoginContent() {
 
             {resetSent ? (
               <div style={{textAlign:'center',padding:'20px 0'}}>
-                <div style={{fontSize:'2rem',marginBottom:12}}>📧</div>
+                <div style={{width:48,height:48,borderRadius:12,background:'var(--teal-light)',border:'1px solid var(--teal-border,rgba(14,79,84,.15))',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px'}}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+                </div>
                 <p style={{fontWeight:600,marginBottom:8}}>Check your email</p>
                 <p style={{fontSize:'.875rem',color:'var(--text3)'}}>We sent a password reset link to <strong>{email}</strong></p>
                 <button type="button" onClick={() => { setMode('login'); setResetSent(false); }} className="btn btn-secondary" style={{marginTop:20}}>Back to sign in</button>
