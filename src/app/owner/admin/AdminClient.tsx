@@ -28,7 +28,7 @@ export default function AdminClient({ flags: initialFlags }: { flags: Flag[] }) 
         body: JSON.stringify({ key: flag.key, enabled: newEnabled })
       })
       if (res.ok) {
-        setFlags(fs => fs.map(f => f.id === flag.id ? { ...f, enabled: newEnabled } : f))
+        setFlags(fs => fs.map((f: any) => f.id === flag.id ? { ...f, enabled: newEnabled } : f))
       }
     } finally {
       setSaving(null)
@@ -61,7 +61,7 @@ export default function AdminClient({ flags: initialFlags }: { flags: Flag[] }) 
       <div className="crd" style={{ marginBottom: 24 }}>
         <div className="crd-h">Integration health</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
-          {INTEGRATIONS.map(intg => {
+          {INTEGRATIONS.map((intg: any) => {
             const status = integrationStatus[intg.key]
             return (
               <div key={intg.key} style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>

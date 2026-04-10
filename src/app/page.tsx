@@ -105,7 +105,7 @@ export default function HomePage() {
             <p style={{ color: '#475569', fontSize: '1.05rem', maxWidth: 540, margin: '0 auto' }}>From prescription tracking to refill coordination — CuraLog handles the complexity so you can focus on care.</p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 20 }}>
-            {FEATURES.map(f => (
+            {FEATURES.map((f: any) => (
               <div key={f.title} style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: 12, padding: '22px 24px' }}>
                 <div style={{ width: 40, height: 40, background: '#E8F4F5', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E4F54" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -128,7 +128,7 @@ export default function HomePage() {
             <p style={{ color: '#475569', fontSize: '1.05rem', maxWidth: 540, margin: '0 auto' }}>Every person gets exactly the access they need — no more, no less.</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 760, margin: '0 auto' }}>
-            {ROLES.map(r => (
+            {ROLES.map((r: any) => (
               <div key={r.role} style={{ display: 'flex', gap: 20, padding: '18px 24px', border: '1px solid #E2E8F0', borderRadius: 12, alignItems: 'flex-start' }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#0E4F54', marginTop: 7, flexShrink: 0 }} />
                 <div>
@@ -152,7 +152,7 @@ export default function HomePage() {
             <p style={{ color: '#475569', fontSize: '1.05rem', maxWidth: 540, margin: '0 auto' }}>CuraLog is built on enterprise-grade infrastructure so your data is always safe, fast, and available.</p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
-            {INTEGRATIONS.map(intg => (
+            {INTEGRATIONS.map((intg: any) => (
               <div key={intg.name} style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: 10, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ width: 36, height: 36, background: '#E8F4F5', borderRadius: 8, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E4F54" strokeWidth="2" strokeLinecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -181,7 +181,7 @@ export default function HomePage() {
               { title: 'Row-level security', icon: 'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z', desc: 'Database-level access controls via Supabase RLS. Users can only access their own data.' },
               { title: 'Encrypted in transit', icon: 'M5 12h14M12 5l7 7-7 7', desc: 'All data is encrypted in transit via HTTPS/TLS. Passwords are managed by Supabase Auth.' },
               { title: 'Full audit trail', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2', desc: 'Every action is logged with actor, timestamp, and before/after values. Nothing happens without a record.' },
-            ].map(s => (
+            ].map((s: any) => (
               <div key={s.title} style={{ border: '1px solid #E2E8F0', borderRadius: 10, padding: '18px 20px', display: 'flex', gap: 14, alignItems: 'flex-start' }}>
                 <div style={{ width: 36, height: 36, background: '#E8F4F5', borderRadius: 8, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E4F54" strokeWidth="2" strokeLinecap="round">

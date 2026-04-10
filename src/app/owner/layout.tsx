@@ -12,7 +12,7 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
     prisma.message.count({ where: { status: 'unread' } }),
   ])
 
-  const initials = user.name.split(' ').map(x => x[0]).join('').slice(0,2).toUpperCase()
+  const initials = user.name.split(' ').map((x: any) => x[0]).join('').slice(0,2).toUpperCase()
 
   return (
     <div className="pg-wrap">

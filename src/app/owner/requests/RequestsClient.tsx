@@ -18,8 +18,8 @@ export default function RequestsClient({ initialRequests, patients }: { initialR
   const [newForm, setNewForm] = useState({ patient_id: patients[0]?.id || '', notes: '', method: 'electronic' })
 
   const filtered = filter === 'active'
-    ? requests.filter(r => !['picked_up','denied'].includes(r.status))
-    : filter === 'all' ? requests : requests.filter(r => r.status === filter)
+    ? requests.filter((r: any) => !['picked_up','denied'].includes(r.status))
+    : filter === 'all' ? requests : requests.filter((r: any) => r.status === filter)
 
   async function updateStatus(id: string, status: string) {
     setLoading(id)
@@ -27,13 +27,13 @@ export default function RequestsClient({ initialRequests, patients }: { initialR
     const data = await res.json()
     setLoading(null)
     if (data.success) {
-      setRequests(rrs => rrs.map(r => r.id === id ? { ...r, status } : r))
+      setRequests(rrs => rrs.map((r: any) => r.id === id ? { ...r, status } : r))
     }
   }
 
   async function createRequest(e: React.FormEvent) {
     e.preventDefault()
-    const pt = patients.find(p => p.id === newForm.patient_id)
+    const pt = patients.find((p: any) => p.id === newForm.patient_id)
     if (!pt) return
     const ws = (pt as any).workspace_id
     const res = await fetch('/api/refill-requests', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...newForm, workspace_id: ws }) })
@@ -62,14 +62,14 @@ export default function RequestsClient({ initialRequests, patients }: { initialR
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {filtered.map(rr => {
+          {filtered.map((rr: any) => {
             const currentStep = PIPELINE.indexOf(rr.status)
             return (
               <div key={rr.id} className="crd">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <div style={{ width: 32, height: 32, borderRadius: '50%', background: rr.patient.color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '.7rem', fontWeight: 700, flexShrink: 0 }}>
-                      {rr.patient.name.split(' ').map(x => x[0]).join('').slice(0,2).toUpperCase()}
+                      {rr.patient.name.split(' ').map((x: any) => x[0]).join('').slice(0,2).toUpperCase()}
                     </div>
                     <div>
                       <div style={{ fontWeight: 700 }}>{rr.patient.name}</div>
@@ -115,7 +115,7 @@ export default function RequestsClient({ initialRequests, patients }: { initialR
               <div className="modal-body">
                 <div className="form-grp"><label className="form-lbl">Patient</label>
                   <select className="form-inp" value={newForm.patient_id} onChange={e => setNewForm(f => ({ ...f, patient_id: e.target.value }))}>
-                    {patients.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                    {patients.map((p: any) => <option key={p.id} value={p.id}>{p.name}</option>)}
                   </select></div>
                 <div className="form-grp"><label className="form-lbl">Method</label>
                   <select className="form-inp" value={newForm.method} onChange={e => setNewForm(f => ({ ...f, method: e.target.value }))}>

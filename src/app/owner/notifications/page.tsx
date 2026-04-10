@@ -17,7 +17,7 @@ export default async function NotificationsPage() {
     <div className="pg-inner">
       <div className="pg-hd">
         <h2>Notifications</h2>
-        <p>{notifications.filter(n => n.status === 'unread').length} unread</p>
+        <p>{notifications.filter((n: any) => n.status === 'unread').length} unread</p>
       </div>
       <div className="crd" style={{ padding: 0 }}>
         {notifications.length === 0 ? (
@@ -26,7 +26,7 @@ export default async function NotificationsPage() {
             <h3>No notifications</h3><p>You're all caught up.</p>
           </div>
         ) : (
-          notifications.map(n => (
+          notifications.map((n: any) => (
             <div key={n.id} style={{ padding: '14px 20px', borderBottom: '1px solid var(--border)', display: 'flex', gap: 14, alignItems: 'flex-start', background: n.status === 'unread' ? 'rgba(14,79,84,.03)' : 'transparent' }}>
               <div style={{ width: 8, height: 8, borderRadius: '50%', background: n.status === 'unread' ? 'var(--teal)' : 'transparent', marginTop: 6, flexShrink: 0, border: '1.5px solid var(--border)' }} />
               <div style={{ flex: 1 }}>

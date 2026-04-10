@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next({ request })
 
   // Allow public routes without auth
-  if (PUBLIC_ROUTES.some(r => pathname === r) || pathname.startsWith('/invite/')) {
+  if (PUBLIC_ROUTES.some((r: any) => pathname === r) || pathname.startsWith('/invite/')) {
     return response
   }
 
@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll: (cookiesToSet) => {
-          cookiesToSet.forEach(({ name, value, options }) => {
+          cookiesToSet.forEach(({ name, value, options }: any) => {
             request.cookies.set(name, value)
             response.cookies.set(name, value, options)
           })
@@ -42,7 +42,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Owner routes — verify owner role via DB
-  if (OWNER_ROUTES.some(r => pathname.startsWith(r))) {
+  if (OWNER_ROUTES.some((r: any) => pathname.startsWith(r))) {
     // Fetch role from DB (can't import prisma in edge, use supabase RPC instead)
     const { data: profile } = await supabase
       .from('users')

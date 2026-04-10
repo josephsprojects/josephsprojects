@@ -35,7 +35,7 @@ export default function WorkspacesClient({ initialWorkspaces }: { initialWorkspa
     if (!data.success) { setError(data.message || 'Failed'); return }
     setShowModal(false)
     router.refresh()
-    setWorkspaces(ws => editing ? ws.map(w => w.id === editing.id ? { ...w, ...form } : w) : [data.data, ...ws])
+    setWorkspaces(ws => editing ? ws.map((w: any) => w.id === editing.id ? { ...w, ...form } : w) : [data.data, ...ws])
   }
 
   async function archive(ws: Workspace) {
@@ -60,7 +60,7 @@ export default function WorkspacesClient({ initialWorkspaces }: { initialWorkspa
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
-          {workspaces.map(ws => (
+          {workspaces.map((ws: any) => (
             <div key={ws.id} className="crd" style={{ cursor: 'pointer' }} onClick={() => openEdit(ws)}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
                 <div>

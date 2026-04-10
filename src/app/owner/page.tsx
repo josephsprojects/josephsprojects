@@ -99,7 +99,7 @@ export default async function OwnerDashboard() {
               <tr><th>User</th><th>Action</th><th>Entity</th><th>When</th></tr>
             </thead>
             <tbody>
-              {recentAudit.map(log => (
+              {recentAudit.map((log: any) => (
                 <tr key={log.id}>
                   <td style={{ fontWeight: 600 }}>{log.user_name || '—'}</td>
                   <td><span className={`badge badge-${log.action === 'create' ? 'teal' : log.action === 'delete' ? 'red' : 'gray'}`}>{log.action}</span></td>

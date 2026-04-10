@@ -66,7 +66,7 @@ export async function searchProviders(params: NPISearchParams): Promise<NPIResul
   const filterByCity = (results: NPIResult[]) => {
     if (!city) return results
     const q = city.toLowerCase().trim()
-    const filtered = results.filter(r => r.city.toLowerCase().includes(q))
+    const filtered = results.filter((r: any) => r.city.toLowerCase().includes(q))
     return filtered.length > 0 ? filtered : results
   }
 

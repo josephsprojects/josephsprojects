@@ -18,7 +18,7 @@ export default function PatientsClient({ initialPatients, workspaces }: { initia
   const [error, setError] = useState('')
   const [form, setForm] = useState({ workspace_id: workspaces[0]?.id || '', name: '', dob: '', relationship: '', allergies: 'None known', emergency_name: '', emergency_phone: '', notes: '', color: COLORS[0] })
 
-  const filtered = patients.filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
+  const filtered = patients.filter((p: any) => p.name.toLowerCase().includes(search.toLowerCase()))
 
   function openCreate() {
     setForm({ workspace_id: workspaces[0]?.id || '', name: '', dob: '', relationship: '', allergies: 'None known', emergency_name: '', emergency_phone: '', notes: '', color: COLORS[patients.length % COLORS.length] })
@@ -42,9 +42,9 @@ export default function PatientsClient({ initialPatients, workspaces }: { initia
     setLoading(false)
     if (!data.success) { setError(data.message || 'Failed'); return }
     setShowModal(false); router.refresh()
-    const ws = workspaces.find(w => w.id === form.workspace_id)
+    const ws = workspaces.find((w: any) => w.id === form.workspace_id)
     const newPt = { ...data.data, _count: { medications: 0 }, workspace: { name: ws?.name || '' } }
-    setPatients(pts => editing ? pts.map(p => p.id === editing.id ? { ...p, ...form, workspace: { name: ws?.name || '' } } : p) : [newPt, ...pts])
+    setPatients(pts => editing ? pts.map((p: any) => p.id === editing.id ? { ...p, ...form, workspace: { name: ws?.name || '' } } : p) : [newPt, ...pts])
   }
 
   return (
@@ -78,12 +78,12 @@ export default function PatientsClient({ initialPatients, workspaces }: { initia
           <table className="tbl">
             <thead><tr><th>Patient</th><th>Workspace</th><th>Meds</th><th>Allergies</th><th>DOB</th><th></th></tr></thead>
             <tbody>
-              {filtered.map(p => (
+              {filtered.map((p: any) => (
                 <tr key={p.id}>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <div style={{ width: 32, height: 32, borderRadius: '50%', background: p.color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '.7rem', fontWeight: 700, flexShrink: 0 }}>
-                        {p.name.split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase()}
+                        {p.name.split(' ').map((x: any) => x[0]).join('').slice(0, 2).toUpperCase()}
                       </div>
                       <div>
                         <div style={{ fontWeight: 600 }}>{p.name}</div>
@@ -124,14 +124,14 @@ export default function PatientsClient({ initialPatients, workspaces }: { initia
                   <div className="form-grp">
                     <label className="form-lbl">Workspace *</label>
                     <select className="form-inp" value={form.workspace_id} onChange={e => setForm(f => ({ ...f, workspace_id: e.target.value }))}>
-                      {workspaces.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
+                      {workspaces.map((w: any) => <option key={w.id} value={w.id}>{w.name}</option>)}
                     </select>
                   </div>
                   <div className="form-grp">
                     <label className="form-lbl">Relationship</label>
                     <select className="form-inp" value={form.relationship} onChange={e => setForm(f => ({ ...f, relationship: e.target.value }))}>
                       <option value="">Select…</option>
-                      {RELATIONSHIPS.map(r => <option key={r} value={r}>{r}</option>)}
+                      {RELATIONSHIPS.map((r: any) => <option key={r} value={r}>{r}</option>)}
                     </select>
                   </div>
                   <div className="form-grp">
@@ -157,7 +157,7 @@ export default function PatientsClient({ initialPatients, workspaces }: { initia
                   <div className="form-grp" style={{ gridColumn: '1/-1' }}>
                     <label className="form-lbl">Color</label>
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                      {COLORS.map(col => (
+                      {COLORS.map((col: any) => (
                         <button key={col} type="button" onClick={() => setForm(f => ({ ...f, color: col }))}
                           style={{ width: 28, height: 28, borderRadius: '50%', background: col, border: form.color === col ? '3px solid var(--text)' : '2px solid transparent', cursor: 'pointer' }} />
                       ))}

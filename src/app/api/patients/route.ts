@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json<ApiResponse>({ success: false, message: 'Invalid data' }, { status: 400 })
   }
 
-  const initials = parsed.data.name.split(' ').map(x => x[0]).join('').slice(0,2).toUpperCase()
+  const initials = parsed.data.name.split(' ').map((x: any) => x[0]).join('').slice(0,2).toUpperCase()
   const patient = await prisma.patient.create({
     data: { ...parsed.data, initials }
   })
