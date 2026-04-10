@@ -206,9 +206,10 @@ model Medication {
   patient         Patient         @relation(fields: [patient_id], references: [id], onDelete: Cascade)
   provider        Provider?       @relation(fields: [provider_id], references: [id])
   pharmacy        Pharmacy?       @relation(fields: [pharmacy_id], references: [id])
-  refill_requests RefillRequest[]     @relation("MedicationRefills")
-  symptom_logs    SymptomLog[]
-  adherence_logs  AdherenceLog[]
+  refill_requests    RefillRequest[]     @relation("MedicationRefills")
+  symptom_logs       SymptomLog[]
+  adherence_logs     AdherenceLog[]
+  medication_history MedicationHistory[]
 
   @@map("medications")
 }
