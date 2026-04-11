@@ -10,16 +10,20 @@ function generateOTP(): string {
 }
 
 // POST /api/auth/send-otp
-// Called from /verify page to send an OTP code
+// Body: { project?: 'finance'|'curalog', resend?: boolean }
+// - On initial load: reuses any unexpired OTP so page refresh never invalidates the code
+// - On resend (resend: true): soft-expires old OTPs and sends a fresh code
 export async function POST(req: NextRequest) {
   const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ success: false, message: 'Not authenticated' }, { status: 401 })
 
   let project: 'finance' | 'curalog' = 'curalog'
+  let isResend = false
   try {
     const body = await req.json()
     if (body?.project === 'finance') project = 'finance'
+    if (body?.resend === true) isResend = true
   } catch { /* no body is fine */ }
 
   let profile = await prisma.user.findUnique({
@@ -35,21 +39,26 @@ export async function POST(req: NextRequest) {
   }
   if (!profile) return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 })
 
-  // Check if there's a fresh OTP already created in the last 30 seconds (prevents double-send from StrictMode)
-  const recent = await prisma.otpSession.findFirst({
-    where: { user_id: profile.id, used: false, expires_at: { gt: new Date() }, created_at: { gt: new Date(Date.now() - 30_000) } },
-    orderBy: { created_at: 'desc' },
-  })
-  if (recent) {
-    return NextResponse.json({
-      success: true,
-      channel: 'email',
-      hint: `Code sent to ${profile.email.replace(/(.{2}).+(@.+)/, '$1•••$2')}`,
+  const hint = `Code sent to ${profile.email.replace(/(.{2}).+(@.+)/, '$1•••$2')}`
+
+  // If not an explicit resend, reuse any existing unexpired OTP.
+  // This prevents page refresh / StrictMode double-invoke from creating a second
+  // OTP that soft-expires the one the user already received in their email.
+  if (!isResend) {
+    const existing = await prisma.otpSession.findFirst({
+      where: { user_id: profile.id, used: false, expires_at: { gt: new Date() } },
+      orderBy: { created_at: 'desc' },
     })
+    if (existing) {
+      return NextResponse.json({ success: true, channel: existing.channel, hint })
+    }
   }
 
-  // Expire all previous unused OTPs
-  await prisma.otpSession.updateMany({ where: { user_id: profile.id, used: false }, data: { expires_at: new Date() } })
+  // Soft-expire all previous unused OTPs, then create a fresh one
+  await prisma.otpSession.updateMany({
+    where: { user_id: profile.id, used: false },
+    data: { expires_at: new Date() },
+  })
 
   const code = generateOTP()
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
@@ -65,11 +74,7 @@ export async function POST(req: NextRequest) {
     html: otpEmailHtml(profile.name, code, project),
   })
 
-  return NextResponse.json({
-    success: true,
-    channel: 'email',
-    hint: `Code sent to ${profile.email.replace(/(.{2}).+(@.+)/, '$1•••$2')}`,
-  })
+  return NextResponse.json({ success: true, channel: 'email', hint })
 }
 
 // GET /api/auth/send-otp — check if user has passkeys enrolled

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { startAuthentication } from '@simplewebauthn/browser'
 
@@ -77,8 +77,13 @@ function VerifyContent() {
   const [error, setError] = useState('')
   const [resendCooldown, setResendCooldown] = useState(0)
   const [skipping, setSkipping] = useState(false)
+  const initCalled = useRef(false)
 
-  useEffect(() => { init() }, [])
+  useEffect(() => {
+    if (initCalled.current) return
+    initCalled.current = true
+    init()
+  }, [])
 
   useEffect(() => {
     if (resendCooldown <= 0) return
@@ -95,20 +100,20 @@ function VerifyContent() {
         setStep('passkey')
         startPasskeyLogin()
       } else {
-        await sendOTP()
+        await sendOTP(false)
       }
     } catch {
       setStep('failed')
     }
   }
 
-  async function sendOTP() {
+  async function sendOTP(resend = false) {
     setLoading(true); setError('')
     try {
       const res = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ project: projectKey }),
+        body: JSON.stringify({ project: projectKey, resend }),
       })
       const data = await res.json()
       if (!res.ok || !data.success) {
@@ -475,7 +480,7 @@ function VerifyContent() {
                 </form>
 
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
-                  <button onClick={sendOTP} disabled={resendCooldown > 0 || loading} className="verify-btn-ghost">
+                  <button onClick={() => sendOTP(true)} disabled={resendCooldown > 0 || loading} className="verify-btn-ghost">
                     {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend code'}
                   </button>
                 </div>
