@@ -22,14 +22,40 @@ export async function sendEmail({ to, subject, html, text }: EmailOptions) {
   return true
 }
 
+// ── Project configs for email ──────────────────────────────────────────────────
+const EMAIL_PROJECTS = {
+  finance: {
+    name: 'Finance Tracker',
+    tagline: 'Shared Expense Management',
+    icon: '&#9650;',
+    accent: '#4F46E5',
+    codeColor: '#4338CA',
+    codeBg: '#EEF2FF',
+    codeBorder: '#C7D2FE',
+    footer: 'Finance Tracker by <strong style="color:#6b7280;">DataPrimeTech</strong> &middot; Shared Expense Management',
+  },
+  curalog: {
+    name: 'CuraLog',
+    tagline: 'Care Coordination Platform',
+    icon: '+',
+    accent: '#0d9488',
+    codeColor: '#0d9488',
+    codeBg: '#f0fdf4',
+    codeBorder: '#bbf7d0',
+    footer: 'CuraLog by <strong style="color:#6b7280;">DataPrimeTech</strong> &middot; Care Coordination Platform',
+  },
+}
+
 // ── Shared layout ──────────────────────────────────────────────────────────────
 function emailLayout(opts: {
   title: string
   preheader?: string
   accentColor?: string
+  project?: 'finance' | 'curalog'
   body: string
 }) {
-  const accent = opts.accentColor || '#0d9488'
+  const proj = EMAIL_PROJECTS[opts.project || 'curalog']
+  const accent = opts.accentColor || proj.accent
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,9 +78,9 @@ function emailLayout(opts: {
                 <table cellpadding="0" cellspacing="0" role="presentation">
                   <tr>
                     <td style="background:rgba(255,255,255,0.2);border-radius:8px;width:36px;height:36px;text-align:center;vertical-align:middle;">
-                      <span style="color:#fff;font-size:20px;font-weight:800;line-height:36px;">+</span>
+                      <span style="color:#fff;font-size:18px;font-weight:800;line-height:36px;">${proj.icon}</span>
                     </td>
-                    <td style="padding-left:10px;color:#fff;font-size:1.1rem;font-weight:800;letter-spacing:-0.3px;vertical-align:middle;">CuraLog</td>
+                    <td style="padding-left:10px;color:#fff;font-size:1.1rem;font-weight:800;letter-spacing:-0.3px;vertical-align:middle;">${proj.name}</td>
                   </tr>
                 </table>
               </td>
@@ -71,8 +97,7 @@ function emailLayout(opts: {
         <!-- Footer -->
         <tr><td style="background:#f9fafb;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;padding:20px 36px;text-align:center;">
           <p style="margin:0;font-size:0.72rem;color:#9ca3af;line-height:1.6;">
-            CuraLog by <strong style="color:#6b7280;">DataPrimeTech</strong> &middot; Care Coordination Platform<br>
-            Questions? Contact your care team through the CuraLog portal.
+            ${proj.footer}
           </p>
         </td></tr>
 
@@ -84,17 +109,19 @@ function emailLayout(opts: {
 }
 
 // ── OTP / Verification email ───────────────────────────────────────────────────
-export function otpEmailHtml(name: string, code: string) {
+export function otpEmailHtml(name: string, code: string, project: 'finance' | 'curalog' = 'curalog') {
+  const proj = EMAIL_PROJECTS[project]
   return emailLayout({
     title: 'Verification Code',
-    preheader: `Your CuraLog verification code is ${code}`,
+    preheader: `Your ${proj.name} verification code is ${code}`,
+    project,
     body: `
       <p style="margin:0 0 6px;font-size:1rem;font-weight:700;color:#111827;">Hi ${name},</p>
-      <p style="margin:0 0 28px;font-size:0.875rem;color:#6b7280;line-height:1.6;">Use the code below to verify your identity. It expires in <strong>10 minutes</strong>.</p>
+      <p style="margin:0 0 28px;font-size:0.875rem;color:#6b7280;line-height:1.6;">Use the code below to verify your identity for <strong>${proj.name}</strong>. It expires in <strong>10 minutes</strong>.</p>
 
-      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:28px;text-align:center;margin-bottom:28px;">
+      <div style="background:${proj.codeBg};border:1px solid ${proj.codeBorder};border-radius:12px;padding:28px;text-align:center;margin-bottom:28px;">
         <p style="margin:0 0 8px;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6b7280;">Your verification code</p>
-        <p style="margin:0;font-size:2.4rem;font-weight:800;letter-spacing:0.3em;color:#0d9488;font-variant-numeric:tabular-nums;">${code}</p>
+        <p style="margin:0;font-size:2.4rem;font-weight:800;letter-spacing:0.3em;color:${proj.codeColor};font-variant-numeric:tabular-nums;">${code}</p>
       </div>
 
       <p style="margin:0;font-size:0.8rem;color:#9ca3af;line-height:1.6;">

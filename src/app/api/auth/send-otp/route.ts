@@ -16,6 +16,12 @@ export async function POST(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ success: false, message: 'Not authenticated' }, { status: 401 })
 
+  let project: 'finance' | 'curalog' = 'curalog'
+  try {
+    const body = await req.json()
+    if (body?.project === 'finance') project = 'finance'
+  } catch { /* no body is fine */ }
+
   let profile = await prisma.user.findUnique({
     where: { supabase_id: user.id },
     select: { id: true, name: true, email: true, phone: true },
@@ -29,8 +35,21 @@ export async function POST(req: NextRequest) {
   }
   if (!profile) return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 })
 
-  // Delete any existing unused OTP sessions for this user
-  await prisma.otpSession.deleteMany({ where: { user_id: profile.id, used: false } })
+  // Check if there's a fresh OTP already created in the last 30 seconds (prevents double-send from StrictMode)
+  const recent = await prisma.otpSession.findFirst({
+    where: { user_id: profile.id, used: false, expires_at: { gt: new Date() }, created_at: { gt: new Date(Date.now() - 30_000) } },
+    orderBy: { created_at: 'desc' },
+  })
+  if (recent) {
+    return NextResponse.json({
+      success: true,
+      channel: 'email',
+      hint: `Code sent to ${profile.email.replace(/(.{2}).+(@.+)/, '$1•••$2')}`,
+    })
+  }
+
+  // Expire all previous unused OTPs
+  await prisma.otpSession.updateMany({ where: { user_id: profile.id, used: false }, data: { expires_at: new Date() } })
 
   const code = generateOTP()
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
@@ -39,10 +58,11 @@ export async function POST(req: NextRequest) {
     data: { user_id: profile.id, code, channel: 'email', expires_at: expiresAt },
   })
 
+  const projectName = project === 'finance' ? 'Finance Tracker' : 'CuraLog'
   await sendEmail({
     to: profile.email,
-    subject: 'CuraLog — Your verification code',
-    html: otpEmailHtml(profile.name, code),
+    subject: `${projectName} — Your verification code`,
+    html: otpEmailHtml(profile.name, code, project),
   })
 
   return NextResponse.json({
