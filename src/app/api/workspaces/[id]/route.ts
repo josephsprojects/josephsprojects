@@ -23,7 +23,11 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json<ApiResponse>({ success: false, message: 'Invalid data' }, { status: 400 })
   }
 
-  const ws = await prisma.workspace.update({ where: { id }, data: parsed.data })
+  const ws = await prisma.workspace.update({
+    where: { id },
+    data: parsed.data,
+    include: { _count: { select: { patients: true, members: true } } },
+  })
 
   await createAuditLog({
     userId: user.id, userName: user.name,

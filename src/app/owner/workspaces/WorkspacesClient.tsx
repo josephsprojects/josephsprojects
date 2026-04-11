@@ -36,7 +36,10 @@ export default function WorkspacesClient({ initialWorkspaces }: { initialWorkspa
     if (!data.success) { setError(data.message || 'Failed'); return }
     setShowModal(false)
     router.refresh()
-    setWorkspaces(ws => editing ? ws.map((w: any) => w.id === editing.id ? { ...w, ...form } : w) : [data.data, ...ws])
+    setWorkspaces(ws => editing
+      ? ws.map((w: any) => w.id === editing.id ? { ...w, ...form, _count: w._count } : w)
+      : [data.data, ...ws]
+    )
   }
 
   async function archive(ws: Workspace) {

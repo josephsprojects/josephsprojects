@@ -32,7 +32,10 @@ export async function POST(req: NextRequest) {
 
   const cookieStore = await cookies()
   const isTestMode = cookieStore.get('curalog_test_mode')?.value === '1'
-  const ws = await prisma.workspace.create({ data: { ...parsed.data, is_test: isTestMode } })
+  const ws = await prisma.workspace.create({
+    data: { ...parsed.data, is_test: isTestMode },
+    include: { _count: { select: { patients: true, members: true } } },
+  })
 
   await createAuditLog({
     userId: user.id, userName: user.name,
