@@ -284,7 +284,7 @@ const clientJs = `
       icon: '<rect x="9" y="2" width="6" height="4" rx="1"/><path d="M8 6H6a2 2 0 00-2 2v11a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-2"/><path d="M12 12v4M10 14h4"/>',
     },
     {
-      name: 'Finance Tracker',
+      name: 'Fintra',
       tagline: 'Your money, fully under control',
       desc: 'Personal finance dashboard to manage cards, subscriptions, and bills. Simulate debt payoff strategies, split shared expenses, send invoices, and track net worth over time.',
       features: ['Credit card & utilization tracking', 'Avalanche & snowball payoff planner', 'Shared expense invoicing', 'Progress snapshots'],

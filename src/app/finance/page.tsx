@@ -3,7 +3,7 @@ import { requireAuth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import FinanceClient from './FinanceClient'
 
-export const metadata = { title: 'Finance Tracker — DataPrimeTech' }
+export const metadata = { title: 'Fintra — DataPrimeTech' }
 
 export default async function FinancePage() {
   const user = await requireAuth()

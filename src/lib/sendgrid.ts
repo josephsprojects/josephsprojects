@@ -25,14 +25,14 @@ export async function sendEmail({ to, subject, html, text }: EmailOptions) {
 // ── Project configs for email ──────────────────────────────────────────────────
 const EMAIL_PROJECTS = {
   finance: {
-    name: 'Finance Tracker',
+    name: 'Fintra',
     tagline: 'Shared Expense Management',
     icon: '&#9650;',
     accent: '#4F46E5',
     codeColor: '#4338CA',
     codeBg: '#EEF2FF',
     codeBorder: '#C7D2FE',
-    footer: 'Finance Tracker by <strong style="color:#6b7280;">DataPrimeTech</strong> &middot; Shared Expense Management',
+    footer: 'Fintra by <strong style="color:#6b7280;">DataPrimeTech</strong> &middot; Shared Expense Management',
   },
   curalog: {
     name: 'CuraLog',
@@ -253,7 +253,7 @@ export function invoiceEmailHtml(opts: {
               <!-- Wordmark -->
               <td style="padding-left:11px;vertical-align:middle;">
                 <div style="font-size:1.05rem;font-weight:900;color:#1a1a2e;letter-spacing:-0.4px;line-height:1.15;">DataPrimeTech</div>
-                <div style="font-size:.62rem;font-weight:700;color:#4F6EF7;letter-spacing:.1em;text-transform:uppercase;margin-top:2px;">Finance Tracker</div>
+                <div style="font-size:.62rem;font-weight:700;color:#4F6EF7;letter-spacing:.1em;text-transform:uppercase;margin-top:2px;">Fintra</div>
               </td>
             </tr>
           </table>
@@ -371,7 +371,7 @@ export function invoiceEmailHtml(opts: {
                 Questions about this invoice? Reply to <strong style="color:#374151;">${senderName}</strong> directly.
               </p>
               <p style="margin:8px 0 0;font-size:.7rem;color:#9ca3af;">
-                Sent via <strong style="color:#6b7280;">DataPrimeTech Finance Tracker</strong>
+                Sent via <strong style="color:#6b7280;">DataPrimeTech Fintra</strong>
               </p>
             </td></tr>
           </table>

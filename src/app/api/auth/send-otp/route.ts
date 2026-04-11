@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     data: { user_id: profile.id, code, channel: 'email', expires_at: expiresAt },
   })
 
-  const projectName = project === 'finance' ? 'Finance Tracker' : 'CuraLog'
+  const projectName = project === 'finance' ? 'Fintra' : 'CuraLog'
   await sendEmail({
     to: profile.email,
     subject: `${projectName} — Your verification code`,

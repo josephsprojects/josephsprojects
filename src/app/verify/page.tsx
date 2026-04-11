@@ -15,7 +15,7 @@ const PROJECTS: Record<ProjectKey, {
   features: { icon: string; label: string }[]
 }> = {
   finance: {
-    name: 'Finance Tracker',
+    name: 'Fintra',
     tagline: 'Smart shared expense management',
     accent: '#4F46E5',
     accentDark: '#3730A3',

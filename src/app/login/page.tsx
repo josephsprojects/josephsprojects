@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 // ── Project configs ────────────────────────────────────────────────────────────
 const PROJECTS = {
   finance: {
-    name: 'Finance Tracker',
+    name: 'Fintra',
     tagline: 'Your money, fully under control.',
     accent: '#4F6EF7',
     accentDark: '#3b55d4',
@@ -212,7 +212,7 @@ function LoginContent() {
               <div style={{ marginBottom: 32 }}>
                 <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#111827', letterSpacing: '-.5px', marginBottom: 6 }}>Sign in</h2>
                 <p style={{ fontSize: '.875rem', color: '#6b7280' }}>
-                  {projectKey === 'finance' ? 'Access your Finance Tracker dashboard'
+                  {projectKey === 'finance' ? 'Access your Fintra dashboard'
                     : projectKey === 'curalog' ? 'Access your CuraLog dashboard'
                     : 'Access your DataPrimeTech account'}
                 </p>
