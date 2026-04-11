@@ -420,7 +420,7 @@ function VerifyContent() {
                 <button onClick={startPasskeyLogin} disabled={loading} className="verify-btn-primary" style={{ marginBottom: 8 }}>
                   {loading ? 'Waiting for passkey…' : 'Use passkey'}
                 </button>
-                <button onClick={sendOTP} className="verify-btn-ghost" style={{ width: '100%', textAlign: 'center', fontSize: '.8rem' }}>
+                <button onClick={() => sendOTP(false)} className="verify-btn-ghost" style={{ width: '100%', textAlign: 'center', fontSize: '.8rem' }}>
                   Use a verification code instead
                 </button>
               </div>
