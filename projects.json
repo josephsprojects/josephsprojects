@@ -2,22 +2,22 @@
   {
     "id": "curalog",
     "name": "CuraLog",
-    "description": "Full medication management platform for caregivers and care teams. Multi-patient support, refill tracking, provider lookup, secure messaging, and role-based access.",
-    "url": "/medicationtracker",
+    "description": "Care coordination platform for caregivers and care teams. Track medications, manage refill requests across the full pharmacy journey — from prescriber approval to prior auth to ready for pickup — with patient portal access and automated email notifications.",
+    "url": "/curalog",
     "status": "live",
-    "tags": ["Healthcare", "Supabase", "2FA", "Prisma"],
-    "color": "#4F6EF7",
+    "tags": ["Healthcare", "Care Coordination", "Refill Tracking", "Patient Portal"],
+    "color": "#0E4F54",
     "icon": "clipboard"
   },
   {
     "id": "finance",
     "name": "Finance Tracker",
-    "description": "Personal finance dashboard for tracking credit cards, subscriptions, and bills. Includes utilization alerts, debt payoff calculator, and shared payment splits.",
+    "description": "Personal finance dashboard to manage credit cards, subscriptions, and monthly bills in one place. Track utilization across all cards, split shared expenses between people, simulate debt payoff with avalanche or snowball strategies, and save snapshots to monitor progress over time.",
     "url": "/finance",
     "status": "live",
-    "tags": ["Finance", "Supabase", "2FA", "Dashboard"],
-    "color": "#10B981",
-    "icon": "dollar"
+    "tags": ["Finance", "Credit Cards", "Debt Payoff", "Shared Expenses"],
+    "color": "#4F6EF7",
+    "icon": "finance"
   },
   {
     "id": "clientportal",

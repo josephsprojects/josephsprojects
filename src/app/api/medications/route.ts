@@ -9,6 +9,8 @@ const CreateMedSchema = z.object({
   workspace_id: z.string(),
   patient_id: z.string(),
   name: z.string().min(1),
+  type: z.string().default('medication'),
+  brand: z.string().optional(),
   generic: z.string().optional(),
   dosage: z.string().optional(),
   actual_dose: z.string().optional(),
@@ -19,12 +21,17 @@ const CreateMedSchema = z.object({
   purpose: z.string().optional(),
   quantity: z.number().int().default(30),
   days_supply: z.number().int().default(30),
+  quantity_home: z.number().int().optional().nullable(),
+  pickup_date: z.string().optional().nullable(),
   refills: z.number().int().default(0),
+  notify_refill: z.boolean().default(true),
   last_fill: z.string().optional(),
+  next_fill: z.string().optional(),
   provider_id: z.string().optional(),
   pharmacy_id: z.string().optional(),
   rxcui: z.string().optional(),
   notes: z.string().optional(),
+  status: z.enum(['active', 'on_hold', 'discontinued', 'archived']).optional(),
 })
 
 export async function GET(req: NextRequest) {

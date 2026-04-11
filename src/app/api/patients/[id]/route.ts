@@ -9,6 +9,8 @@ const UpdatePatientSchema = z.object({
   name: z.string().min(1).max(150).optional(),
   dob: z.string().optional(),
   relationship: z.string().optional(),
+  phone: z.string().optional().nullable(),
+  email: z.string().optional().nullable(),
   allergies: z.string().optional(),
   emergency_name: z.string().optional(),
   emergency_phone: z.string().optional(),
@@ -48,4 +50,22 @@ export async function PATCH(req: NextRequest) {
   })
 
   return NextResponse.json<ApiResponse>({ success: true, data: patient })
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const user = await requireAuth()
+  const { id } = await params
+
+  const existing = await prisma.patient.findUnique({ where: { id }, select: { id: true, name: true, workspace_id: true } })
+  if (!existing) return NextResponse.json<ApiResponse>({ success: false, message: 'Not found' }, { status: 404 })
+
+  await prisma.patient.delete({ where: { id } })
+
+  await createAuditLog({
+    userId: user.id, userName: user.name,
+    workspaceId: existing.workspace_id, action: 'delete',
+    entityType: 'patient', entityName: existing.name,
+  })
+
+  return NextResponse.json<ApiResponse>({ success: true })
 }

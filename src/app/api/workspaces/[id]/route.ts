@@ -33,3 +33,21 @@ export async function PATCH(req: NextRequest) {
 
   return NextResponse.json<ApiResponse>({ success: true, data: ws })
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const user = await requireOwner()
+  const { id } = await params
+
+  const ws = await prisma.workspace.findUnique({ where: { id }, select: { id: true, name: true } })
+  if (!ws) return NextResponse.json<ApiResponse>({ success: false, message: 'Not found' }, { status: 404 })
+
+  await prisma.workspace.delete({ where: { id } })
+
+  await createAuditLog({
+    userId: user.id, userName: user.name,
+    workspaceId: id, action: 'delete',
+    entityType: 'workspace', entityName: ws.name,
+  })
+
+  return NextResponse.json<ApiResponse>({ success: true })
+}

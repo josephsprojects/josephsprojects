@@ -134,8 +134,12 @@ function LoginContent() {
           </>
         )}
 
-        <p style={{textAlign:'center',fontSize:'.72rem',color:'var(--text3)',marginTop:28}}>
-          CuraLog · Built by <strong>DataPrimeTech</strong> · Joseph Diaz-Ordonez
+        <p style={{textAlign:'center',fontSize:'.82rem',color:'var(--text3)',marginTop:20}}>
+          Don't have an account?{' '}
+          <a href="/signup" style={{color:'var(--teal)',fontWeight:600}}>Create one</a>
+        </p>
+        <p style={{textAlign:'center',fontSize:'.72rem',color:'var(--text3)',marginTop:12}}>
+          CuraLog · Built by <strong>DataPrimeTech</strong>
         </p>
       </div>
     </div>

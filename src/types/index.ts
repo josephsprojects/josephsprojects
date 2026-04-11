@@ -136,8 +136,9 @@ export interface PharmacyResult {
 }
 
 export interface MedSearchResult {
-  name: string
-  generic: string
+  name: string       // Display name (brand preferred, else generic)
+  brand?: string     // Brand name if available
+  generic: string    // Generic/ingredient name
   rxcui?: string
   strengths?: string[]
   forms?: string[]

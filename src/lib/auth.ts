@@ -9,10 +9,19 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const dbUser = await prisma.user.findUnique({
+  let dbUser = await prisma.user.findUnique({
     where: { supabase_id: user.id },
     select: { id: true, supabase_id: true, email: true, name: true, role: true, initials: true, color: true }
   })
+
+  // Auto-create DB record on first login (e.g. after signup)
+  if (!dbUser && user.email) {
+    const name = (user.user_metadata?.full_name as string) || user.email.split('@')[0]
+    dbUser = await prisma.user.create({
+      data: { supabase_id: user.id, email: user.email, name },
+      select: { id: true, supabase_id: true, email: true, name: true, role: true, initials: true, color: true }
+    })
+  }
 
   return dbUser as AuthUser | null
 }

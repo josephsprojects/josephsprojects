@@ -8,6 +8,494 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model User {
+  id                String            @id @default(cuid())
+  supabase_id       String            @unique
+  email             String            @unique
+  name              String
+  role              Role              @default(patient)
+  phone             String?
+  initials          String?
+  color             String?
+  status            String            @default("active")
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  audit_logs        AuditLog[]
+  received_messages Message[]         @relation("ReceivedMessages")
+  sent_messages     Message[]         @relation("SentMessages")
+  notifications     Notification[]
+  otp_sessions      OtpSession[]
+  passkeys          Passkey[]
+  refill_requests   RefillRequest[]   @relation("RequestedBy")
+  workspace_members WorkspaceMember[]
+  credit_cards      CreditCard[]
+  subscriptions     Subscription[]
+  bills             Bill[]
+  finance_people    FinancePerson[]
+  shared_expenses   SharedExpense[]
+  finance_snapshots FinanceSnapshot[]
+
+  @@map("users")
+}
+
+// ── Finance Tracker (Project 2) ───────────────────────────────────────────────
+
+model CreditCard {
+  id           String   @id @default(cuid())
+  user_id      String
+  name         String
+  bank         String?
+  last4        String?
+  limit        Float    @default(0)
+  balance      Float    @default(0)
+  apr          Float    @default(0)
+  due_day      Int?
+  min_payment  Float?
+  rewards_type String?
+  rewards_rate Float?
+  color        String   @default("#4F6EF7")
+  notes        String?
+  is_closed    Boolean  @default(false)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  user         User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("credit_cards")
+}
+
+model Subscription {
+  id            String   @id @default(cuid())
+  user_id       String
+  name          String
+  amount        Float
+  billing_cycle String   @default("monthly")
+  next_billing  DateTime?
+  category      String?
+  url           String?
+  notes         String?
+  is_active     Boolean  @default(true)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+model Bill {
+  id         String   @id @default(cuid())
+  user_id    String
+  name       String
+  amount     Float
+  due_day    Int?
+  category   String?
+  auto_pay   Boolean  @default(false)
+  notes      String?
+  is_active  Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("bills")
+}
+
+model FinancePerson {
+  id         String               @id @default(cuid())
+  user_id    String
+  name       String
+  email      String?
+  phone      String?
+  color      String               @default("#4F6EF7")
+  created_at DateTime             @default(now())
+  user       User                 @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  splits     SharedExpenseSplit[]
+
+  @@map("finance_people")
+}
+
+model SharedExpense {
+  id         String               @id @default(cuid())
+  user_id    String
+  name       String
+  total      Float
+  date       DateTime             @default(now())
+  notes      String?
+  created_at DateTime             @default(now())
+  updated_at DateTime             @updatedAt
+  user       User                 @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  splits     SharedExpenseSplit[]
+
+  @@map("shared_expenses")
+}
+
+model SharedExpenseSplit {
+  id         String        @id @default(cuid())
+  expense_id String
+  person_id  String
+  amount     Float
+  paid       Boolean       @default(false)
+  expense    SharedExpense @relation(fields: [expense_id], references: [id], onDelete: Cascade)
+  person     FinancePerson @relation(fields: [person_id], references: [id], onDelete: Cascade)
+
+  @@map("shared_expense_splits")
+}
+
+model FinanceSnapshot {
+  id          String   @id @default(cuid())
+  user_id     String
+  label       String?
+  net_worth   Float    @default(0)
+  total_debt  Float    @default(0)
+  total_credit Float   @default(0)
+  utilization Float    @default(0)
+  data        Json     @default("{}")
+  created_at  DateTime @default(now())
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("finance_snapshots")
+}
+
+// ── End Finance Tracker ────────────────────────────────────────────────────────
+
+model OtpSession {
+  id         String   @id @default(cuid())
+  user_id    String
+  code       String
+  channel    String
+  expires_at DateTime
+  used       Boolean  @default(false)
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("otp_sessions")
+}
+
+model Passkey {
+  id            String    @id @default(cuid())
+  user_id       String
+  credential_id String    @unique
+  public_key    String
+  counter       Int       @default(0)
+  transports    String?
+  name          String    @default("Passkey")
+  created_at    DateTime  @default(now())
+  last_used     DateTime?
+  user          User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("passkeys")
+}
+
+model Workspace {
+  id              String            @id @default(cuid())
+  name            String
+  type            WorkspaceType     @default(family)
+  description     String?
+  timezone        String            @default("America/New_York")
+  status          String            @default("active")
+  is_test         Boolean           @default(false)
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  audit_logs      AuditLog[]
+  medications     Medication[]
+  messages        Message[]
+  notifications   Notification[]
+  patients        Patient[]
+  refill_requests RefillRequest[]
+  members         WorkspaceMember[]
+
+  @@map("workspaces")
+}
+
+model WorkspaceMember {
+  id           String    @id @default(cuid())
+  workspace_id String
+  user_id      String
+  role         Role      @default(manager)
+  joined_at    DateTime  @default(now())
+  user         User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  workspace    Workspace @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@unique([workspace_id, user_id])
+  @@map("workspace_members")
+}
+
+model Patient {
+  id              String          @id @default(cuid())
+  workspace_id    String
+  name            String
+  dob             String?
+  relationship    String?
+  phone           String?
+  email           String?
+  allergies       String          @default("None known")
+  emergency_name  String?
+  emergency_phone String?
+  notes           String?
+  initials        String?
+  color           String          @default("#0E4F54")
+  status          String          @default("active")
+  share_code      String?         @unique
+  created_at      DateTime        @default(now())
+  updated_at      DateTime        @updatedAt
+  adherence_logs  AdherenceLog[]
+  documents       Document[]
+  medications     Medication[]
+  notifications   Notification[]
+  workspace       Workspace       @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  refill_requests RefillRequest[]
+  symptom_logs    SymptomLog[]
+
+  @@map("patients")
+}
+
+model Provider {
+  id          String       @id @default(cuid())
+  npi         String?      @unique
+  name        String
+  specialty   String?
+  address     String?
+  city        String?
+  state       String?
+  zip         String?
+  phone       String?
+  fax         String?
+  email       String?
+  source      String       @default("nppes")
+  created_at  DateTime     @default(now())
+  medications Medication[]
+
+  @@map("providers")
+}
+
+model Pharmacy {
+  id          String       @id @default(cuid())
+  npi         String?
+  name        String
+  address     String?
+  city        String?
+  state       String?
+  zip         String?
+  phone       String?
+  chain       String?
+  source      String       @default("nppes")
+  created_at  DateTime     @default(now())
+  medications Medication[]
+
+  @@map("pharmacies")
+}
+
+model Medication {
+  id                 String              @id @default(cuid())
+  workspace_id       String
+  patient_id         String
+  provider_id        String?
+  pharmacy_id        String?
+  name               String
+  type               String              @default("medication")
+  fhir_id            String?
+  fhir_source        String?
+  generic            String?
+  brand              String?
+  dosage             String?
+  actual_dose        String?
+  form               String              @default("Tablet")
+  route              String?
+  frequency          String?
+  instructions       String?
+  purpose            String?
+  status             MedStatus           @default(active)
+  quantity           Int                 @default(30)
+  days_supply        Int                 @default(30)
+  quantity_home      Int?
+  pickup_date        String?
+  refills            Int                 @default(0)
+  notify_refill      Boolean             @default(true)
+  last_fill          String?
+  next_fill          String?
+  rxcui              String?
+  notes              String?
+  created_at         DateTime            @default(now())
+  updated_at         DateTime            @updatedAt
+  adherence_logs     AdherenceLog[]
+  medication_history MedicationHistory[]
+  patient            Patient             @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+  pharmacy           Pharmacy?           @relation(fields: [pharmacy_id], references: [id])
+  provider           Provider?           @relation(fields: [provider_id], references: [id])
+  workspace          Workspace           @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  refill_requests    RefillRequest[]     @relation("MedicationRefills")
+  symptom_logs       SymptomLog[]
+
+  @@map("medications")
+}
+
+model MedicationHistory {
+  id            String     @id @default(cuid())
+  medication_id String
+  field         String
+  from_value    String?
+  to_value      String?
+  changed_by    String?
+  changed_at    DateTime   @default(now())
+  medication    Medication @relation(fields: [medication_id], references: [id], onDelete: Cascade)
+
+  @@map("medication_history")
+}
+
+model RefillRequest {
+  id             String      @id @default(cuid())
+  workspace_id   String
+  patient_id     String
+  medication_id  String?
+  requested_by   String?
+  status         RRStatus    @default(pending)
+  status_note    String?
+  method         String      @default("electronic")
+  notes          String?
+  status_history Json        @default("[]")
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @updatedAt
+  medication     Medication? @relation("MedicationRefills", fields: [medication_id], references: [id])
+  patient        Patient     @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+  requester      User?       @relation("RequestedBy", fields: [requested_by], references: [id])
+  workspace      Workspace   @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@map("refill_requests")
+}
+
+model FhirConnection {
+  id            String   @id @default(cuid())
+  user_id       String
+  patient_id    String?
+  issuer        String
+  display_name  String
+  access_token  String
+  refresh_token String?
+  token_type    String   @default("Bearer")
+  scope         String?
+  expires_at    DateTime?
+  patient_fhir_id String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  @@map("fhir_connections")
+}
+
+model Notification {
+  id           String    @id @default(cuid())
+  workspace_id String
+  patient_id   String?
+  user_id      String?
+  type         String
+  title        String
+  message      String
+  status       String    @default("unread")
+  color        String    @default("blue")
+  link         String?
+  created_at   DateTime  @default(now())
+  patient      Patient?  @relation(fields: [patient_id], references: [id], onDelete: SetNull)
+  user         User?     @relation(fields: [user_id], references: [id])
+  workspace    Workspace @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model Message {
+  id           String    @id @default(cuid())
+  workspace_id String
+  sender_id    String
+  recipient_id String?
+  subject      String?
+  body         String
+  status       String    @default("unread")
+  created_at   DateTime  @default(now())
+  recipient    User?     @relation("ReceivedMessages", fields: [recipient_id], references: [id])
+  sender       User      @relation("SentMessages", fields: [sender_id], references: [id])
+  workspace    Workspace @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model AuditLog {
+  id           String      @id @default(cuid())
+  workspace_id String?
+  user_id      String?
+  user_name    String?
+  action       AuditAction
+  entity_type  String
+  entity_name  String?
+  field        String?
+  from_value   String?
+  to_value     String?
+  ip_address   String?
+  created_at   DateTime    @default(now())
+  user         User?       @relation(fields: [user_id], references: [id])
+  workspace    Workspace?  @relation(fields: [workspace_id], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
+
+model SymptomLog {
+  id            String      @id @default(cuid())
+  patient_id    String
+  medication_id String?
+  symptom       String
+  severity      Int         @default(5)
+  notes         String?
+  logged_at     DateTime    @default(now())
+  medication    Medication? @relation(fields: [medication_id], references: [id], onDelete: SetNull)
+  patient       Patient     @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+
+  @@map("symptom_logs")
+}
+
+model AdherenceLog {
+  id            String     @id @default(cuid())
+  patient_id    String
+  medication_id String
+  status        String
+  scheduled_at  DateTime
+  logged_at     DateTime   @default(now())
+  notes         String?
+  medication    Medication @relation(fields: [medication_id], references: [id], onDelete: Cascade)
+  patient       Patient    @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+
+  @@map("adherence_logs")
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  patient_id  String
+  name        String
+  type        String?
+  url         String
+  size        Int?
+  uploaded_by String?
+  created_at  DateTime @default(now())
+  patient     Patient  @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+
+  @@map("documents")
+}
+
+model FeatureFlag {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  name        String
+  description String?
+  enabled     Boolean  @default(false)
+  env         String   @default("production")
+  updated_at  DateTime @updatedAt
+
+  @@map("feature_flags")
+}
+
+model SystemSetting {
+  id         String   @id @default(cuid())
+  key        String   @unique
+  value      String
+  updated_at DateTime @updatedAt
+
+  @@map("system_settings")
+}
+
 enum Role {
   platform_owner
   workspace_owner
@@ -33,12 +521,24 @@ enum MedStatus {
 
 enum RRStatus {
   pending
+  sent_to_prescriber
   submitted
   at_prescriber
+  prescriber_approved
+  prescriber_denied
+  sent_to_pharmacy
   at_pharmacy
+  prior_auth_required
+  prior_auth_submitted
+  prior_auth_approved
+  prior_auth_denied
+  too_soon
+  insurance_issue
+  delay
   ready
   picked_up
   denied
+  cancelled
 }
 
 enum AuditAction {
@@ -51,323 +551,4 @@ enum AuditAction {
   deny
   upload
   invite
-}
-
-model User {
-  id            String    @id @default(cuid())
-  supabase_id   String    @unique
-  email         String    @unique
-  name          String
-  role          Role      @default(patient)
-  initials      String?
-  color         String?
-  status        String    @default("active")
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
-
-  workspace_members WorkspaceMember[]
-  audit_logs        AuditLog[]
-  sent_messages     Message[]         @relation("SentMessages")
-  received_messages Message[]         @relation("ReceivedMessages")
-  notifications     Notification[]
-  refill_requests   RefillRequest[]   @relation("RequestedBy")
-
-  @@map("users")
-}
-
-model Workspace {
-  id          String        @id @default(cuid())
-  name        String
-  type        WorkspaceType @default(family)
-  description String?
-  timezone    String        @default("America/New_York")
-  status      String        @default("active")
-  created_at  DateTime      @default(now())
-  updated_at  DateTime      @updatedAt
-
-  members        WorkspaceMember[]
-  patients        Patient[]
-  medications     Medication[]
-  refill_requests RefillRequest[]
-  messages        Message[]
-  notifications   Notification[]
-  audit_logs      AuditLog[]
-
-  @@map("workspaces")
-}
-
-model WorkspaceMember {
-  id           String    @id @default(cuid())
-  workspace_id String
-  user_id      String
-  role         Role      @default(manager)
-  joined_at    DateTime  @default(now())
-
-  workspace Workspace @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
-  user      User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@unique([workspace_id, user_id])
-  @@map("workspace_members")
-}
-
-model Patient {
-  id              String    @id @default(cuid())
-  workspace_id    String
-  name            String
-  dob             String?
-  relationship    String?
-  allergies       String    @default("None known")
-  emergency_name  String?
-  emergency_phone String?
-  notes           String?
-  initials        String?
-  color           String    @default("#0E4F54")
-  status          String    @default("active")
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-
-  workspace       Workspace      @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
-  medications     Medication[]
-  refill_requests RefillRequest[]
-  symptom_logs    SymptomLog[]
-  adherence_logs  AdherenceLog[]
-  documents       Document[]
-  notifications   Notification[]
-
-  @@map("patients")
-}
-
-model Provider {
-  id           String  @id @default(cuid())
-  npi          String? @unique
-  name         String
-  specialty    String?
-  address      String?
-  city         String?
-  state        String?
-  zip          String?
-  phone        String?
-  fax          String?
-  email        String?
-  source       String  @default("nppes")
-  created_at   DateTime @default(now())
-
-  medications  Medication[]
-
-  @@map("providers")
-}
-
-model Pharmacy {
-  id         String   @id @default(cuid())
-  npi        String?
-  name       String
-  address    String?
-  city       String?
-  state      String?
-  zip        String?
-  phone      String?
-  chain      String?
-  source     String   @default("nppes")
-  created_at DateTime @default(now())
-
-  medications Medication[]
-
-  @@map("pharmacies")
-}
-
-model Medication {
-  id               String    @id @default(cuid())
-  workspace_id     String
-  patient_id       String
-  provider_id      String?
-  pharmacy_id      String?
-  name             String
-  generic          String?
-  brand            String?
-  dosage           String?
-  actual_dose      String?
-  form             String    @default("Tablet")
-  route            String?
-  frequency        String?
-  instructions     String?
-  purpose          String?
-  status           MedStatus @default(active)
-  quantity         Int       @default(30)
-  days_supply      Int       @default(30)
-  refills          Int       @default(0)
-  last_fill        String?
-  next_fill        String?
-  rxcui            String?
-  notes            String?
-  created_at       DateTime  @default(now())
-  updated_at       DateTime  @updatedAt
-
-  workspace       Workspace       @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
-  patient         Patient         @relation(fields: [patient_id], references: [id], onDelete: Cascade)
-  provider        Provider?       @relation(fields: [provider_id], references: [id])
-  pharmacy        Pharmacy?       @relation(fields: [pharmacy_id], references: [id])
-  refill_requests    RefillRequest[]     @relation("MedicationRefills")
-  symptom_logs       SymptomLog[]
-  adherence_logs     AdherenceLog[]
-  medication_history MedicationHistory[]
-
-  @@map("medications")
-}
-
-model MedicationHistory {
-  id            String   @id @default(cuid())
-  medication_id String
-  field         String
-  from_value    String?
-  to_value      String?
-  changed_by    String?
-  changed_at    DateTime @default(now())
-
-  medication Medication @relation(fields: [medication_id], references: [id], onDelete: Cascade)
-
-  @@map("medication_history")
-}
-
-model RefillRequest {
-  id            String   @id @default(cuid())
-  workspace_id  String
-  patient_id    String
-  medication_id String?
-  requested_by  String?
-  status        RRStatus @default(pending)
-  method        String   @default("electronic")
-  notes         String?
-  status_history Json    @default("[]")
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-
-  workspace  Workspace   @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
-  patient    Patient     @relation(fields: [patient_id], references: [id], onDelete: Cascade)
-  medication Medication? @relation("MedicationRefills", fields: [medication_id], references: [id])
-  requester  User?       @relation("RequestedBy", fields: [requested_by], references: [id])
-
-  @@map("refill_requests")
-}
-
-model Notification {
-  id           String   @id @default(cuid())
-  workspace_id String
-  patient_id   String?
-  user_id      String?
-  type         String
-  title        String
-  message      String
-  status       String   @default("unread")
-  color        String   @default("blue")
-  link         String?
-  created_at   DateTime @default(now())
-
-  workspace Workspace  @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
-  patient   Patient?   @relation(fields: [patient_id], references: [id])
-  user      User?      @relation(fields: [user_id], references: [id])
-
-  @@map("notifications")
-}
-
-model Message {
-  id           String   @id @default(cuid())
-  workspace_id String
-  sender_id    String
-  recipient_id String?
-  subject      String?
-  body         String
-  status       String   @default("unread")
-  created_at   DateTime @default(now())
-
-  workspace Workspace @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
-  sender    User      @relation("SentMessages", fields: [sender_id], references: [id])
-  recipient User?     @relation("ReceivedMessages", fields: [recipient_id], references: [id])
-
-  @@map("messages")
-}
-
-model AuditLog {
-  id           String      @id @default(cuid())
-  workspace_id String?
-  user_id      String?
-  user_name    String?
-  action       AuditAction
-  entity_type  String
-  entity_name  String?
-  field        String?
-  from_value   String?
-  to_value     String?
-  ip_address   String?
-  created_at   DateTime    @default(now())
-
-  workspace Workspace? @relation(fields: [workspace_id], references: [id])
-  user      User?      @relation(fields: [user_id], references: [id])
-
-  @@map("audit_logs")
-}
-
-model SymptomLog {
-  id            String   @id @default(cuid())
-  patient_id    String
-  medication_id String?
-  symptom       String
-  severity      Int      @default(5)
-  notes         String?
-  logged_at     DateTime @default(now())
-
-  patient    Patient     @relation(fields: [patient_id], references: [id], onDelete: Cascade)
-  medication Medication? @relation(fields: [medication_id], references: [id])
-
-  @@map("symptom_logs")
-}
-
-model AdherenceLog {
-  id            String   @id @default(cuid())
-  patient_id    String
-  medication_id String
-  status        String
-  scheduled_at  DateTime
-  logged_at     DateTime @default(now())
-  notes         String?
-
-  patient    Patient    @relation(fields: [patient_id], references: [id], onDelete: Cascade)
-  medication Medication @relation(fields: [medication_id], references: [id], onDelete: Cascade)
-
-  @@map("adherence_logs")
-}
-
-model Document {
-  id         String   @id @default(cuid())
-  patient_id String
-  name       String
-  type       String?
-  url        String
-  size       Int?
-  uploaded_by String?
-  created_at DateTime @default(now())
-
-  patient Patient @relation(fields: [patient_id], references: [id], onDelete: Cascade)
-
-  @@map("documents")
-}
-
-model FeatureFlag {
-  id          String  @id @default(cuid())
-  key         String  @unique
-  name        String
-  description String?
-  enabled     Boolean @default(false)
-  env         String  @default("production")
-  updated_at  DateTime @updatedAt
-
-  @@map("feature_flags")
-}
-
-model SystemSetting {
-  id         String   @id @default(cuid())
-  key        String   @unique
-  value      String
-  updated_at DateTime @updatedAt
-
-  @@map("system_settings")
 }

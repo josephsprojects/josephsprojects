@@ -506,14 +506,15 @@ const clientJs = `
   var ICONS = {
     clipboard: '<rect x="9" y="2" width="6" height="4" rx="1"/><path d="M8 6H6a2 2 0 00-2 2v11a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-2"/><path d="M12 12v4M10 14h4"/>',
     dollar: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>',
+    finance: '<rect x="2" y="16" width="4" height="6" rx="1"/><rect x="9" y="11" width="4" height="11" rx="1"/><rect x="16" y="6" width="4" height="16" rx="1"/><polyline points="3,17 10,12 17,7 22,3"/><polyline points="19,2 22,3 21,6"/>',
     briefcase: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>',
     map: '<polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>',
     code: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
   };
 
   var FALLBACK = [
-    { name:'CuraLog', description:'Full medication management platform for caregivers and care teams. Multi-patient support, refill tracking, provider lookup, and role-based access.', tags:['Healthcare','2FA Secured','Multi-patient'], status:'live', icon:'clipboard', color:'#0E4F54', url:'/curalog' },
-    { name:'Finance Tracker', description:'Personal finance dashboard for tracking credit cards, subscriptions, and bills. Debt payoff calculator and utilization alerts.', tags:['Finance','Dashboard','Alerts'], status:'live', icon:'dollar', color:'#1A7A42', url:'/finance' },
+    { name:'CuraLog', description:'Care coordination platform for caregivers and care teams. Track medications, manage refill requests across the full pharmacy journey — from prescriber approval to prior auth to ready for pickup — with patient portal access and automated email notifications.', tags:['Healthcare','Care Coordination','Refill Tracking','Patient Portal'], status:'live', icon:'clipboard', color:'#0E4F54', url:'/curalog' },
+    { name:'Finance Tracker', description:'Personal finance dashboard to manage credit cards, subscriptions, and monthly bills in one place. Track utilization across all cards, split shared expenses between people, simulate debt payoff with avalanche or snowball strategies, and save snapshots to monitor progress over time.', tags:['Finance','Credit Cards','Debt Payoff','Shared Expenses'], status:'live', icon:'finance', color:'#4F6EF7', url:'/finance' },
     { name:'Client Portal', description:'Private project delivery and file-sharing portal for DataPrimeTech clients. Milestone tracking, feedback threads, and secure document handoff.', tags:['Workflow','Collaboration','Security'], status:'building', icon:'briefcase', color:'#C9762A', url:null },
     { name:'Field Ops Tracker', description:'Job scheduling and crew management tool for small field-service businesses. Work orders, photo logs, and invoice generation.', tags:['Operations','Scheduling','Mobile'], status:'building', icon:'map', color:'#5B3BA8', url:null },
   ];
@@ -680,7 +681,7 @@ export default function DataPrimeTechHome() {
                   </div>
                   <div className="app-info">
                     <div className="app-name">Finance Tracker</div>
-                    <div className="app-sub">Cards · Subscriptions · Debt payoff</div>
+                    <div className="app-sub">Cards · Bills · Debt payoff · Shared splits</div>
                   </div>
                   <span className="app-badge badge-live">Live</span>
                 </a>

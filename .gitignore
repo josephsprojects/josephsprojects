@@ -2,6 +2,10 @@ node_modules
 .next
 .env
 .env.local
+.env.production
 *.node
 .vercel
 supabase/.temp
+.env*.local
+tsconfig.tsbuildinfo
+.claude/settings.json

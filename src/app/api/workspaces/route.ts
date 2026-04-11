@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireOwner, createAuditLog } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { cookies } from 'next/headers'
 import { z } from 'zod'
 import type { ApiResponse } from '@/types'
 
@@ -29,7 +30,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json<ApiResponse>({ success: false, message: 'Invalid data', error: parsed.error.message }, { status: 400 })
   }
 
-  const ws = await prisma.workspace.create({ data: parsed.data })
+  const cookieStore = await cookies()
+  const isTestMode = cookieStore.get('curalog_test_mode')?.value === '1'
+  const ws = await prisma.workspace.create({ data: { ...parsed.data, is_test: isTestMode } })
 
   await createAuditLog({
     userId: user.id, userName: user.name,

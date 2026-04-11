@@ -15,6 +15,7 @@ export default function WorkspacesClient({ initialWorkspaces }: { initialWorkspa
   const [showModal, setShowModal] = useState(false)
   const [editing, setEditing] = useState<Workspace | null>(null)
   const [loading, setLoading] = useState(false)
+  const [deleting, setDeleting] = useState<string | null>(null)
   const [form, setForm] = useState({ name: '', type: 'family', description: '' })
   const [error, setError] = useState('')
 
@@ -42,6 +43,19 @@ export default function WorkspacesClient({ initialWorkspaces }: { initialWorkspa
     if (!confirm(`Archive workspace "${ws.name}"? Patients and medications will be preserved.`)) return
     await fetch(`/api/workspaces?id=${ws.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'archived' }) })
     router.refresh()
+  }
+
+  async function deleteWorkspace(ws: Workspace) {
+    if (!confirm(`Permanently delete "${ws.name}"? This will delete ALL patients, medications, and refill requests inside. This cannot be undone.`)) return
+    setDeleting(ws.id)
+    const res = await fetch(`/api/workspaces/${ws.id}`, { method: 'DELETE' })
+    setDeleting(null)
+    if (res.ok) {
+      setWorkspaces(prev => prev.filter(w => w.id !== ws.id))
+    } else {
+      const data = await res.json().catch(() => ({}))
+      alert(data.message || 'Failed to delete workspace. Please try again.')
+    }
   }
 
   return (
@@ -77,7 +91,8 @@ export default function WorkspacesClient({ initialWorkspaces }: { initialWorkspa
               </div>
               <div style={{ display: 'flex', gap: 6, marginTop: 14 }}>
                 <button className="btn btn-secondary" style={{ fontSize: '.75rem', padding: '5px 12px' }} onClick={e => { e.stopPropagation(); openEdit(ws) }}>Edit</button>
-                {ws.status === 'active' && <button className="btn btn-ghost" style={{ fontSize: '.75rem', padding: '5px 12px', color: 'var(--red)' }} onClick={e => { e.stopPropagation(); archive(ws) }}>Archive</button>}
+                {ws.status === 'active' && <button className="btn btn-ghost" style={{ fontSize: '.75rem', padding: '5px 12px', color: 'var(--amber)' }} onClick={e => { e.stopPropagation(); archive(ws) }}>Archive</button>}
+                <button className="btn btn-ghost" style={{ fontSize: '.75rem', padding: '5px 12px', color: 'var(--red)' }} disabled={deleting === ws.id} onClick={e => { e.stopPropagation(); deleteWorkspace(ws) }}>{deleting === ws.id ? '…' : 'Delete'}</button>
               </div>
             </div>
           ))}

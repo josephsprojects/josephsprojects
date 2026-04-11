@@ -10,6 +10,8 @@ const CreatePatientSchema = z.object({
   name: z.string().min(1).max(150),
   dob: z.string().optional(),
   relationship: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().optional(),
   allergies: z.string().default('None known'),
   emergency_name: z.string().optional(),
   emergency_phone: z.string().optional(),
